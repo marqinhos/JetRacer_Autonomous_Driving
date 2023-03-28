@@ -1,7 +1,7 @@
 
 import pygame
 from adafruit_servokit import ServoKit
-import traitlets
+
 
 i2c_address = 0x40
 steering_channel = 0
