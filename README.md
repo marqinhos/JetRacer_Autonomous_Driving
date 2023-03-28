@@ -12,6 +12,7 @@ in progress**
 List TODO:
 - [x] [Test JetRacer motors]()
 - [x] [Keyboard Control JetRacer]()
+- [x] [Gamepad Control JetRacer]()
 - [ ] [Create own dataset]().
 - [ ] [Train YOLO]().
 
