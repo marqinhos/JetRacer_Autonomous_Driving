@@ -17,7 +17,7 @@ List TODO:
 - [ ] [Train YOLO]().
 
 ## License
-JetRacer Autonomous Driving is available under next license:
+**JetRacer Autonomous Driving** is available under next license:
 
 * GPL-3.0 License: See [LICENSE](./LICENSE) file for details.
 ## Author:
