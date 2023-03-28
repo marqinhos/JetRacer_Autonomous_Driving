@@ -16,6 +16,10 @@ List TODO:
 - [ ] [Create own dataset]().
 - [ ] [Train YOLO]().
 
+## License
+YOLOv8 is available under next license:
+
+* GPL-3.0 License: See [LICENSE](./LICENSE) file for details.
 ## Author:
 (c) 2023 ([Marcos Fernández](https://github.com/marqinhos))
 
