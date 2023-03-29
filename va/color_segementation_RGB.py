@@ -8,10 +8,13 @@ class VASegmentation:
     """
 
     def __init__(self, shows: bool=False) -> None:
+        ## Update values of dictionary to work in RGB space
         self.color_dict_HSV = {'black': [(0, 0, 0), (180, 255, 30)],
                                 'white': [(0, 0, 231), (180, 18, 255)],
-                                'orange': [(1, 190, 200), (18, 255, 255)]}
-        
+                                'orange': [(180, 80, 0), (255, 179, 93)]}
+        ## (255, 89, 0) high - (255, 149, 0)
+        ## (241, 156, 33) (255, 144, 32)
+        ## (1, 190, 200), (18, 255, 255)
         self.__show = shows
 
     def get_lines(self, img: np.ndarray, color: str="orange") -> list:
@@ -25,8 +28,13 @@ class VASegmentation:
             list: List of list, with 4 points of the square like as: [[(x, y), (x+w, y), ...], [], ...]
         """
         hsv_img = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
-        mask = cv2.inRange(hsv_img, self.color_dict_HSV[color][0], self.color_dict_HSV[color][1])
-        #result = cv2.bitwise_and(img, img, mask=mask)
+
+        mask = cv2.inRange(img, self.color_dict_HSV[color][0], self.color_dict_HSV[color][1])
+        if self.__show:
+            self.__shows_img(mask)
+        result = cv2.bitwise_and(img, img, mask=mask)
+        if self.__show:
+            self.__shows_img(result)
         mask_contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE) 
         result_list = []
         if len(mask_contours) != 0:
@@ -59,8 +67,15 @@ class VASegmentation:
         
 
 if __name__ == "__main__":
-    img = cv2.imread('/home/marcos/TFG/JetRacer_Autonomous_Driving/va/data/road.jpg')
+    img = cv2.imread('/home/marcos/TFG/JetRacer_Autonomous_Driving/va/data/image_5.jpg')
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    ### Adjust the brightness and contrart of image
+    need_adjust = False
+    if need_adjust:
+        # Defining alpha and beta:
+        alpha = 2.0   # Contrast Control [1.0-3.0]
+        beta = 1    # Brightness Control [0-100]
+        img = cv2.convertScaleAbs(img, alpha=alpha, beta=beta)
 
     seg = VASegmentation(shows=True)
     seg.get_lines(img)
