@@ -8,6 +8,7 @@ class VASegmentation:
     """
 
     def __init__(self, shows: bool=False) -> None:
+        ## Update values of dictionary to work in RGB space
         self.color_dict_HSV = {'black': [(0, 0, 0), (180, 255, 30)],
                                 'white': [(0, 0, 231), (180, 18, 255)],
                                 'orange': [(180, 80, 0), (255, 179, 93)]}
@@ -68,6 +69,7 @@ class VASegmentation:
 if __name__ == "__main__":
     img = cv2.imread('/home/marcos/TFG/JetRacer_Autonomous_Driving/va/data/image_5.jpg')
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    ### Adjust the brightness and contrart of image
     need_adjust = False
     if need_adjust:
         # Defining alpha and beta:
