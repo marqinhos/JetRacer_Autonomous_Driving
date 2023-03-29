@@ -18,7 +18,9 @@ Applying color Segmentation
 ## Development
 
 List TODO:
-- [ ] [Create vision color detector]()
+- [x] [Create vision color detector](./color_segementation.py)
+- [ ] [Perform vision color detector]()
+
 
 
 ## Author:
