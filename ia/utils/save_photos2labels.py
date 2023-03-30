@@ -11,10 +11,10 @@ class SaveIMG:
             -> path2save_img (str): Path for save selective images
             -> img_extension (str): Extension images
         """
-        self.root_path_labels = "./marcosData/labels/*.txt"
-        self.path2save_img = "./marcosData/images/"
+        self.root_path_labels = "./data/labels/*.txt"
+        self.path2save_img = "./data/images/"
         self.img_extension = ".jpg"
-        self.root_path_images = "./marcosData/all_img/"
+        self.root_path_images = "./data/all_img/"
 
 
     def __call__(self):
