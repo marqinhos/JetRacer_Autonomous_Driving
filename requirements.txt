@@ -23,3 +23,4 @@ zipp==3.15.0
 pygame==2.3.0
 depthai==2.20.2
 ultralytics==8.0.58
+onnx==1.13.1
