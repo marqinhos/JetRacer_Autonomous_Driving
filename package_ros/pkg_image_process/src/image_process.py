@@ -28,7 +28,7 @@ class ProccesImage(th.Thread):
         Them process the segmentation, to extract the desired point to go the robot
     """
 
-    def __init__(self, model_ia_path: str,name_sub: str="jetracer_image", name_pub: str="jetracer_vels", name_ros_node: str="procces_and_sub_image") -> None:
+    def __init__(self, model_ia_path: str,name_sub: str="jetracer_image", name_pub: str="jetracer_vels", name_ros_node: str="procces_and_sub_image") -> "ProccesImage":
 
         ########################### Threads ###########################
         # Initialize thread
@@ -65,6 +65,8 @@ class ProccesImage(th.Thread):
 
 
     def run(self) -> None:
+        """Main void
+        """
         rospy.loginfo("Processing image...")
         while self.running:
             ## Wait for a frame
@@ -98,27 +100,39 @@ class ProccesImage(th.Thread):
         
     
     def publish_vels(self, angle_deg: float) -> None:
-            CONSTANT_VEL = 0.6
-            vel = 0.05
-            
-            #if not same:
-            if angle_deg > 0:
-                vel = 4.4*(1/abs(angle_deg))  # Aquí se asigna un valor arbitrario para la velocidad
+        """Void to publish angular vel and linear vel in Twist format. The topic to publish is "jetracer_vels"
 
-            else:
-                vel = CONSTANT_VEL
-            
-            # Break velocity
-            vel = vel if vel <= CONSTANT_VEL else CONSTANT_VEL
-            # Crear un mensaje de tipo Twist y asignar los valores de angle y vel
-            twist_msg = Twist()
-            twist_msg.angular.z = angle_deg
-            twist_msg.linear.x = vel
-            
-            # Publicar el mensaje en el topic vels_jetracer
-            self.pub_vels.publish(twist_msg)
+        Args:
+            angle_deg (float): Angle
+        """
+        CONSTANT_VEL = 0.6
+        vel = 0.05
+        
+        #if not same:
+        if angle_deg > 0:
+            vel = 4.4*(1/abs(angle_deg))  # Aquí se asigna un valor arbitrario para la velocidad
 
-    def __show(self, image: np.ndarray, point: Point):
+        else:
+            vel = CONSTANT_VEL
+        
+        # Break velocity
+        vel = vel if vel <= CONSTANT_VEL else CONSTANT_VEL
+        # Crear un mensaje de tipo Twist y asignar los valores de angle y vel
+        twist_msg = Twist()
+        twist_msg.angular.z = angle_deg
+        twist_msg.linear.x = vel
+        
+        # Publicar el mensaje en el topic vels_jetracer
+        self.pub_vels.publish(twist_msg)
+
+
+    def __show(self, image: np.ndarray, point: Point) -> None:
+        """Void to show desired point, and real point 
+
+        Args:
+            image (np.ndarray): Image to show
+            point (Point): Point to draw in image
+        """
         cv2.circle(image, (point.x, point.y), 5, (0, 0, 255), -1)
         cv2.circle(image, (self.compute_detec.size[0]//2, self.compute_detec.size[1]-10), 5, (255, 0, 0), -1)
         cv2.imshow(self.name_ros_node , image)
@@ -148,6 +162,21 @@ class ProccesImage(th.Thread):
 
 
     def __convert_point_2_vel(self, goal_point: Point) -> float:
+        """Function to extract angle from a goal point respect real point.
+            To calculate angle use trigonometry.
+                - Calculate horizontal side
+                - Calculate vertical side
+                - Calculate angle with arctang
+                - To select the turn sign i do the next:
+                    If go to right, that is, the desired point is to the right of the real point the sign is negativa.
+                    In the other case is positive.
+
+        Args:
+            goal_point (Point): Desired Point calculate below
+
+        Returns:
+            float: Return angle in degrees
+        """
 
         real_pose = Point(self.compute_detec.size[0]//2, self.compute_detec.size[1]-10)
         ## Calculate sides
