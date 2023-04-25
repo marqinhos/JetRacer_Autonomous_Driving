@@ -13,7 +13,7 @@ class Features_Detection:
     """Class to extrac the goal point in the image 
         Errors:
             - 1: No detection
-            - 2: 
+            - 2: Other error
     """
 
     def __init__(self) -> "Features_Detection":
@@ -47,6 +47,28 @@ class Features_Detection:
 
 
     def process(self, result: list) -> Point:
+        """Function to get the desired point (this point will be a point in the center of the lane). 
+            For get the point use diferent methods. Methods implement:
+                | RIGHT CORNER -- MIDDLE LINE -> Detect right corner line and middle line. Return the center point of both masks' centroids
+                | RIGHT LANE -> Detect right lane. Return the centroid of lane mask
+                | RIGHT CORNER  -> Detect right corner line. Return the mask's centroid adding right offset (to center in the lane)
+                | MIDDLE LINE -> Detect middle line. Return the mask's centroid adding mid offset (to center in the lane)
+
+            TODO: Methods to implement:
+                | lane_middle_right -> Detections of right Lane, middle Line and right coner Line
+                | lane_right -> Detections of right Lane and right corner Line
+                | lane_middle -> Detections of right Lane and middle Line
+                
+        Args:
+            result (list): Result of the prediction
+
+        Raises:
+            ValueError: Posible value error
+                           - 1: No detections
+
+        Returns:
+            Point: Return the point in the middle of right lane
+        """
 
         ##############################################################
         ##                  Check the detections                    ##
@@ -120,6 +142,20 @@ class Features_Detection:
 
     
     def __get_index_detection(self, result: list, class_name: str=None, class_num: int=None) -> int:
+        """Function to get index for a class name or class num
+
+        Args:
+            result (list): Result of the prediction
+            class_name (str, optional): Name of the class to take index. Defaults to None.
+            class_num (int, optional): Num of the class to take index. Defaults to None.
+
+        Raises:
+            ValueError: Posible value error
+                           - 1: No detections
+
+        Returns:
+            int: Return the index for the class enter
+        """
         tensors_detecs = result[0].boxes.cls
         if class_num is None:
             class_num = self.dict_keys_detect[class_name]
@@ -133,6 +169,20 @@ class Features_Detection:
         
 
     def __get_index_detection_corner(self, result: list, class_name: str=None, class_num: int=None) -> list:
+        """Function to get all index of corners' detections
+
+        Args:
+            result (list): Result of the prediction
+            class_name (str, optional): Name of the class to take index. Defaults to None.
+            class_num (int, optional): Num of the class to take index. Defaults to None.
+
+        Raises:
+            ValueError: Posible value error
+                           - 1: No detections
+
+        Returns:
+            list: Return a list with all index for detections
+        """
         tensors_detecs = result[0].boxes.cls
         if class_num is None:
             class_num = self.dict_keys_detect[class_name]
@@ -145,7 +195,20 @@ class Features_Detection:
             raise ValueError(1) # Error 1: No detections
         
 
-    def __get_index_corner_right(self, index: list, result: list) -> list:
+    def __get_index_corner_right(self, index: list, result: list) -> int:
+        """Function to get only the index of the right corner's mask
+
+        Args:
+            index (list): List with all index for all corners detect
+            result (list): Result of the prediction
+
+        Raises:
+            ValueError: Posible value error
+                           - 2: Other error
+
+        Returns:
+            int: Return the index of right corner line
+        """
         try:
             all_point = []
             for i in index:
@@ -165,15 +228,14 @@ class Features_Detection:
 
     @staticmethod
     def __get_torch_centroid(mask: torch.Tensor) -> Point:
-        """Function to get centrooid of a mask
+        """Function to get centrooid of a mask using GPU (torch)
 
         Args:
             mask (torch.Tensor): Mask of segment
 
         Returns:
-            Point: Point with the x and y of corner right line centroid
+            Point: Point with the x and y of the mask
         """
-
         y_coords, x_coords = torch.where(mask)
         ## Calculate the mean of coords
         cx = int(torch.mean(x_coords.float()))
@@ -183,6 +245,14 @@ class Features_Detection:
 
     @staticmethod
     def __get_numpy_centroid(mask: torch.Tensor) -> Point:
+        """Function to get centrooid of a mask usign CPU (numpy)
+
+        Args:
+            mask (torch.Tensor): Mask of segment
+
+        Returns:
+            Point: Point with the x and y of the mask
+        """
         np_mask = mask.detach().cpu().numpy().astype(np.uint8)
         # Aplica la segmentación y obtiene la máscara binaria
         _, thresh = cv2.threshold(np_mask, 0, 255, cv2.THRESH_BINARY)
@@ -207,11 +277,27 @@ class Features_Detection:
 
 
     def __get_centroid_lane(self, lane_mask: torch.Tensor) -> Point:
+        """Function to get the centroid of right lane maks
+
+        Args:
+            lane_mask (torch.Tensor): Right lane mask
+
+        Returns:
+            Point: Return the centroid point of right lane mask
+        """
         centroid_pt = self.__get_torch_centroid(lane_mask)
         return centroid_pt
 
 
     def __get_centroid_line_corner(self, corner_line_mask: torch.Tensor) -> Point:
+        """Function to get the centroid of a corner right mask, with add the offset to center in the lane 
+
+        Args:
+            corner_line_mask (torch.Tensor): The corner right mask
+
+        Returns:
+            Point: Return centroid point of this mask adding the offset to center in the lane
+        """
         ## Get centroid of corner mask
         c_in_line = self.__get_torch_centroid(corner_line_mask)
         ## Add offset to center de point into the lane
@@ -223,6 +309,14 @@ class Features_Detection:
 
 
     def __get_centroid_line_mid(self, mid_line_mask: torch.Tensor) -> Point:
+        """Function to get the centroid of a line mid mask, with add the offset to center in the lane 
+
+        Args:
+            mid_line_mask (torch.Tensor): The line mid mask
+
+        Returns:
+            Point: Return centroid point of this mask adding the offset to center in the lane
+        """
         ## Get centroid of mid mask
         c_in_line = self.__get_torch_centroid(mid_line_mask)
         ## Add offset to center de point into the lane
