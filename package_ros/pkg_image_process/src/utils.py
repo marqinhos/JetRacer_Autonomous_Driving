@@ -46,6 +46,15 @@ class Point:
             Point: Return the self point displaced
         """
         return Point(self.x + x, self.y + y)
+    
+    def zero(self) -> bool:
+        """Function to check if 0,0 point
+
+        Returns:
+            bool: Return True if 0,0 point and False in the other cases
+        """
+
+        return self.x == 0 and self.y == 0
 
 
     
