@@ -17,9 +17,7 @@ class Camera_OAK(th.Thread):
         self.width = 640
         self.height = 480
         self.time2save = 5
-        self.__show = False
-        self.root_folder = os.path.join(".", "data")
-        self.frame = np.zeros((640, 480))
+        self.frame = np.zeros((self.width, self.height))
 
 
     @staticmethod
@@ -59,10 +57,6 @@ class Camera_OAK(th.Thread):
             # Start pipeline
             device.startPipeline(pipeline)
             fpsCounter = {}
-            lastFpsCount = {}
-            tfps = time.time()
-            start_time = tfps
-            num_img = 0
 
             while not device.isClosed():
                 queueNames = device.getQueueEvents(streams)
@@ -71,10 +65,7 @@ class Camera_OAK(th.Thread):
                     fpsCounter[stream] = fpsCounter.get(stream, 0.0) + len(messages)
                     for message in messages:
                         # Display arrived frames
-                        if type(message) == dai.ImgFrame:
-                            # render fps
-                            fps = lastFpsCount.get(stream, 0)
-                            
+                        if type(message) == dai.ImgFrame:                            
                             frame = message.getCvFrame()
                             resize_points = (self.width, self.height)
                             frame = cv2.resize(frame, resize_points, interpolation= cv2.INTER_LINEAR)
@@ -100,17 +91,15 @@ class ImagePublisher(th.Thread):
         self.bridge = CvBridge()
         self.camera = camera
         
+
     def publish_image(self):
-        # Cargar la imagen de archivo
-        ## image_path = 'path/to/your/image.jpg'
-        ## image = cv2.imread(image_path)
         image = self.camera.get_frame()
 
         # Convertir la imagen de OpenCV a ROS y publicarla
-        if image is None: pass
-        ros_image = self.bridge.cv2_to_imgmsg(image, 'bgr8')
-        self.image_pub.publish(ros_image)
-        print("Publising")
+        if image is not None: 
+            ros_image = self.bridge.cv2_to_imgmsg(image, 'bgr8')
+            self.image_pub.publish(ros_image)
+
 
     def run(self):
         print("Go publish")
@@ -129,9 +118,6 @@ class ImagePublisher(th.Thread):
 if __name__ == '__main__':
     try:
         camera = Camera_OAK()
-        ## camera()
-        ## image_publisher = ImagePublisher(camera)
-        ## image_publisher.run()
         list_run = [camera, ImagePublisher(camera)]
         [item.start() for item in list_run]
         [item.join() for item in list_run]
