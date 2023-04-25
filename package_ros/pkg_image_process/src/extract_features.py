@@ -65,7 +65,7 @@ class Features_Detection:
             raise ValueError(1) # Error 1: No detections
 
     @staticmethod
-    def __get_centroid(mask: torch.Tensor) -> Point:
+    def __get_torch_centroid(mask: torch.Tensor) -> Point:
         """Function to get centrooid of a mask
 
         Args:
@@ -82,14 +82,19 @@ class Features_Detection:
         return Point(cx, cy)
 
 
+    @staticmethod
+    def __get_numpy_centroid(mask: torch.Tensor) -> Point:
+        pass
+
+
     def __get_centroid_lane(self, lane_mask: torch.Tensor) -> Point:
-        centroid_pt = self.__get_centroid(lane_mask)
+        centroid_pt = self.__get_torch_centroid(lane_mask)
         return centroid_pt
 
 
     def __get_centroid_line_corner(self, corner_line_mask: torch.Tensor) -> Point:
         ## Get centroid of corner mask
-        c_in_line = self.__get_centroid(corner_line_mask)
+        c_in_line = self.__get_torch_centroid(corner_line_mask)
         ## Add offset to center de point into the lane
         if c_in_line.x - self.offset_right >= 0: 
             centroid_pt = c_in_line.displace(-self.offset_right)
@@ -100,7 +105,7 @@ class Features_Detection:
 
     def __get_centroid_line_mid(self, mid_line_mask: torch.Tensor) -> Point:
         ## Get centroid of mid mask
-        c_in_line = self.__get_centroid(mid_line_mask)
+        c_in_line = self.__get_torch_centroid(mid_line_mask)
         ## Add offset to center de point into the lane
         if c_in_line.x + self.offset_mid <= self.size[0]: 
             centroid_pt = c_in_line.displace(self.offset_mid)
