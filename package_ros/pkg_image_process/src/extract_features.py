@@ -19,10 +19,10 @@ class Features_Detection:
 
         ########################### DETECTIONS ###########################
         self.dict_keys_detec = {
-                                0: "right_lane",
-                                1: "left_lane",
-                                2: "middle_line",
-                                3: "corner_line"}
+                                "right_lane": 0,
+                                "left_lane": 1,
+                                "middle_line": 2,
+                                "corner_line": 3}
 
 
     def run(self, result: list) -> Point:
