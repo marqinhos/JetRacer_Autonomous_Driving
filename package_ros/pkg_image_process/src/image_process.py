@@ -26,7 +26,7 @@ class ProccesImage(th.Thread):
         Them process the segmentation, to extract the desired point to go the robot
     """
 
-    def __init__(self, model_ia_path: str,name_sub: str="jetracer_image", name_pub: str="jetracer_vels", name_ros_node: str="procces_and_sub_image"):
+    def __init__(self, model_ia_path: str,name_sub: str="jetracer_image", name_pub: str="jetracer_vels", name_ros_node: str="procces_and_sub_image") -> None:
 
         ########################### Threads ###########################
         # Initialize thread
@@ -58,7 +58,7 @@ class ProccesImage(th.Thread):
         self.bridge = CvBridge()
 
 
-    def run(self):
+    def run(self) -> None:
         rospy.loginfo("Processing image...")
         while self.running:
             ## Wait for a frame
@@ -101,7 +101,7 @@ class ProccesImage(th.Thread):
         pass
 
 
-def signal_handler(signal, frame):
+def signal_handler(signal, frame) -> None:
     print("Ctrl+C detected, stopping threads...")
     image_process.running = False
 

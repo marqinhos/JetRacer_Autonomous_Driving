@@ -93,7 +93,7 @@ class Camera_OAK(th.Thread):
 class ImagePublisher(th.Thread):
     """Class to publish in a topic cam image"""
 
-    def __init__(self, camera, name_ros_node: str="image_publisher", name_pub: str="jetracer_image"):
+    def __init__(self, camera, name_ros_node: str="image_publisher", name_pub: str="jetracer_image") -> None:
         
         ########################### Threads ###########################
         # Initialize thread
@@ -118,7 +118,7 @@ class ImagePublisher(th.Thread):
         self.running = True
 
 
-    def run(self):
+    def run(self) -> None:
         rospy.loginfo("Publishing Image...")
 
         while not rospy.is_shutdown() and self.running:
@@ -144,7 +144,7 @@ class ImagePublisher(th.Thread):
             self.pub_image.publish(ros_image)
 
 
-def signal_handler(signal, frame):
+def signal_handler(signal, frame) -> None:
     print("Ctrl+C detected, stopping threads...")
     image_publisher.running = False
     camera.running = False
