@@ -84,11 +84,31 @@ class Features_Detection:
 
     @staticmethod
     def __get_numpy_centroid(mask: torch.Tensor) -> Point:
-        pass
+        np_mask = mask.detach().cpu().numpy().astype(np.uint8)
+        # Aplica la segmentación y obtiene la máscara binaria
+        _, thresh = cv2.threshold(np_mask, 0, 255, cv2.THRESH_BINARY)
+        # Encuentra los contornos de la máscara
+        contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+        dict_area = {}
+        # Encuentra el centroide de cada contorno
+        for contour in contours:
+            # Calcula los momentos del contorno
+            moments = cv2.moments(contour)
+            area = cv2.contourArea(contour)
+            dict_area[area] = moments
+
+        max_area = max(list(dict_area.keys()))
+        moment = dict_area[max_area]
+        # Calcula el centroide del contorno
+        cx = int(moment['m10'] / moment['m00'])
+        cy = int(moment['m01'] / moment['m00'])
+
+        return Point(cx, cy)
 
 
     def __get_centroid_lane(self, lane_mask: torch.Tensor) -> Point:
-        centroid_pt = self.__get_torch_centroid(lane_mask)
+        centroid_pt = self.__get_numpy_centroid(lane_mask)
         return centroid_pt
 
 
