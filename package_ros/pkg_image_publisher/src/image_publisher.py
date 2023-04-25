@@ -13,11 +13,17 @@ import threading as th
 class Camera_OAK(th.Thread):
 
     def __init__(self) -> None:
-        super().__init__()
+        ########################### Threads ###########################
+        # Initialize thread
+        th.Thread.__init__(self)
+        
+        ########################### IMAGE ###########################
         self.width = 640
         self.height = 480
-        self.time2save = 5
         self.frame = np.zeros((self.width, self.height))
+
+        ########################### OS ###########################
+        self.running =True
 
 
     @staticmethod
@@ -58,7 +64,7 @@ class Camera_OAK(th.Thread):
             device.startPipeline(pipeline)
             fpsCounter = {}
 
-            while not device.isClosed():
+            while not device.isClosed() and self.running:
                 queueNames = device.getQueueEvents(streams)
                 for stream in queueNames:
                     messages = device.getOutputQueue(stream).tryGetAll()
@@ -69,56 +75,83 @@ class Camera_OAK(th.Thread):
                             frame = message.getCvFrame()
                             resize_points = (self.width, self.height)
                             frame = cv2.resize(frame, resize_points, interpolation= cv2.INTER_LINEAR)
-
                             self.frame = frame
                             
 
-    def get_frame(self):
+    def get_frame(self) -> np.darray:
+        """Function to get the image save in the buffer
+
+        Returns:
+            np.darray: Return the last image save in the buffer
+        """
         return self.frame
 
 
 class ImagePublisher(th.Thread):
+    """Class to publish in a topic cam image"""
 
-    def __init__(self, camera):
-        super().__init__()
-        # Inicializar el nodo de ROS
-        rospy.init_node('image_publisher')
+    def __init__(self, camera, name_ros_node: str="image_publisher", name_pub: str="jetracer_image"):
+        
+        ########################### Threads ###########################
+        # Initialize thread
+        th.Thread.__init__(self)
 
-        # Configurar el publicador de imágenes
-        self.image_pub = rospy.Publisher('image', Image, queue_size=1)
+        ########################### ROS ###########################
+        ## Constants
+        self.name_pub = name_pub
+        self.name_ros_node = name_ros_node
+        ## Initialize node of ros
+        rospy.init_node(self.name_ros_node)
+        self.pub_image = rospy.Publisher(self.name_pub, Image, queue_size=1)
+        ## Rate
+        self.rate = 10
+        self.rospyRate = rospy.Rate(self.rate)
 
-        # Configurar el convertidor de OpenCV a ROS
+        ########################### IMAGE ###########################
         self.bridge = CvBridge()
         self.camera = camera
-        
 
-    def publish_image(self):
-        image = self.camera.get_frame()
-
-        # Convertir la imagen de OpenCV a ROS y publicarla
-        if image is not None: 
-            ros_image = self.bridge.cv2_to_imgmsg(image, 'bgr8')
-            self.image_pub.publish(ros_image)
+        ########################### OS ###########################
+        self.running = True
 
 
     def run(self):
-        print("Go publish")
-        rate = rospy.Rate(5)  # Publicar imágenes a 10 Hz
+        rospy.loginfo("Publishing Image...")
 
-        while not rospy.is_shutdown():
+        while not rospy.is_shutdown() and self.running:
             try:
-                self.publish_image()
-                rospy.log("Publishing")
-                print("Publishing")
+                self.__publish_image()
+
+            except: 
+                rospy.logwarn("Image is not Published")
+            
+            self.rospyRate.sleep()
+
+        rospy.loginfo("Shutdown")
 
 
-            except: continue
-            rate.sleep()
+    def __publish_image(self) -> None:
+        """Void to publish image
+        """
+        image = self.camera.get_frame()
+        ## Check image
+        if image is not None: 
+            ## Convert opencv image to image msg to publish
+            ros_image = self.bridge.cv2_to_imgmsg(image, 'bgr8')
+            self.pub_image.publish(ros_image)
+
+
+def signal_handler(signal, frame):
+    print("Ctrl+C detected, stopping threads...")
+    image_publisher.running = False
+    camera.running = False
+
 
 if __name__ == '__main__':
     try:
         camera = Camera_OAK()
-        list_run = [camera, ImagePublisher(camera)]
+        image_publisher = ImagePublisher(camera)
+        list_run = [camera, image_publisher]
         [item.start() for item in list_run]
         [item.join() for item in list_run]
 
