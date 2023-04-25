@@ -16,14 +16,14 @@ class Camera_OAK(th.Thread):
         ########################### Threads ###########################
         # Initialize thread
         th.Thread.__init__(self)
-        
+
         ########################### IMAGE ###########################
         self.width = 640
         self.height = 480
         self.frame = np.zeros((self.width, self.height))
 
         ########################### OS ###########################
-        self.running =True
+        self.running = True
 
 
     @staticmethod
@@ -65,6 +65,8 @@ class Camera_OAK(th.Thread):
             fpsCounter = {}
 
             while not device.isClosed() and self.running:
+                if self.running is False:
+                    device.close()
                 queueNames = device.getQueueEvents(streams)
                 for stream in queueNames:
                     messages = device.getOutputQueue(stream).tryGetAll()
@@ -76,9 +78,10 @@ class Camera_OAK(th.Thread):
                             resize_points = (self.width, self.height)
                             frame = cv2.resize(frame, resize_points, interpolation= cv2.INTER_LINEAR)
                             self.frame = frame
-                            
 
-    def get_frame(self) -> np.darray:
+
+
+    def get_frame(self) -> np.ndarray:
         """Function to get the image save in the buffer
 
         Returns:
