@@ -20,6 +20,8 @@ from cv_bridge import CvBridge
 # Import utils
 from utils import *
 
+# Import detections features
+from extract_features import Features_Detection
 
 class ProccesImage(th.Thread):
     """Class to subscribe a topic to take image and by means of IA extract the lane and lines segmentation.
@@ -57,6 +59,9 @@ class ProccesImage(th.Thread):
         self.frame = None
         self.bridge = CvBridge()
 
+        #################### FEATURES DETECTION ####################
+        self.compute_detec = Features_Detection()
+
 
     def run(self) -> None:
         rospy.loginfo("Processing image...")
@@ -70,10 +75,20 @@ class ProccesImage(th.Thread):
             result = self.__run_ia(self.frame)
 
             ## Get desired Point
+            desired_pt = self.compute_detec.run(result)
+
+            ## Show Point in image
+            self.__show(self.frame, desired_pt)
 
         rospy.loginfo(f"Shutdown {self.name_ros_node}")
         
     
+    def __show(self, image: np.ndarray, point: Point):
+        cv2.circle(image, (point.x, point.y), 5, (0, 0, 255), -1)
+        cv2.circle(image, (self.compute_detec.size[0]//2, self.compute_detec.size[1]-10), 5, (255, 0, 0), -1)
+        cv2.imshow(self.name_ros_node , image)
+        cv2.waitKey(3)
+
     
     def __callback_image(self, data: Image) -> None:
         """Callback to set in self variable the values of image. Conver the type of data to opencv image
