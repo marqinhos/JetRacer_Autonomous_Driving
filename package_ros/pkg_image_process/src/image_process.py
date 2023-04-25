@@ -61,6 +61,7 @@ class ProccesImage(th.Thread):
 
         #################### FEATURES DETECTION ####################
         self.compute_detec = Features_Detection()
+        self.last_desired_pt = Point(0, 0)
 
 
     def run(self) -> None:
@@ -75,8 +76,11 @@ class ProccesImage(th.Thread):
             result = self.__run_ia(self.frame)
 
             ## Get desired Point
-            desired_pt = self.compute_detec.run(result)
-
+            try:
+                desired_pt = self.compute_detec.run(result)
+                self.last_desired_pt = desired_pt
+            except: 
+                desired_pt = self.last_desired_pt
             ## Show Point in image
             self.__show(self.frame, desired_pt)
 

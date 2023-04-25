@@ -33,11 +33,21 @@ class Features_Detection:
             num_err = err.args[0]
             if num_err == 1:
                 ## No detections
+                raise ValueError(1)
+            
+            elif num_err == 2:
+                ## Other error
+                raise ValueError(2)
+
+            """
+            num_err = err.args[0]
+            if num_err == 1:
+                ## No detections
                 return Point(self.size[0]//2, self.size[1])
             elif num_err == 2:
                 ## Other error
                 return Point(self.size[0]//2, self.size[1])
-
+            """
     
     def only_test(self, result: list) -> Point:
         class_name = "right_lane"
@@ -46,6 +56,7 @@ class Features_Detection:
             mask = result[0].masks[index_mask].masks.squeeze()
             pt_centroid = self.__get_centroid_lane(mask)
             return pt_centroid
+        
         except Exception as err:
             num_err = err.args[0]
             if num_err == 1:
