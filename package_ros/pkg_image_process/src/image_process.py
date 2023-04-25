@@ -78,15 +78,46 @@ class ProccesImage(th.Thread):
             ## Get desired Point
             try:
                 desired_pt = self.compute_detec.run(result)
+                if not self.last_desired_pt.zero():
+                    if abs(self.last_desired_pt.x - desired_pt.x) > 95 or abs(self.last_desired_pt.y - desired_pt.y) > 80:
+                        rospy.logwarn("BAD DESIRED POINT")
+                        desired_pt = self.last_desired_pt.middle_2_point(desired_pt)
                 self.last_desired_pt = desired_pt
             except: 
                 desired_pt = self.last_desired_pt
+
             ## Show Point in image
             self.__show(self.frame, desired_pt)
+
+            ## Show angle to turn
+            angle_degree = self.__convert_point_2_vel(desired_pt)
+            self.publish_vels(angle_degree)
+            rospy.loginfo(f"Angle: {angle_degree}")
 
         rospy.loginfo(f"Shutdown {self.name_ros_node}")
         
     
+    def publish_vels(self, angle_deg: float) -> None:
+            CONSTANT_VEL = 0.6
+            vel = 0.05
+            
+            #if not same:
+            if angle_deg > 0:
+                vel = 4.4*(1/abs(angle_deg))  # Aquí se asigna un valor arbitrario para la velocidad
+
+            else:
+                vel = CONSTANT_VEL
+            
+            # Break velocity
+            vel = vel if vel <= CONSTANT_VEL else CONSTANT_VEL
+            # Crear un mensaje de tipo Twist y asignar los valores de angle y vel
+            twist_msg = Twist()
+            twist_msg.angular.z = angle_deg
+            twist_msg.linear.x = vel
+            
+            # Publicar el mensaje en el topic vels_jetracer
+            self.pub_vels.publish(twist_msg)
+
     def __show(self, image: np.ndarray, point: Point):
         cv2.circle(image, (point.x, point.y), 5, (0, 0, 255), -1)
         cv2.circle(image, (self.compute_detec.size[0]//2, self.compute_detec.size[1]-10), 5, (255, 0, 0), -1)
@@ -116,8 +147,21 @@ class ProccesImage(th.Thread):
         return self.model_ia.predict(source=frame, conf=self.predict_ia_conf)
 
 
-    def __convert_point_2_vel(self, goal_point: Point):
-        pass
+    def __convert_point_2_vel(self, goal_point: Point) -> float:
+
+        real_pose = Point(self.compute_detec.size[0]//2, self.compute_detec.size[1]-10)
+        ## Calculate sides
+        horizontal_side = real_pose.x - goal_point.x
+        vertical_side = real_pose.y - goal_point.y
+        ## Take sign of turn
+        sign = 1 if horizontal_side >= 0 else -1
+        ## Calculate theta
+        theta_rad = np.arctan2(abs(horizontal_side), vertical_side)
+        theta_degree = theta_rad * 180.0 / np.pi
+        ## Bounded theta for max value to jetracer
+        theta_deg_bounded = theta_degree * 32.2 / 80
+
+        return theta_deg_bounded*sign
 
 
 def signal_handler(signal, frame) -> None:
