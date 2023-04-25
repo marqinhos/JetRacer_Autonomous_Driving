@@ -10,7 +10,7 @@ from utils import *
 
 class Features_Detection:
 
-    def __init__(self) -> None:
+    def __init__(self) -> "Features_Detection":
 
         ########################### IMAGE ###########################
         self.offset_right = 160 + 20 #px
