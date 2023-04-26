@@ -5,9 +5,14 @@ from sensor_msgs.msg import LaserScan
 from std_msgs.msg import Bool
 import numpy as np
 
-def scan_callback(msg):
+def scan_callback(msg: LaserScan):
+    """Callback to get all ranges that rplidar return
+
+    Args:
+        msg (LaserScan): Message that subscriber to rplidar return
+    """
     
-    MIN_CENTER = .16
+    MIN_CENTER = .24
     MIN_BACK = .18
     MIN_SIDES = .17
 
@@ -24,7 +29,17 @@ def scan_callback(msg):
         obstacle_pub.publish(False)
 
 if __name__ == '__main__':
-    rospy.init_node('obstacle_detector')
-    scan_sub = rospy.Subscriber('/scan', LaserScan, scan_callback)
-    obstacle_pub = rospy.Publisher('/jetracer_obstacle_detected', Bool, queue_size=1)
+
+    ########################### ROS ###########################
+    ## Constants
+    name_ros_node = "obstacle_detector"
+    name_sub = "/scan"
+    name_pub = "jetracer_obstacle_detector"
+    ## Initialize node of ros
+    rospy.init_node(name_ros_node)
+    scan_sub = rospy.Subscriber(name_sub, LaserScan, scan_callback)
+    obstacle_pub = rospy.Publisher(name_pub, Bool, queue_size=1)
+    ## Running
     rospy.spin()
+ 
+
