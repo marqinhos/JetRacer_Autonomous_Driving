@@ -41,6 +41,7 @@ class Brain(th.Thread):
     def run(self) -> None:
         """Void to set velocities into JetRacer
         """
+        rospy.loginfo("Setting velocities to JetRacer...")
         while self.running:
             self.jetracer.set_vel(self.vel)
             self.jetracer.set_angle(self.angle)
@@ -63,6 +64,7 @@ class Brain(th.Thread):
             msg (Bool): Message to get to subscribe to the jetracer_obstacle_detected
         """
         if msg is True:
+            rospy.loginfo("EMERGENCY STOP")
             self.jetracer.stop()
         else: self.jetracer.running = True
 
