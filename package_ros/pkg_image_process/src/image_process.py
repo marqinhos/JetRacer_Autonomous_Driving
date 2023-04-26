@@ -28,7 +28,7 @@ class ProcessImage(th.Thread):
         Them process the segmentation, to extract the desired point to go the robot
     """
 
-    def __init__(self, model_ia_path: str,name_sub: str="jetracer_image", name_pub: str="jetracer_vels", name_ros_node: str="procces_and_sub_image") -> "ProccesImage":
+    def __init__(self, model_ia_path: str,name_sub: str="jetracer_image", name_pub: str="jetracer_vels", name_ros_node: str="process_and_sub_image") -> "ProcessImage":
 
         ########################### Threads ###########################
         # Initialize thread
