@@ -23,7 +23,7 @@ from utils import *
 # Import detections features
 from extract_features import Features_Detection
 
-class ProccesImage(th.Thread):
+class ProcessImage(th.Thread):
     """Class to subscribe a topic to take image and by means of IA extract the lane and lines segmentation.
         Them process the segmentation, to extract the desired point to go the robot
     """
@@ -60,7 +60,7 @@ class ProccesImage(th.Thread):
         self.bridge = CvBridge()
 
         #################### FEATURES DETECTION ####################
-        self.compute_detec = Features_Detection()
+        self.compute_detect = Features_Detection()
         self.last_desired_pt = Point(0, 0)
 
 
@@ -74,12 +74,12 @@ class ProccesImage(th.Thread):
                 self.rospyRate.sleep()
                 continue
             
-            ## Execute ia to extrac features
+            ## Execute ia to extract features
             result = self.__run_ia(self.frame)
 
             ## Get desired Point
             try:
-                desired_pt = self.compute_detec.run(result)
+                desired_pt = self.compute_detect.run(result)
                 if not self.last_desired_pt.zero():
                     if abs(self.last_desired_pt.x - desired_pt.x) > 95 or abs(self.last_desired_pt.y - desired_pt.y) > 80:
                         rospy.logwarn("BAD DESIRED POINT")
@@ -110,19 +110,19 @@ class ProccesImage(th.Thread):
         
         #if not same:
         if angle_deg > 0:
-            vel = 4.4*(1/abs(angle_deg))  # Aquí se asigna un valor arbitrario para la velocidad
+            vel = 4.4*(1/abs(angle_deg))
 
         else:
             vel = CONSTANT_VEL
         
         # Break velocity
         vel = vel if vel <= CONSTANT_VEL else CONSTANT_VEL
-        # Crear un mensaje de tipo Twist y asignar los valores de angle y vel
+        # Create Twist message
         twist_msg = Twist()
         twist_msg.angular.z = angle_deg
         twist_msg.linear.x = vel
         
-        # Publicar el mensaje en el topic vels_jetracer
+        # Publish message in topic vels_jetracer
         self.pub_vels.publish(twist_msg)
 
 
@@ -134,13 +134,13 @@ class ProccesImage(th.Thread):
             point (Point): Point to draw in image
         """
         cv2.circle(image, (point.x, point.y), 5, (0, 0, 255), -1)
-        cv2.circle(image, (self.compute_detec.size[0]//2, self.compute_detec.size[1]-10), 5, (255, 0, 0), -1)
+        cv2.circle(image, (self.compute_detect.size[0]//2, self.compute_detect.size[1]-10), 5, (255, 0, 0), -1)
         cv2.imshow(self.name_ros_node , image)
         cv2.waitKey(3)
 
     
     def __callback_image(self, data: Image) -> None:
-        """Callback to set in self variable the values of image. Conver the type of data to opencv image
+        """Callback to set in self variable the values of image. Convert the type of data to opencv image
 
         Args:
             data (Image): Image in format image msg 
@@ -153,7 +153,7 @@ class ProccesImage(th.Thread):
         """Function to segment a frame with own IA
 
         Args:
-            frame (np.darray): Frame to predict
+            frame (np.ndarray): Frame to predict
 
         Returns:
             list: List of result (masks, boxes, image) that return prediction in model YOLOv8
@@ -168,7 +168,7 @@ class ProccesImage(th.Thread):
                 - Calculate vertical side
                 - Calculate angle with arctang
                 - To select the turn sign i do the next:
-                    If go to right, that is, the desired point is to the right of the real point the sign is negativa.
+                    If go to right, that is, the desired point is to the right of the real point the sign is negative.
                     In the other case is positive.
 
         Args:
@@ -178,7 +178,7 @@ class ProccesImage(th.Thread):
             float: Return angle in degrees
         """
 
-        real_pose = Point(self.compute_detec.size[0]//2, self.compute_detec.size[1]-10)
+        real_pose = Point(self.compute_detect.size[0]//2, self.compute_detect.size[1]-10)
         ## Calculate sides
         horizontal_side = real_pose.x - goal_point.x
         vertical_side = real_pose.y - goal_point.y
@@ -203,8 +203,8 @@ if __name__ == '__main__':
         
         model_path = os.path.join('.', 'models', 'best.pt')
         
-        image_process = ProccesImage(model_ia_path=model_path)
-        # Manejar señal SIGINT
+        image_process = ProcessImage(model_ia_path=model_path)
+        # Manage signal SIGINT
         signal.signal(signal.SIGINT, signal_handler)
 
         list_threads = [image_process]
