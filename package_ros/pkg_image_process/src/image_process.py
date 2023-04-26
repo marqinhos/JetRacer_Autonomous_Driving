@@ -28,7 +28,7 @@ class ProcessImage(th.Thread):
         Them process the segmentation, to extract the desired point to go the robot
     """
 
-    def __init__(self, model_ia_path: str,name_sub: str="jetracer_image", name_pub: str="jetracer_vels", name_ros_node: str="process_and_sub_image") -> "ProcessImage":
+    def __init__(self, model_ia_path: str, name_sub: str="jetracer_image", name_pub: str="jetracer_vels", name_ros_node: str="process_and_sub_image") -> "ProcessImage":
 
         ########################### Threads ###########################
         # Initialize thread
@@ -194,22 +194,24 @@ class ProcessImage(th.Thread):
 
 
 def signal_handler(signal, frame) -> None:
-    print("Ctrl+C detected, stopping threads...")
+    rospy.logwarn("Ctrl+C detected, stopping threads...")
     image_process.running = False
 
         
 if __name__ == '__main__':
     try:
-        
+        ## Model IA path
         model_path = os.path.join('.', 'models', 'best.pt')
-        
+        ## Call Process Image class
         image_process = ProcessImage(model_ia_path=model_path)
-        # Manage signal SIGINT
+        ## Manage SIGINT signal
         signal.signal(signal.SIGINT, signal_handler)
-
+        ## Upload thread
         list_threads = [image_process]
+        ## Start and Join threads
         [wire.start() for wire in list_threads]
         [wire.join() for wire in list_threads]
 
     except rospy.ROSInterruptException:
+        rospy.loginfo("Close this program")
         pass
