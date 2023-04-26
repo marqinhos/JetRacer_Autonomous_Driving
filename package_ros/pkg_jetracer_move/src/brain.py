@@ -11,7 +11,7 @@ import signal
 
 class Brain(th.Thread):
 
-    def __init__(self, jetracer: JetRacer, name_sub_vels: str="jetracer_vels", name_sub_emergency: str="jetracer_obstacle_detector",name_ros_node: str="vels_subscriber") -> "Brain":
+    def __init__(self, jetracer: JetRacer, name_sub_vels: str="jetracer_vels", name_sub_emergency: str="jetracer_obstacle_detector", name_ros_node: str="vels_subscriber") -> "Brain":
         ########################### Threads ###########################
         # Initialize thread
         th.Thread.__init__(self)
@@ -24,7 +24,7 @@ class Brain(th.Thread):
         ## Initialize node of ros
         rospy.init_node(self.name_ros_node)
         self.vels_sub = rospy.Subscriber(self.name_sub_vels, Twist, self.__callback_vels)
-        self.vels_sub = rospy.Subscriber(self.name_sub_emergency, Bool, self.__callback_emergency)
+        self.emer_sub = rospy.Subscriber(self.name_sub_emergency, Bool, self.__callback_emergency)
         ## Rate
         self.rate = 10
         self.rospyRate = rospy.Rate(self.rate)
@@ -56,17 +56,23 @@ class Brain(th.Thread):
         """
         self.vel = msg.linear.x
         self.angle = msg.angular.z
-    
+
+
     def __callback_emergency(self, msg: Bool) -> None:
         """Callback to set emergency stop to JetRacer
 
         Args:
             msg (Bool): Message to get to subscribe to the jetracer_obstacle_detected
         """
-        if msg is True:
+        if msg.data is True:
             rospy.loginfo("EMERGENCY STOP")
-            self.jetracer.stop()
-        else: self.jetracer.running = True
+            self.jetracer.stop_emergency()
+        
+        elif msg.data is False:
+            if self.jetracer.run_stop_emergency is True:
+                self.jetracer.run_stop_emergency = False 
+        else: 
+            pass
 
 
 def signal_handler(signal, frame):
