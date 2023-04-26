@@ -21,6 +21,7 @@ class JetRacer(th.Thread):
 
         ######################### Running #############################
         self.running = True
+        self.run_stop_emergency = False
 
         ##################### JetRacer Constants ######################
         self.__max_vel = 0.8
@@ -55,25 +56,36 @@ class JetRacer(th.Thread):
             ####################################################
             ## Maybe add pid controller to reduce delta error ##
             ####################################################
-            try:
-                self.steering_motor.throttle = self.current_value_turn
-                self.throttle_motor.throttle = self.current_value_vel
-                self.rate.sleep()
-                #self.rate.sleep()
-            except Exception as err:
-                rospy.logerr(err.args)
+            if not self.run_stop_emergency:
+                try:
+                    self.steering_motor.throttle = self.current_value_turn
+                    self.throttle_motor.throttle = self.current_value_vel
+                    self.rate.sleep()
+                    #self.rate.sleep()
+                except Exception as err:
+                    rospy.logerr(err.args)
         
         rospy.loginfo("JetRacer is closed")
 
 
     def stop(self):
-        """Function to STOP emergency
+        """Function to STOP JetRacer
         """
         self.current_value_turn = 0
         self.current_value_vel = 0
         self.steering_motor.throttle = self.current_value_turn
         self.throttle_motor.throttle = self.current_value_vel
         self.running = False
+
+
+    def stop_emergency(self):
+        """Function to STOP emergency
+        """
+        self.current_value_turn = 0
+        self.current_value_vel = 0
+        self.steering_motor.throttle = self.current_value_turn
+        self.throttle_motor.throttle = self.current_value_vel
+        self.run_stop_emergency = True
 
 
     def set_angle(self, angle: float) -> None:
