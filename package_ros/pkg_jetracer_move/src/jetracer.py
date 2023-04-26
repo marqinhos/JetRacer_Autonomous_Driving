@@ -19,8 +19,8 @@ class JetRacer(th.Thread):
         self.steering_motor = self.kit.continuous_servo[self.__steering_channel]
         self.throttle_motor = self.kit.continuous_servo[self.__throttle_channel]
 
-        ########################### OS ################################
-        self.__running = True
+        ######################### Running #############################
+        self.running = True
 
         ##################### JetRacer Constants ######################
         self.__max_vel = 0.8
@@ -51,7 +51,7 @@ class JetRacer(th.Thread):
         """Process to run the program. Inside it only set the velocity and turn to adafruit motors.
             If there are some problems, they show into logerror ROS. 
         """
-        while self.__running:
+        while self.running:
             ####################################################
             ## Maybe add pid controller to reduce delta error ##
             ####################################################
@@ -73,7 +73,7 @@ class JetRacer(th.Thread):
         self.current_value_vel = 0
         self.steering_motor.throttle = self.current_value_turn
         self.throttle_motor.throttle = self.current_value_vel
-        self.__running = False
+        self.running = False
 
 
     def set_angle(self, angle: float) -> None:
