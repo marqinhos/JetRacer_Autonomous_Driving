@@ -11,7 +11,7 @@ import signal
 
 class Brain(th.Thread):
 
-    def __init__(self, jetracer: JetRacer, name_sub_vels: str="jetracer_vels", name_sub_emergency: str="jetracer_obstacle_detected",name_ros_node: str="vels_subscriber") -> "Brain":
+    def __init__(self, jetracer: JetRacer, name_sub_vels: str="jetracer_vels", name_sub_emergency: str="jetracer_obstacle_detector",name_ros_node: str="vels_subscriber") -> "Brain":
         ########################### Threads ###########################
         # Initialize thread
         th.Thread.__init__(self)
