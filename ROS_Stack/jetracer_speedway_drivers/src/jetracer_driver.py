@@ -61,8 +61,8 @@ class Driver(th.Thread):
         Args:
             msg (Twist): Message to get to subscribe to the jetracer_vels topic
         """
-        self.vel = msg.linear.x
-        self.angle = msg.angular.z
+        self.vel = msg.linear
+        self.angle = msg.angular
 
 
     def __callback_emergency(self, msg: Bool) -> None:
