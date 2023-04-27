@@ -1,17 +1,22 @@
 <!-- version: 0.0.1 -->
 <launch>
   <!-- Set config_file path -->
+  <rosparam file="$(find jetracer_speedway_bringup)/config/config.yaml" command="load" />
   <param name="config_file" value="$(find jetracer_speedway_bringup)/config/config.yaml"/>
-  <rosparam command="load" file="$(arg config_file)" />
-  <!-- Inicialize sensors of JetRacer -->
-  <node pkg="jetracer_speedway_sensors" type="camera_publish.py" name="${yaml $(arg config_file) sensors.node_name_img}" />
-  <!-- Inicialize navigation of JetRacer -->
-  <node pkg="jetracer_speedway_navigation" type="publish_goalPoint.py" name="${yaml $(arg config_file) navigation.node_name_img}"/>
+  
   <!-- Inicialize security stop of JetRacer -->
-  <node pkg="jetracer_speedway_navigation" type="security_stop.py" name="${yaml $(arg config_file) navigation.node_name_obs}"/>
+  <!-- <node pkg="jetracer_speedway_navigation" type="security_stop.py" name="jetracer_emergency_stop_node"/> -->
+
+  <!-- Inicialize navigation of JetRacer -->
+  <!-- <node pkg="jetracer_speedway_navigation" type="publish_goalPoint.py" name="jetracer_img_process_node"/> -->
+
+  <!-- Inicialize sensors of JetRacer -->
+  <!-- <node pkg="jetracer_speedway_sensors" type="camera_publish.py" name="jetracer_img_pub_node" /> -->
+
   <!-- Inicialize cotnrol of JetRacer -->
-  <node pkg="jetracer_speedway_control" type="jetracer_brain.py" name="${yaml $(arg config_file) control.node_name}"/>
+  <!--<node pkg="jetracer_speedway_control" type="jetracer_brain.py" name="jetracer_control_node"/>-->
+
   <!-- Inicialize cotnrol of JetRacer -->
-  <node pkg="jetracer_speedway_drivers" type="jetracer_driver.py" name="${yaml $(arg config_file) driver.node_name}"/>
+  <node pkg="jetracer_speedway_drivers" type="jetracer_driver.py" name="jetracer_driver_node"/>
 
 </launch>

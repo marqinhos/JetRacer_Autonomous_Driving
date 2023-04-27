@@ -50,18 +50,21 @@
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>rospy</build_depend>
-  <build_depend>jetracer_bringup</build_depend>
-  <build_depend>jetracer_msgs</build_depend>
-  <build_depend>jetracer_control</build_depend>
-  <build_depend>jetracer_sensors</build_depend>
-  <build_depend>jetracer_navigation</build_depend>
+  <build_depend>jetracer_speedway_bringup</build_depend>
+  <build_depend>jetracer_speedway_msgs</build_depend>
+  <build_depend>jetracer_speedway_control</build_depend>
+  <build_depend>jetracer_speedway_sensors</build_depend>
+  <build_depend>jetracer_speedway_navigation</build_depend>
+  <build_depend>jetracer_speedway_driver</build_depend>
+
   <build_export_depend>rospy</build_export_depend>
   <exec_depend>rospy</exec_depend>
-  <exec_depend>jetracer_bringup</exec_depend>
-  <exec_depend>jetracer_msgs</exec_depend>
-  <exec_depend>jetracer_control</exec_depend>
-  <exec_depend>jetracer_sensors</exec_depend>
-  <exec_depend>jetracer_navigation</exec_depend>
+  <exec_depend>jetracer_speedway_bringup</exec_depend>
+  <exec_depend>jetracer_speedway_msgs</exec_depend>
+  <exec_depend>jetracer_speedway_control</exec_depend>
+  <exec_depend>jetracer_speedway_sensors</exec_depend>
+  <exec_depend>jetracer_speedway_navigation</exec_depend>
+  <exec_depend>jetracer_speedway_driver</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
