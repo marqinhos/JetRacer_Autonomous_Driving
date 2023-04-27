@@ -10,9 +10,9 @@ import signal
 import yaml
 
 
-class Brain(th.Thread):
+class Driver(th.Thread):
 
-    def __init__(self, jetracer: JetRacer) -> "Brain":
+    def __init__(self, jetracer: JetRacer) -> "Driver":
         ########################### Threads ###########################
         # Initialize thread
         th.Thread.__init__(self)
@@ -86,21 +86,21 @@ class Brain(th.Thread):
 
 def signal_handler(signal, frame):
     rospy.logwarn("Ctrl+C detected, stopping threads...")
-    brain_control.running = False
-    brain_control.jetracer.stop()
+    driver_control.running = False
+    driver_control.jetracer.stop()
 
 
 if __name__ == '__main__':
     try:
         ## Call JetRacer and Brain classes
         jetracer = JetRacer()
-        brain_control = Brain(jetracer)
+        driver_control = Driver(jetracer)
         ## Manage SIGINT signal
         signal.signal(signal.SIGINT, signal_handler)
         ## Set rate to JetRacer
-        jetracer.set_rate(brain_control.rospyRate)
+        jetracer.set_rate(driver_control.rospyRate)
         ## Upload threads
-        list_threads = [jetracer, brain_control]
+        list_threads = [jetracer, driver_control]
         ## Start and Join threads
         [wire.start() for wire in list_threads]
         [wire.join() for wire in list_threads]
