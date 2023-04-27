@@ -12,7 +12,7 @@ def scan_callback(msg: LaserScan):
         msg (LaserScan): Message that subscriber to rplidar return
     """
     
-    MIN_CENTER = .24
+    MIN_CENTER = .31
     MIN_BACK = .18
     MIN_SIDES = .17
 
@@ -21,9 +21,12 @@ def scan_callback(msg: LaserScan):
     laser_beam_l = msg.ranges[80:280]
     laser_beam_b = msg.ranges[280:440]
     laser_beam_r = msg.ranges[440:640]
-
-    if min(laser_beam_c) <= MIN_CENTER or min(laser_beam_b) <= MIN_BACK or min(laser_beam_r+laser_beam_l) <= MIN_SIDES:
-        rospy.loginfo("Obstacle detected AUTOMATIC STOP")
+    # laser_beam_c = [0.1 if laser_beam_c[i] > 99 else laser_beam_c[i] for i in range(len(laser_beam_c))]
+    # mean_center = sum(laser_beam_c)/len(laser_beam_c)
+    smallest_10 = sorted(laser_beam_c)[:10]
+    mean = sum(smallest_10) / len(smallest_10)
+    if mean <= MIN_CENTER:
+        rospy.loginfo("OBSTACLE IN FRONT")
         obstacle_pub.publish(True)
     else:
         obstacle_pub.publish(False)
