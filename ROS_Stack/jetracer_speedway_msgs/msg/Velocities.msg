@@ -1,2 +1,2 @@
-float linear
-float angular
+float64 linear
+float64 angular

@@ -33,12 +33,14 @@ def scan_callback(msg: LaserScan):
     else:
         obstacle_pub.publish(False)
 
+
 if __name__ == '__main__':
 
     ########################### YAML ###########################
     # Load config.yaml
-    with open(rospy.get_param("/jetracer_speedway_bringup/config_file"), 'r') as f:
-        config = yaml.safe_load(f)
+    yaml_path = rospy.get_param('config_file')
+    with open(yaml_path, 'r') as f:
+           config = yaml.safe_load(f)
 
     ########################### ROS ###########################
     ## Constants

@@ -15,14 +15,13 @@ from ultralytics import YOLO
 from sensor_msgs.msg import Image
 from geometry_msgs.msg import Twist
 from jetracer_speedway_msgs.msg import Points
-
 # Import converter ros image to cv2 image
 from cv_bridge import CvBridge
 
 # Import utils
-from .utils.utils import *
+from utils import Point, Features_Detection
 # Import detections features
-from .utils.image_process import Features_Detection
+# from .utils.image_process import Features_Detection
 
 
 class ProcessImage(th.Thread):
@@ -38,7 +37,8 @@ class ProcessImage(th.Thread):
         
         ########################### YAML ###########################
         # Load config.yaml
-        with open(rospy.get_param("/jetracer_speedway_bringup/config_file"), 'r') as f:
+        yaml_path = rospy.get_param('config_file')
+        with open(yaml_path, 'r') as f:
             config = yaml.safe_load(f)
 
         ########################### ROS ###########################

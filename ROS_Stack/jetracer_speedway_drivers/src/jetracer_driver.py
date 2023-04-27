@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from .utils.jetracer_cls import JetRacer
+from utils import JetRacer
 
 import rospy
 from jetracer_speedway_msgs.msg import Velocities
@@ -18,7 +18,8 @@ class Driver(th.Thread):
         th.Thread.__init__(self)
         ########################### YAML ###########################
         # Load config.yaml
-        with open(rospy.get_param("/jetracer_speedway_bringup/config_file"), 'r') as f:
+        yaml_path = rospy.get_param('config_file')
+        with open(yaml_path, 'r') as f:
             config = yaml.safe_load(f)
 
         ########################### ROS ###########################

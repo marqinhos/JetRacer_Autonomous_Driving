@@ -8,7 +8,7 @@ import rospy
 import yaml
 
 # Import utils
-from utils import *
+from .utils import Point
 
 class Features_Detection:
     """Class to extract the goal point in the image 
@@ -21,7 +21,8 @@ class Features_Detection:
         
         ########################### YAML ###########################
         # Load config.yaml
-        with open(rospy.get_param("/jetracer_speedway_bringup/config_file"), 'r') as f:
+        yaml_path = rospy.get_param('config_file')
+        with open(yaml_path, 'r') as f:
             config = yaml.safe_load(f)
 
         ########################### IMAGE ###########################

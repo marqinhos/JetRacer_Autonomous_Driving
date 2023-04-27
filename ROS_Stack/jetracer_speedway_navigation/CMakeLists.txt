@@ -10,6 +10,9 @@ project(jetracer_speedway_navigation)
 find_package(catkin REQUIRED COMPONENTS
   rospy
 )
+find_package(jetracer_speedway_bringup REQUIRED)
+find_package(jetracer_speedway_msgs REQUIRED)
+
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
