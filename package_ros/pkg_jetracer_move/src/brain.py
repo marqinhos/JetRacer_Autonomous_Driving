@@ -36,6 +36,7 @@ class Brain(th.Thread):
 
         ########################### Running ###########################
         self.running = True
+        self.emergency_stop = False
 
 
     def run(self) -> None:
@@ -43,9 +44,10 @@ class Brain(th.Thread):
         """
         rospy.loginfo("Setting velocities to JetRacer...")
         while self.running:
-            self.jetracer.set_vel(self.vel)
-            self.jetracer.set_angle(self.angle)
-            self.rospyRate.sleep()
+            if not self.emergency_stop:
+                self.jetracer.set_vel(self.vel)
+                self.jetracer.set_angle(self.angle)
+                self.rospyRate.sleep()
 
 
     def __callback_vels(self, msg: Twist) -> None:
@@ -66,10 +68,12 @@ class Brain(th.Thread):
         """
         if msg.data is True:
             rospy.loginfo("EMERGENCY STOP")
+            self.emergency_stop = True
             self.jetracer.stop_emergency()
         
         elif msg.data is False:
             if self.jetracer.run_stop_emergency is True:
+                self.emergency_stop = False
                 self.jetracer.run_stop_emergency = False 
         else: 
             pass
