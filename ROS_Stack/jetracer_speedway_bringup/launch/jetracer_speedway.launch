@@ -2,11 +2,14 @@
 <launch>
   <!-- Set config_file path -->
   <param name="config_file" value="$(find jetracer_speedway_bringup)/config/config.yaml"/>
+  <rosparam command="load" file="$(arg config_file)" />
   <!-- Inicialize sensors of JetRacer -->
-  <node pkg="jetracer_speedway_sensors" type="my_node" name="my_node"/>
+  <node pkg="jetracer_speedway_sensors" type="camera_publish.py" name="${yaml $(arg config_file) sensors.node_name_img}" />
   <!-- Inicialize navigation of JetRacer -->
-  <node pkg="jetracer_speedway_navigation" type="my_node" name="my_node"/>
+  <node pkg="jetracer_speedway_navigation" type="publish_goalPoint.py" name="${yaml $(arg config_file) navigation.node_name_img}"/>
+  <!-- Inicialize security stop of JetRacer -->
+  <node pkg="jetracer_speedway_navigation" type="security_stop.py" name="${yaml $(arg config_file) navigation.node_name_obs}"/>
   <!-- Inicialize cotnrol of JetRacer -->
-  <node pkg="jetracer_speedway_control" type="my_node" name="my_node"/>
+  <node pkg="jetracer_speedway_control" type="jetracer_brain.py" name="${yaml $(arg config_file) control.node_name}"/>
 
 </launch>
