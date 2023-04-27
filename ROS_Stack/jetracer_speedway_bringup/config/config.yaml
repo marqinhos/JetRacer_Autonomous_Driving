@@ -24,4 +24,4 @@ sensors
   node_name_rplidar = "rplidarNode"
   pub_name_rplidar = "scan"
 
-
+rate = 10
