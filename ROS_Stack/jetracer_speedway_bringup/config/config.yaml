@@ -27,3 +27,4 @@ sensors
   pub_name_rplidar = "scan"
 
 rate = 10
+confidence = 0.8
