@@ -1,7 +1,27 @@
-I2C_ADDRESS = 0x40
-STEERING_CHANNEL = 0
-THROTTLE_CHANNEL = 1
-MAX_SPEED = 0.8
-MIN_SPEED = 0.08
-MAX_ANGLE = 32.2
-MIN_ANGLE = 0.0
+driver
+  i2c_address = 0x40
+  steering_channel = 0
+  throttle_channel = 1
+  max_speed = 0.8
+  min_speed = 0.08
+  max_angle = 32.2
+  min_angle = 0
+  node_name = "jetracer_driver_node"
+
+control
+  node_name = "jetracer_control_node"
+  pub_name = "jetracer_vels_pub"
+
+navigation
+  node_name_img = "jetracer_img_process_node"
+  node_name_obs = "jetracer_emergency_stop_node"
+  pub_name_img = "jetracer_goal_point_pub"
+  pub_name_obs = "jetracer_emergency_stop_pub"
+
+sensors
+  node_name_img = "jetracer_img_pub_node"
+  pub_name_img = "jetracer_img_pub"
+  node_name_rplidar = "rplidarNode"
+  pub_name_rplidar = "scan"
+
+
