@@ -17,6 +17,8 @@ navigation
   node_name_obs = "jetracer_emergency_stop_node"
   pub_name_img = "jetracer_goal_point_pub"
   pub_name_obs = "jetracer_emergency_stop_pub"
+  offsetright = 190
+  offsetmid = 230
 
 sensors
   node_name_img = "jetracer_img_pub_node"
