@@ -49,7 +49,7 @@ class ProcessImage(th.Thread):
         ## Initialize node of ros
         rospy.init_node(self.name_ros_node)
         self.sub_img = rospy.Subscriber(self.name_sub, Image, self.__callback_image)
-        self.pub_vels = rospy.Publisher(self.name_pub, Twist, queue_size=1)
+        self.pub_vels = rospy.Publisher(self.name_pub, Points, queue_size=1)
         ## Rate
         self.rate = config["rate"]
         self.rospyRate = rospy.Rate(self.rate)
@@ -111,10 +111,14 @@ class ProcessImage(th.Thread):
         Args:
             angle_deg (float): Angle
         """
+
+        real_pose = Point(self.compute_detect.size[0]//2, self.compute_detect.size[1]-10)
         # Create Points message
         point_msg = Points()
         point_msg.x = desired_point.x
         point_msg.y = desired_point.y
+        point_msg.xr = real_pose.x
+        point_msg.yr = real_pose.y
         
         # Publish message in topic vels_jetracer
         self.pub_vels.publish(point_msg)
