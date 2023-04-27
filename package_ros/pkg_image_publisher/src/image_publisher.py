@@ -85,7 +85,7 @@ class Camera_OAK(th.Thread):
         """Function to get the image save in the buffer
 
         Returns:
-            np.darray: Return the last image save in the buffer
+            np.ndarray: Return the last image save in the buffer
         """
         return self.frame
 
