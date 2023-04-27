@@ -1,0 +1,11 @@
+<!-- version: 0.0.1 -->
+<launch>
+
+  <!-- Inicialize sensors of JetRacer -->
+  <node pkg="jetracer_speedway_sensors" type="my_node" name="my_node"/>
+  <!-- Inicialize navigation of JetRacer -->
+  <node pkg="jetracer_speedway_navigation" type="my_node" name="my_node"/>
+  <!-- Inicialize cotnrol of JetRacer -->
+  <node pkg="jetracer_speedway_control" type="my_node" name="my_node"/>
+
+</launch>
