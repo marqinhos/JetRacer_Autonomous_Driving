@@ -11,5 +11,7 @@
   <node pkg="jetracer_speedway_navigation" type="security_stop.py" name="${yaml $(arg config_file) navigation.node_name_obs}"/>
   <!-- Inicialize cotnrol of JetRacer -->
   <node pkg="jetracer_speedway_control" type="jetracer_brain.py" name="${yaml $(arg config_file) control.node_name}"/>
+  <!-- Inicialize cotnrol of JetRacer -->
+  <node pkg="jetracer_speedway_drivers" type="jetracer_driver.py" name="${yaml $(arg config_file) driver.node_name}"/>
 
 </launch>
