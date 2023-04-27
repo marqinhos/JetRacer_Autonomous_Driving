@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from jetracer import JetRacer
+from .utils.jetracer_cls import JetRacer
 
 import rospy
 from geometry_msgs.msg import Twist
