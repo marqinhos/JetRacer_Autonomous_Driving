@@ -1,6 +1,7 @@
 <!-- version: 0.0.1 -->
 <launch>
-
+  <!-- Set config_file path -->
+  <param name="config_file" value="$(find jetracer_speedway_bringup)/config/config.yaml"/>
   <!-- Inicialize sensors of JetRacer -->
   <node pkg="jetracer_speedway_sensors" type="my_node" name="my_node"/>
   <!-- Inicialize navigation of JetRacer -->
