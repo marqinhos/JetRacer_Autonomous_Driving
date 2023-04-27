@@ -101,6 +101,8 @@ class ProcessImage(th.Thread):
             ## Publish desired point
             self.publish_point(desired_pt)
             # rospy.loginfo(f"Point: {desired_pt}")
+            self.rospyRate.sleep()
+
 
         rospy.loginfo(f"Shutdown {self.name_ros_node}")
         
