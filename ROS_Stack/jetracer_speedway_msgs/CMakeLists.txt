@@ -48,6 +48,8 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   Velocities.msg
+  Point.msg
+
 )
 
 ## Generate services in the 'srv' folder
