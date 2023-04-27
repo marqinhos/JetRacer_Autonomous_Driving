@@ -14,6 +14,7 @@ from ultralytics import YOLO
 # Import type of msgs
 from sensor_msgs.msg import Image
 from geometry_msgs.msg import Twist
+from jetracer_speedway_msgs.msg import Points
 
 # Import converter ros image to cv2 image
 from cv_bridge import CvBridge
@@ -97,39 +98,26 @@ class ProcessImage(th.Thread):
             ## Show Point in image
             self.__show(self.frame, desired_pt)
 
-            ## Show angle to turn
-            angle_degree = self.__convert_point_2_vel(desired_pt)
-            self.publish_vels(angle_degree)
-            rospy.loginfo(f"Angle: {angle_degree}")
+            ## Publish desired point
+            self.publish_point(desired_pt)
+            # rospy.loginfo(f"Point: {desired_pt}")
 
         rospy.loginfo(f"Shutdown {self.name_ros_node}")
         
     
-    def publish_vels(self, angle_deg: float) -> None:
-        """Void to publish angular vel and linear vel in Twist format. The topic to publish is "jetracer_vels"
+    def publish_point(self, desired_point: Point) -> None:
+        """Void to publish desired point in Points format. The topic to publish is "jetracer_vels"
 
         Args:
             angle_deg (float): Angle
         """
-        CONSTANT_VEL = 0.6
-        vel = 0.05
-        
-        #if not same:
-        if angle_deg > 0:
-            vel = 4.4*(1/abs(angle_deg))
-
-        else:
-            vel = CONSTANT_VEL
-        
-        # Break velocity
-        vel = vel if vel <= CONSTANT_VEL else CONSTANT_VEL
-        # Create Twist message
-        twist_msg = Twist()
-        twist_msg.angular.z = angle_deg
-        twist_msg.linear.x = vel
+        # Create Points message
+        point_msg = Points()
+        point_msg.x = desired_point.x
+        point_msg.y = desired_point.y
         
         # Publish message in topic vels_jetracer
-        self.pub_vels.publish(twist_msg)
+        self.pub_vels.publish(point_msg)
 
 
     def __show(self, image: np.ndarray, point: Point) -> None:
@@ -165,38 +153,6 @@ class ProcessImage(th.Thread):
             list: List of result (masks, boxes, image) that return prediction in model YOLOv8
         """
         return self.model_ia.predict(source=frame, conf=self.predict_ia_conf)
-
-
-    def __convert_point_2_vel(self, goal_point: Point) -> float:
-        """Function to extract angle from a goal point respect real point.
-            To calculate angle use trigonometry.
-                - Calculate horizontal side
-                - Calculate vertical side
-                - Calculate angle with arctang
-                - To select the turn sign i do the next:
-                    If go to right, that is, the desired point is to the right of the real point the sign is negative.
-                    In the other case is positive.
-
-        Args:
-            goal_point (Point): Desired Point calculate below
-
-        Returns:
-            float: Return angle in degrees
-        """
-
-        real_pose = Point(self.compute_detect.size[0]//2, self.compute_detect.size[1]-10)
-        ## Calculate sides
-        horizontal_side = real_pose.x - goal_point.x
-        vertical_side = real_pose.y - goal_point.y
-        ## Take sign of turn
-        sign = 1 if horizontal_side >= 0 else -1
-        ## Calculate theta
-        theta_rad = np.arctan2(abs(horizontal_side), vertical_side)
-        theta_degree = theta_rad * 180.0 / np.pi
-        ## Bounded theta for max value to jetracer
-        theta_deg_bounded = theta_degree * 32.2 / 80
-
-        return theta_deg_bounded*sign
 
 
 def signal_handler(signal, frame) -> None:
