@@ -9,6 +9,7 @@ import time
 import os 
 import threading as th
 import sys
+import yaml
 
 
 class Camera_OAK(th.Thread):
@@ -105,21 +106,26 @@ class Camera_OAK(th.Thread):
 class ImagePublisher(th.Thread):
     """Class to publish in a topic cam image"""
 
-    def __init__(self, camera: Camera_OAK, name_ros_node: str="image_publisher", name_pub: str="jetracer_image") -> "ImagePublisher":
+    def __init__(self, camera: Camera_OAK) -> "ImagePublisher":
         
         ########################### Threads ###########################
         # Initialize thread
         th.Thread.__init__(self)
 
+        ########################### YAML ###########################
+        # Load config.yaml
+        with open(rospy.get_param("/jetracer_speedway_bringup/config_file"), 'r') as f:
+            config = yaml.safe_load(f)
+
         ########################### ROS ###########################
         ## Constants
-        self.name_pub = name_pub
-        self.name_ros_node = name_ros_node
+        self.name_pub = config["sensors"]["pub_name_img"]
+        self.name_ros_node = config["sensors"]["node_name_img"]
         ## Initialize node of ros
         rospy.init_node(self.name_ros_node)
         self.pub_image = rospy.Publisher(self.name_pub, Image, queue_size=1)
         ## Rate
-        self.rate = 10
+        self.rate = config["rate"]
         self.rospyRate = rospy.Rate(self.rate)
 
         ########################### IMAGE ###########################
