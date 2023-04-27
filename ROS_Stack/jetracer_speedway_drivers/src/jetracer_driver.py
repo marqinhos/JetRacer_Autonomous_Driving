@@ -3,7 +3,7 @@
 from .utils.jetracer_cls import JetRacer
 
 import rospy
-from geometry_msgs.msg import Twist
+from jetracer_speedway_msgs.msg import Velocities
 from std_msgs.msg import Bool
 import threading as th
 import signal
@@ -28,7 +28,7 @@ class Driver(th.Thread):
         self.name_ros_node = config["driver"]["node_name"]
         ## Initialize node of ros
         rospy.init_node(self.name_ros_node)
-        self.vels_sub = rospy.Subscriber(self.name_sub_vels, Twist, self.__callback_vels)
+        self.vels_sub = rospy.Subscriber(self.name_sub_vels, Velocities, self.__callback_vels)
         self.emer_sub = rospy.Subscriber(self.name_sub_emergency, Bool, self.__callback_emergency)
         ## Rate
         self.rate = config["rate"]
@@ -55,7 +55,7 @@ class Driver(th.Thread):
                 self.rospyRate.sleep()
 
 
-    def __callback_vels(self, msg: Twist) -> None:
+    def __callback_vels(self, msg: Velocities) -> None:
         """Callback to get the linear and angular vels, to set in JetRacer
 
         Args:
