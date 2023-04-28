@@ -5,7 +5,7 @@
   <param name="config_file" value="$(find jetracer_speedway_bringup)/config/config.yaml"/>
   
   <!-- Inicialize security stop of JetRacer -->
-<node pkg="jetracer_speedway_navigation" type="security_stop.py" name="jetracer_emergency_stop_node"/>
+  <node pkg="jetracer_speedway_navigation" type="security_stop.py" name="jetracer_emergency_stop_node"/>
 
   <!-- Inicialize navigation of JetRacer -->
   <node pkg="jetracer_speedway_navigation" type="publish_goalPoint.py" name="jetracer_img_process_node"/>
