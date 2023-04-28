@@ -8,7 +8,23 @@
 
 
 ## Description
-Package ROS, following ROS Stack Practice
+
+Use next packages for own project, using the base name "jetracer_speedway":
+- jetracer_speedway
+- jetracer_speedway_bringup
+- jetracer_speedway_msg
+- jetracer_speedway_sensors
+- jetracer_speedway_driver
+- jetracer_speedway_control
+- jetracer_speedway_navigate
+
+Download package in your main computer. Go to jetracer_speedway_bringup/scripts and create a .envrc file, next writte the following information:
+- export JETSON_IP=main_pc_ip
+- export JETSON_PASSWORD=password_jetson
+- export JETSON_USER=name_user_jetson
+- export USER_IP=jetson_ip
+
+Them run "script.sh" and the jetracer is running all files and driving the circuit
 
 ## Software
 in progress**
