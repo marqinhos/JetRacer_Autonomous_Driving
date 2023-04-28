@@ -62,6 +62,7 @@ class Brain(th.Thread):
 
 
     def __callback_point(self, msg: Points) -> None:
+        ## rospy.loginfo(msg)
         self.points = msg
 
 
