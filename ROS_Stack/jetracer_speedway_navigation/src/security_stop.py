@@ -24,9 +24,9 @@ class SecurityStop(th.Thread):
         
         ########################### DISTANCES ###########################
         ## Set distance constants
-        self.MIN_CENTER = .31
-        self.MIN_BACK = .18
-        self.MIN_SIDES = .17
+        self.MIN_CENTER = config["navigation"]["min_center"]
+        self.MIN_BACK = config["navigation"]["min_back"]
+        self.MIN_SIDES = config["navigation"]["min_sides"]
 
         ########################### SCAN ###########################
         self.ranges = None
