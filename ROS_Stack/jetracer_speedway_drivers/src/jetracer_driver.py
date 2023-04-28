@@ -33,7 +33,7 @@ class Driver(th.Thread):
 
         ########################### ROS ###########################
         ## Constants
-        self.name_sub_vels = config["control"]["jetracer_vels_pub"]
+        self.name_sub_vels = config["control"]["pub_name"]
         self.name_sub_emergency = config["navigation"]["pub_name_obs"]
         self.name_ros_node = config["driver"]["node_name"]
         ## Initialize node of ros
