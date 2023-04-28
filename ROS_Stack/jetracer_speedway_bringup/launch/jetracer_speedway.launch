@@ -14,9 +14,9 @@
   <!-- <node pkg="jetracer_speedway_sensors" type="camera_publish.py" name="jetracer_img_pub_node" /> -->
 
   <!-- Inicialize cotnrol of JetRacer -->
-  <!--<node pkg="jetracer_speedway_control" type="jetracer_brain.py" name="jetracer_control_node"/>-->
+  <node pkg="jetracer_speedway_control" type="jetracer_brain.py" name="jetracer_control_mm_node"/>
 
   <!-- Inicialize cotnrol of JetRacer -->
-  <node pkg="jetracer_speedway_drivers" type="jetracer_driver.py" name="jetracer_driver_node"/>
+  <!--  <node pkg="jetracer_speedway_drivers" type="jetracer_driver.py" name="jetracer_driver_node"/>  -->
 
 </launch>
