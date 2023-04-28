@@ -41,19 +41,6 @@ class ProcessImage(th.Thread):
         with open(yaml_path, 'r') as f:
             config = yaml.safe_load(f)
 
-        ########################### ROS ###########################
-        ## Constants
-        self.name_sub = config["sensors"]["pub_name_img"]
-        self.name_pub = config["navigation"]["offsetright"]
-        self.name_ros_node = config["navigation"]["node_name_img"]
-        ## Initialize node of ros
-        rospy.init_node(self.name_ros_node)
-        self.sub_img = rospy.Subscriber(self.name_sub, Image, self.__callback_image)
-        self.pub_vels = rospy.Publisher(self.name_pub, Points, queue_size=1)
-        ## Rate
-        self.rate = config["rate"]
-        self.rospyRate = rospy.Rate(self.rate)
-
         ########################### Running ###########################
         self.running = True
 
@@ -70,6 +57,22 @@ class ProcessImage(th.Thread):
         self.compute_detect = Features_Detection()
         self.last_desired_pt = Point(0, 0)
 
+        ########################### ROS ###########################
+        ## Constants
+        self.name_sub = config["sensors"]["pub_name_img"]
+        self.name_pub = config["navigation"]["pub_name_img"]
+        self.name_ros_node = config["navigation"]["node_name_img"]
+        ## Initialize node of ros
+        rospy.init_node(self.name_ros_node)
+        ## Rate
+        self.rate = config["rate"]
+        self.rospyRate = rospy.Rate(self.rate)
+        ## Publisher and Subscribers
+        self.pub_vels = rospy.Publisher(self.name_pub, Points, queue_size=1)
+        rospy.wait_for_message(self.name_sub, Image)
+        self.sub_img = rospy.Subscriber(self.name_sub, Image, self.__callback_image)
+        
+       
 
     def run(self) -> None:
         """Main void
@@ -169,7 +172,15 @@ def signal_handler(signal, frame) -> None:
 if __name__ == '__main__':
     try:
         ## Model IA path
-        model_path = os.path.join('.', 'models', 'best.pt')
+        # model_path = os.path.join('.', 'models', 'best.pt')
+        # Obtener la ruta absoluta del archivo
+        file_path = os.path.abspath(__file__)
+
+        # Obtener la ruta absoluta del directorio "models"
+        models_dir = os.path.join(os.path.dirname(file_path), 'models')
+        model_path = "./asd/best.pt"
+        # Obtener la ruta absoluta del archivo "best.pt"
+        model_path = os.path.join(models_dir, 'best.pt')
         ## Call Process Image class
         image_process = ProcessImage(model_ia_path=model_path)
         ## Manage SIGINT signal

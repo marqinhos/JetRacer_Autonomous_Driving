@@ -22,19 +22,6 @@ class Driver(th.Thread):
         with open(yaml_path, 'r') as f:
             config = yaml.safe_load(f)
 
-        ########################### ROS ###########################
-        ## Constants
-        self.name_sub_vels = config["navigation"]["pub_name_img"]
-        self.name_sub_emergency = config["navigation"]["pub_name_obs"]
-        self.name_ros_node = config["driver"]["node_name"]
-        ## Initialize node of ros
-        rospy.init_node(self.name_ros_node)
-        self.vels_sub = rospy.Subscriber(self.name_sub_vels, Velocities, self.__callback_vels)
-        self.emer_sub = rospy.Subscriber(self.name_sub_emergency, Bool, self.__callback_emergency)
-        ## Rate
-        self.rate = config["rate"]
-        self.rospyRate = rospy.Rate(self.rate)
-
         ########################### JetRacer ###########################
         self.jetracer = jetracer
         self.vel = 0
@@ -43,6 +30,22 @@ class Driver(th.Thread):
         ########################### Running ###########################
         self.running = True
         self.emergency_stop = False
+
+        ########################### ROS ###########################
+        ## Constants
+        self.name_sub_vels = config["control"]["jetracer_vels_pub"]
+        self.name_sub_emergency = config["navigation"]["pub_name_obs"]
+        self.name_ros_node = config["driver"]["node_name"]
+        ## Initialize node of ros
+        rospy.init_node(self.name_ros_node)
+        ## Rate
+        self.rate = config["rate"]
+        self.rospyRate = rospy.Rate(self.rate)
+        ## Publisher and Subscribers
+        rospy.wait_for_message(self.name_sub_vels, Velocities)
+        self.vels_sub = rospy.Subscriber(self.name_sub_vels, Velocities, self.__callback_vels)
+        rospy.wait_for_message(self.name_sub_emergency, Bool)
+        self.emer_sub = rospy.Subscriber(self.name_sub_emergency, Bool, self.__callback_emergency)
 
 
     def run(self) -> None:

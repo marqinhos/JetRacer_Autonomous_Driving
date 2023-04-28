@@ -23,25 +23,26 @@ class Brain(th.Thread):
         with open(yaml_path, 'r') as f:
             config = yaml.safe_load(f)
 
-
-        ########################### ROS ###########################
-        ## Constants
-        self.name_sub = config["navigation"]["pub_name_img"]
-        self.name_pub = config["control"]["pub_name"]
-        self.name_ros_node = config["control"]["node_name"]
-        ## Initialize node of ros
-        rospy.init_node(self.name_ros_node)
-        self.sub_point = rospy.Subscriber(self.name_sub, Points, self.__callback_point)
-        self.pub_vels = rospy.Publisher(self.name_pub, Velocities, queue_size=1)
-        ## Rate
-        self.rate = config["rate"]
-        self.rospyRate = rospy.Rate(self.rate)
-
         ########################### Running ###########################
         self.running = True   
 
         ########################### Point ###########################
         self.points = None
+        ########################### ROS ###########################
+         ## Constants
+        self.name_sub = config["navigation"]["pub_name_img"]
+        self.name_pub = config["control"]["pub_name"]
+        self.name_ros_node = config["control"]["node_name"]
+        ## Initialize node of ros
+        rospy.init_node(self.name_ros_node)
+        ## Rate
+        self.rate = config["rate"]
+        self.rospyRate = rospy.Rate(self.rate)
+        ## Publisher and Subscribers
+        self.pub_vels = rospy.Publisher(self.name_pub, Velocities, queue_size=1)
+        rospy.wait_for_message(self.name_sub, Points)
+        self.sub_point = rospy.Subscriber(self.name_sub, Points, self.__callback_point)
+        
 
 
     def run(self) -> None:
@@ -61,7 +62,7 @@ class Brain(th.Thread):
 
 
     def __callback_point(self, msg: Points) -> None:
-        self.points = Points
+        self.points = msg
 
 
     def publish_vels(self, angle_deg: float) -> None:

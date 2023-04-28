@@ -49,8 +49,9 @@ if __name__ == '__main__':
     name_pub = config["navigation"]["pub_name_obs"]
     ## Initialize node of ros
     rospy.init_node(name_ros_node)
-    scan_sub = rospy.Subscriber(name_sub, LaserScan, scan_callback)
     obstacle_pub = rospy.Publisher(name_pub, Bool, queue_size=1)
+    rospy.wait_for_message(name_sub, LaserScan)
+    scan_sub = rospy.Subscriber(name_sub, LaserScan, scan_callback)
     ## Running
     rospy.spin()
  
