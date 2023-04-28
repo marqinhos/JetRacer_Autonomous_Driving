@@ -23,6 +23,10 @@ navigation:
   pub_name_obs: "jetracer_emergency_stop_pub"
   offsetright: 190
   offsetmid: 230
+  min_center: 0.31
+  min_back: 0.18
+  min_sides: 0.18
+
 
 sensors:
   node_name_img: "jetracer_img_pub_node"
