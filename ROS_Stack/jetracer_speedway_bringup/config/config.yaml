@@ -13,7 +13,7 @@ driver:
   node_name: "jetracer_driver_node"
 
 control:
-  node_name: "jetracer_control_node"
+  node_name: "jetracer_control_mm_node"
   pub_name: "jetracer_vels_pub"
 
 navigation:
