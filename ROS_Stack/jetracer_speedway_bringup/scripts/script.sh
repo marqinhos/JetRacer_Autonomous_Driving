@@ -71,12 +71,24 @@ export ROS_IP=$JETSON_IP && export ROS_MASTER_URI=http://$USER_IP:11311;
 cd src;
 sudo chmod 666 /dev/ttyUSB0;
 roslaunch rplidar_ros rplidar.launch &
-
+if [ -d "ros_jetracer_control" ]; then
+    rm -rf ros_jetracer_control
+fi
 git clone https://github.com/marqinhos/ros_jetracer_control;
 cd ..;
 catkin_make;
 cd src;
-cd ros_jetracer_control/ROS_Stack/jetracer_speedway_bringup/src;
+cd ros_jetracer_control/ROS_Stack/jetracer_speedway_sensors/src;
+chmod +x camera_publish.py;
+cd ../..;
+cd jetracer_speedway_control/src;
+chmod +x jetracer_brain.py;
+cd ../..;
+cd jetracer_speedway_drivers/src;
+chmod +x jetracer_driver.py;
+cd ../..;
+
+# cd jetracer_speedway_bringup/src;
 roslaunch jetracer_speedway_bringup run_jetson.launch" &
 
 ################################### PID ###################################
@@ -86,8 +98,13 @@ sshpass_pid_1=$!
 
 cd ~/catkin_ws; 
 source ~/catkin_ws/devel/setup.bash;
+catkin_make;
 export ROS_IP=$USER_IP;
-cd src/ROS_Stack/jetracer_speedway_bringup/src;
+cd src/ROS_Stack/jetracer_speedway_navigation/src;
+chmod +r models/best.pt;
+chmod +x publish_goalPoint.py;
+cd ../..;
+cd jetracer_speedway_bringup/src;
 roslaunch jetracer_speedway_bringup run_master.launch
 
 echo 'Se esta ejecutando'
