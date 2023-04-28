@@ -8,11 +8,12 @@ import depthai as dai
 import time
 import os 
 import threading as th
+import sys
 
 
 class Camera_OAK(th.Thread):
 
-    def __init__(self) -> None:
+    def __init__(self) -> "Camera_OAK":
         ########################### Threads ###########################
         # Initialize thread
         th.Thread.__init__(self)
@@ -24,6 +25,9 @@ class Camera_OAK(th.Thread):
 
         ########################### OS ###########################
         self.running = True
+
+        ########################### CAMERA ###########################
+        self.device = None
 
 
     @staticmethod
@@ -39,53 +43,61 @@ class Camera_OAK(th.Thread):
 
 
     def run(self) -> None:
-        with dai.Device() as device:
-            self.__show_specs(device)
-            # Create pipeline
-            pipeline = dai.Pipeline()
-            cams = device.getConnectedCameraFeatures()
-            streams = []
-            
-            for cam in cams:
-                """Initialize camera
-                """
-                print(str(cam), str(cam.socket), cam.socket)
-                c = pipeline.create(dai.node.Camera)
-                x = pipeline.create(dai.node.XLinkOut)
-                c.isp.link(x.input)
-                c.setBoardSocket(cam.socket)
-                stream = str(cam.socket)
-                if cam.name:
-                    stream = f'{cam.name} ({stream})'
-                x.setStreamName(stream)
-                streams.append(stream)
-            
-            # Start pipeline
-            device.startPipeline(pipeline)
-            fpsCounter = {}
+        try:
+            with dai.Device() as device:
+                self.device = device
+                self.__show_specs(device)
+                # Create pipeline
+                pipeline = dai.Pipeline()
+                cams = device.getConnectedCameraFeatures()
+                streams = []
+                
+                for cam in cams:
+                    """Initialize camera
+                    """
+                    print(str(cam), str(cam.socket), cam.socket)
+                    c = pipeline.create(dai.node.Camera)
+                    x = pipeline.create(dai.node.XLinkOut)
+                    c.isp.link(x.input)
+                    c.setBoardSocket(cam.socket)
+                    stream = str(cam.socket)
+                    if cam.name:
+                        stream = f'{cam.name} ({stream})'
+                    x.setStreamName(stream)
+                    streams.append(stream)
+                
+                # Start pipeline
+                device.startPipeline(pipeline)
+                fpsCounter = {}
 
-            while not device.isClosed() and self.running:
-                if self.running is False:
-                    device.close()
-                queueNames = device.getQueueEvents(streams)
-                for stream in queueNames:
-                    messages = device.getOutputQueue(stream).tryGetAll()
-                    fpsCounter[stream] = fpsCounter.get(stream, 0.0) + len(messages)
-                    for message in messages:
-                        # Display arrived frames
-                        if type(message) == dai.ImgFrame:                            
-                            frame = message.getCvFrame()
-                            resize_points = (self.width, self.height)
-                            frame = cv2.resize(frame, resize_points, interpolation= cv2.INTER_LINEAR)
-                            self.frame = frame
+                while not device.isClosed() and self.running:
+                    if self.running is False:
+                        raise Exception
+                    queueNames = device.getQueueEvents(streams)
+                    for stream in queueNames:
+                        messages = device.getOutputQueue(stream).tryGetAll()
+                        fpsCounter[stream] = fpsCounter.get(stream, 0.0) + len(messages)
+                        for message in messages:
+                            # Display arrived frames
+                            if type(message) == dai.ImgFrame:                            
+                                frame = message.getCvFrame()
+                                resize_points = (self.width, self.height)
+                                frame = cv2.resize(frame, resize_points, interpolation= cv2.INTER_LINEAR)
+                                self.frame = frame
+        except Exception as e:
+            rospy.loginfo("Close Camera")
+            device.close()
 
+        finally:
+            rospy.loginfo("Close Camera")
+            device.close()
 
 
     def get_frame(self) -> np.ndarray:
         """Function to get the image save in the buffer
 
         Returns:
-            np.darray: Return the last image save in the buffer
+            np.ndarray: Return the last image save in the buffer
         """
         return self.frame
 
@@ -93,7 +105,7 @@ class Camera_OAK(th.Thread):
 class ImagePublisher(th.Thread):
     """Class to publish in a topic cam image"""
 
-    def __init__(self, camera, name_ros_node: str="image_publisher", name_pub: str="jetracer_image") -> None:
+    def __init__(self, camera: Camera_OAK, name_ros_node: str="image_publisher", name_pub: str="jetracer_image") -> "ImagePublisher":
         
         ########################### Threads ###########################
         # Initialize thread
@@ -129,7 +141,9 @@ class ImagePublisher(th.Thread):
                 rospy.logwarn("Image is not Published")
             
             self.rospyRate.sleep()
-
+            
+        ## Close camera
+        self.camera.running = False
         rospy.loginfo("Shutdown")
 
 
@@ -147,7 +161,7 @@ class ImagePublisher(th.Thread):
 def signal_handler(signal, frame) -> None:
     print("Ctrl+C detected, stopping threads...")
     image_publisher.running = False
-    camera.running = False
+    sys.exit(0)
 
 
 if __name__ == '__main__':
