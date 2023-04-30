@@ -28,7 +28,6 @@ class IntelRealSense(th.Thread):
 
 
     def run(self):
-
         # Configure depth and color streams
         pipeline = rs.pipeline()
         config = rs.config()
@@ -78,20 +77,6 @@ class IntelRealSense(th.Thread):
                 depth_colormap_dim = depth_colormap.shape
                 color_colormap_dim = color_image.shape
 
-                # If depth and color resolutions are different, resize color image to match depth image for display
-                if depth_colormap_dim != color_colormap_dim:
-                    resized_color_image = cv2.resize(color_image, dsize=(depth_colormap_dim[1], depth_colormap_dim[0]), interpolation=cv2.INTER_AREA)
-                    images = np.hstack((resized_color_image, depth_colormap))
-                    img = resized_color_image
-                else:
-                    images = np.hstack((color_image, depth_colormap))
-                    img = color_image
-
-                # Show images
-                #print(depth_image)
-
-                #print(type(depth_image))
-                #print(depth_image.shape)
                 self.color_frame = color_image
                 self.depth_frame = depth_image
 
@@ -173,8 +158,6 @@ class ImageDepthPublisher(th.Thread):
             if depth is not None:
                 ros_depth = self.bridge.cv2_to_imgmsg(depth)
                 pub.publish(ros_depth)
-
-
 
 
 def signal_handler(signal, frame) -> None:
