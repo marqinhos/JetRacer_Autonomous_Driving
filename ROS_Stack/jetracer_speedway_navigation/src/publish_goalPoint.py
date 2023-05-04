@@ -171,15 +171,12 @@ def signal_handler(signal, frame) -> None:
         
 if __name__ == '__main__':
     try:
-        ## Model IA path
-        # model_path = os.path.join('.', 'models', 'best.pt')
-        # Obtener la ruta absoluta del archivo
+        ## Absolute path
         file_path = os.path.abspath(__file__)
-
-        # Obtener la ruta absoluta del directorio "models"
+        ## Absolute path of folder models
         models_dir = os.path.join(os.path.dirname(file_path), 'models')
-        model_path = "./asd/best.pt"
-        # Obtener la ruta absoluta del archivo "best.pt"
+        ## Model IA path
+        model_path = os.path.join(models_dir, 'best.pt')
         model_path = os.path.join(models_dir, 'best.pt')
         ## Call Process Image class
         image_process = ProcessImage(model_ia_path=model_path)
