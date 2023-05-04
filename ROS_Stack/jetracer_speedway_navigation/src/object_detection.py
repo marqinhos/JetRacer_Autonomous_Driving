@@ -14,10 +14,11 @@ from ultralytics import YOLO
 # Import type of msgs
 from sensor_msgs.msg import Image
 from geometry_msgs.msg import Twist
-from jetracer_speedway_msgs.msg import Points
 # Import converter ros image to cv2 image
 from cv_bridge import CvBridge
 
+# Import utils
+from utils import Point, ObjectProcessing
 
 
 class ObjectDetection(th.Thread):
@@ -51,16 +52,20 @@ class ObjectDetection(th.Thread):
 
         ########################### ROS ###########################
         ## Constants
-        self.name_sub = config["sensors"]["pub_name_img"]
-        self.name_pub = config["navigation"]["pub_name_img"]        ## TODO
-        self.name_ros_node = config["navigation"]["node_name_img"]  ## TODO
+        ## self.name_sub = config["sensors"]["pub_name_img"]
+        ## self.name_pub = config["navigation"]["pub_name_img"]        ## TODO
+        ## self.name_ros_node = config["navigation"]["node_name_img"]  ## TODO
+        self.name_sub = "jetracer_img_pub"
+        self.name_pub = ""        ## TODO
+        self.name_ros_node = "jetracer_object_detection_node"  ## TODO
+
         ## Initialize node of ros
         rospy.init_node(self.name_ros_node)
         ## Rate
         self.rate = config["rate"]
         self.rospyRate = rospy.Rate(self.rate)
         ## Publisher and Subscribers
-        self.pub_vels = rospy.Publisher(self.name_pub, Points, queue_size=1) ## TODO
+        #self.pub_vels = rospy.Publisher(self.name_pub, Points, queue_size=1) ## TODO
         rospy.wait_for_message(self.name_sub, Image)
         self.sub_img = rospy.Subscriber(self.name_sub, Image, self.__callback_image)
         
@@ -79,27 +84,31 @@ class ObjectDetection(th.Thread):
             ## Execute ia to extract features
             result = self.__run_ia(self.frame)
 
-            ## Get desired Point
-            try:
-                desired_pt = self.compute_detect.run(result)
-                if not self.last_desired_pt.zero():
-                    if abs(self.last_desired_pt.x - desired_pt.x) > 95 or abs(self.last_desired_pt.y - desired_pt.y) > 80:
-                        rospy.logwarn("BAD DESIRED POINT")
-                        desired_pt = self.last_desired_pt.middle_2_point(desired_pt)
-                self.last_desired_pt = desired_pt
-            except: 
-                desired_pt = self.last_desired_pt
-
             ## Show Point in image
-            self.__show(self.frame, desired_pt)
+            self.__show(self.frame, result)
 
             ## Publish desired point
-            self.publish_point(desired_pt)
+            # self.publish_point(desired_pt)
             # rospy.loginfo(f"Point: {desired_pt}")
             self.rospyRate.sleep()
 
 
         rospy.loginfo(f"Shutdown {self.name_ros_node}")
+
+
+    def __show(self, image: np.ndarray, result: dict) -> None:
+        """Void to show desired point, and real point 
+
+        Args:
+            image (np.ndarray): Image to show
+            point (Point): Point to draw in image
+        """
+        for name in list(result.keys()):
+            for point in result[name]:
+                cv2.circle(image, (point.x, point.y), 5, (0, 0, 255), -1)
+
+        cv2.imshow(self.name_ros_node , image)
+        cv2.waitKey(3)
 
 
     def __run_ia(self, frame: np.ndarray) -> list:
@@ -116,7 +125,7 @@ class ObjectDetection(th.Thread):
 
 def signal_handler(signal, frame) -> None:
     rospy.logwarn("Ctrl+C detected, stopping threads...")
-    image_process.running = False
+    object_detection.running = False
 
         
 if __name__ == '__main__':
@@ -128,11 +137,11 @@ if __name__ == '__main__':
         ## Model IA path
         model_path = os.path.join(models_dir, 'yolov8n-seg.pt')
         ## Call Process Image class
-        image_process = ObjectDetection(model_ia_path=model_path)
+        object_detection = ObjectDetection(model_ia_path=model_path)
         ## Manage SIGINT signal
         signal.signal(signal.SIGINT, signal_handler)
         ## Upload thread
-        list_threads = [image_process]
+        list_threads = [object_detection]
         ## Start and Join threads
         [wire.start() for wire in list_threads]
         [wire.join() for wire in list_threads]
