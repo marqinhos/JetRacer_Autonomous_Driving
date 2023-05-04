@@ -111,8 +111,8 @@ class ImageDepthPublisher(th.Thread):
 
         ########################### ROS ###########################
         ## Constants
-        self.name_pub_img = "jetracer_image"
-        self.name_pub_depth = "jetracer_depth"
+        self.name_pub_img = "jetracer_img_pub"
+        self.name_pub_depth = "jetracer_depth_pub"
 
         self.name_ros_node = "jetracer_intel_node"
         ## Initialize node of ros
