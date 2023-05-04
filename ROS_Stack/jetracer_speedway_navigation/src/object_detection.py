@@ -18,6 +18,8 @@ from jetracer_speedway_msgs.msg import Points
 # Import converter ros image to cv2 image
 from cv_bridge import CvBridge
 
+
+
 class ObjectDetection(th.Thread):
     """Class to subscribe a topic to take image and by means of IA extract the lane and lines segmentation.
         Them process the segmentation, to extract the desired point to go the robot
@@ -110,3 +112,31 @@ class ObjectDetection(th.Thread):
             list: List of result (masks, boxes, image) that return prediction in model YOLOv8
         """
         return self.model_ia.predict(source=frame, conf=self.predict_ia_conf)
+    
+
+def signal_handler(signal, frame) -> None:
+    rospy.logwarn("Ctrl+C detected, stopping threads...")
+    image_process.running = False
+
+        
+if __name__ == '__main__':
+    try:
+        ## Absolute path
+        file_path = os.path.abspath(__file__)
+        ## Absolute path of folder models
+        models_dir = os.path.join(os.path.dirname(file_path), 'models')
+        ## Model IA path
+        model_path = os.path.join(models_dir, 'yolov8n-seg.pt')
+        ## Call Process Image class
+        image_process = ObjectDetection(model_ia_path=model_path)
+        ## Manage SIGINT signal
+        signal.signal(signal.SIGINT, signal_handler)
+        ## Upload thread
+        list_threads = [image_process]
+        ## Start and Join threads
+        [wire.start() for wire in list_threads]
+        [wire.join() for wire in list_threads]
+
+    except rospy.ROSInterruptException:
+        rospy.loginfo("Close this program")
+        pass
