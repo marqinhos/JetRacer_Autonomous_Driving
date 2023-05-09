@@ -50,6 +50,9 @@ class ObjectDetection(th.Thread):
         self.frame = None
         self.bridge = CvBridge()
 
+        #################### Object Processing ####################
+        self.object = ObjectProcessing()
+
         ########################### ROS ###########################
         ## Constants
         ## self.name_sub = config["sensors"]["pub_name_img"]
@@ -84,8 +87,10 @@ class ObjectDetection(th.Thread):
             ## Execute ia to extract features
             result = self.__run_ia(self.frame)
 
+            dict_objects = self.object.run(result)
+
             ## Show Point in image
-            self.__show(self.frame, result)
+            self.__show(self.frame, dict_objects)
 
             ## Publish desired point
             # self.publish_point(desired_pt)
@@ -101,7 +106,7 @@ class ObjectDetection(th.Thread):
 
         Args:
             image (np.ndarray): Image to show
-            point (Point): Point to draw in image
+            result (dict): Dictionary with all objects detections
         """
         for name in list(result.keys()):
             for point in result[name]:
