@@ -51,7 +51,8 @@ add_message_files(
   FILES
   Velocities.msg
   Points.msg
-  Obj_command.msg
+  KeyValue.msg
+  Dictionary.msg
 
 )
 
