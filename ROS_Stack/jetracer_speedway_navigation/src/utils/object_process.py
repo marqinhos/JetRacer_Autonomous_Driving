@@ -36,6 +36,18 @@ class ObjectProcessing:
                                 "dog": 16,
                                 "traffic light": 9}
 
+        self.dict_keys_detect_swap = {
+                                0: "person",
+                                1: "bicycle",
+                                2: "car",
+                                3: "motorcycle",
+                                5: "bus",
+                                7: "truck",
+                                11: "stop sign",
+                                15: "cat",
+                                16: "dog",
+                                9: "traffic light"}
+
 
     def run(self, result: list) -> dict:
         try:
