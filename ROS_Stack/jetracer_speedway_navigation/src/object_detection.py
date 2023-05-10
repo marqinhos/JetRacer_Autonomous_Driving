@@ -13,7 +13,7 @@ from ultralytics import YOLO
 
 # Import type of msgs
 from sensor_msgs.msg import Image
-from geometry_msgs.msg import Twist
+from jetracer_speedway_msgs.msg import Dictionary, KeyValue, Points
 # Import converter ros image to cv2 image
 from cv_bridge import CvBridge
 
@@ -65,7 +65,7 @@ class ObjectDetection(th.Thread):
         self.rate = config["rate"]
         self.rospyRate = rospy.Rate(self.rate)
         ## Publisher and Subscribers
-        #self.pub_vels = rospy.Publisher(self.name_pub, Points, queue_size=1) ## TODO
+        self.pub_dict = rospy.Publisher(self.name_pub, Dictionary, queue_size=1) ## TODO
         rospy.wait_for_message(self.name_sub, Image)
         self.sub_img = rospy.Subscriber(self.name_sub, Image, self.__callback_image)
         
@@ -94,12 +94,51 @@ class ObjectDetection(th.Thread):
             # rospy.loginfo(f"Point: {desired_pt}")
             self.rospyRate.sleep()
 
-
         rospy.loginfo(f"Shutdown {self.name_ros_node}")
 
 
-    def publish_command(self, result_objects: dict):
-        pass
+    def publish_command(self, result_objects: dict) -> None:
+        """Void to publish a dictionary, with:
+                - Key: name of object detection (see object_process.py to now possible detections)
+                - Value: for each key is a list with centroid of all object detections.
+            Only publish car and stop sign info. TODO for the rest of detections.
+
+        Args:
+            result_objects (dict): Dictionary with all objects detections
+        """
+
+        ## Create obj command
+        dict_msg = Dictionary()
+        key_value = KeyValue()
+        point_cc = Points()
+
+        ## Only publish car and stop info
+
+        ## Check for objects
+        try:
+            for name in list(result_objects.keys()):
+                name_detect = self.object.dict_keys_detect_swap[name]
+                key_value.key = name_detect
+                for point in result_objects[name]:
+                    point_cc.x = point.x
+                    point_cc.y = point.y
+                    key_value.value.append(point_cc)
+
+                dict_msg.dict.append(key_value)
+                    
+            self.pub_dict.publish(dict_msg)
+        except: 
+            self.pub_dict.publish(dict_msg)
+            
+
+    def __callback_image(self, data: Image) -> None:
+        """Callback to set in self variable the values of image. Convert the type of data to opencv image
+
+        Args:
+            data (Image): Image in format image msg 
+        """
+        image = self.bridge.imgmsg_to_cv2(data, "bgr8")
+        self.frame = image
 
 
     def __show(self, image: np.ndarray, result: dict) -> None:
