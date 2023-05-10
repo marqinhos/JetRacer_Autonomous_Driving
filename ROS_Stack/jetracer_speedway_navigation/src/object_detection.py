@@ -55,12 +55,9 @@ class ObjectDetection(th.Thread):
 
         ########################### ROS ###########################
         ## Constants
-        ## self.name_sub = config["sensors"]["pub_name_img"]
-        ## self.name_pub = config["navigation"]["pub_name_img"]        ## TODO
-        ## self.name_ros_node = config["navigation"]["node_name_img"]  ## TODO
-        self.name_sub = "jetracer_img_pub"
-        self.name_pub = ""        ## TODO
-        self.name_ros_node = "jetracer_object_detection_node"  ## TODO
+        self.name_sub = config["sensors"]["pub_name_img"]
+        self.name_pub = config["navigation"]["pub_name_obj"]        
+        self.name_ros_node = config["navigation"]["node_name_obj"]  
 
         ## Initialize node of ros
         rospy.init_node(self.name_ros_node)
@@ -101,6 +98,10 @@ class ObjectDetection(th.Thread):
         rospy.loginfo(f"Shutdown {self.name_ros_node}")
 
 
+    def publish_command(self, result_objects: dict):
+        pass
+
+
     def __show(self, image: np.ndarray, result: dict) -> None:
         """Void to show desired point, and real point 
 
@@ -113,7 +114,7 @@ class ObjectDetection(th.Thread):
                 for point in result[name]:
                     cv2.circle(image, (point.x, point.y), 5, (0, 0, 255), -1)
         except: pass
-        
+
         cv2.imshow(self.name_ros_node , image)
         cv2.waitKey(3)
 
