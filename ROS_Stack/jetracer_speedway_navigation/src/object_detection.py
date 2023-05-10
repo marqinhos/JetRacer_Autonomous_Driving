@@ -108,10 +108,12 @@ class ObjectDetection(th.Thread):
             image (np.ndarray): Image to show
             result (dict): Dictionary with all objects detections
         """
-        for name in list(result.keys()):
-            for point in result[name]:
-                cv2.circle(image, (point.x, point.y), 5, (0, 0, 255), -1)
-
+        try:
+            for name in list(result.keys()):
+                for point in result[name]:
+                    cv2.circle(image, (point.x, point.y), 5, (0, 0, 255), -1)
+        except: pass
+        
         cv2.imshow(self.name_ros_node , image)
         cv2.waitKey(3)
 
