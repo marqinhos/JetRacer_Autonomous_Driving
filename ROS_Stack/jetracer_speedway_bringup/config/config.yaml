@@ -1,7 +1,3 @@
-my_params:
-  navigation:
-    node_name_obs: jetracer_emergency_stop_node
-
 driver:
   i2c_address: 0x40
   steering_channel: 0
@@ -19,8 +15,10 @@ control:
 navigation:
   node_name_img: "jetracer_img_process_node"
   node_name_obs: "jetracer_emergency_stop_node"
+  node_name_obj: "jetracer_objects_node"
   pub_name_img: "jetracer_goal_point_pub"
   pub_name_obs: "jetracer_emergency_stop_pub"
+  pub_name_obj: "jetracer_object_pub"
   offsetright: 190
   offsetmid: 230
   min_center: 0.31
