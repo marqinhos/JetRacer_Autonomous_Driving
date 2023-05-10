@@ -58,8 +58,7 @@ class ObjectProcessing:
         ##############################################################
         dict_detections = {}
         list_class_num = list(self.dict_keys_detect.values())
-        
-        for i in range(list_class_num):
+        for i in range(len(list_class_num)):
             try:
                 index = self.__get_index_detection_corner(result, class_num=list_class_num[i])
                 dict_detections[list_class_num[i]] = index
@@ -68,14 +67,14 @@ class ObjectProcessing:
         ##############################################################
         ##                Calculate the centroids                   ##
         ##############################################################
-        result = {}
+        result_dict = {}
         for cls_index in list(dict_detections.keys()):
             for index in dict_detections[cls_index]:
-                detect_mask = result[0].masks[dict_detections[index]].masks.squeeze()
+                detect_mask = result[0].masks[index].masks.squeeze()
                 detect_centroid = self.__get_torch_centroid(detect_mask)
-                result.setdefault(cls_index, []).append(detect_centroid)
+                result_dict.setdefault(cls_index, []).append(detect_centroid)
 
-        return result
+        return result_dict
 
 
     def __get_index_detection_corner(self, result: list, class_name: str=None, class_num: int=None) -> list:
@@ -100,6 +99,7 @@ class ObjectProcessing:
             class_num = class_num
         try:
             index = [(tensors_detects == class_num).nonzero(as_tuple=True)[0][i].item() for i in range(len((tensors_detects == class_num).nonzero(as_tuple=True)[0]))]
+            if len(index) == 0: raise
             return index
         except:
             raise ValueError(1) # Error 1: No detections
