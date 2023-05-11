@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
+
 project(pkg_intel_real_sense_publisher)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
