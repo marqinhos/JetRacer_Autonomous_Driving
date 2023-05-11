@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import pyrealsense2 as rs
+import pyrealsense2.pyrealsense2 as rs
 import numpy as np
 import threading as th
 import cv2
