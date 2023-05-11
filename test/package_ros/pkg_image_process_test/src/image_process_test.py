@@ -18,10 +18,10 @@ from geometry_msgs.msg import Twist
 from cv_bridge import CvBridge
 
 # Import utils
-from utils import *
+from utils_test import *
 
 # Import detections features
-from extract_features import Features_Detection
+from extract_features_test import Features_Detection
 
 class ProcessImage(th.Thread):
     """Class to subscribe a topic to take image and by means of IA extract the lane and lines segmentation.
