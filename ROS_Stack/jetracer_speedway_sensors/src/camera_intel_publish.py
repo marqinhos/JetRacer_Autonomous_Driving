@@ -110,7 +110,7 @@ class IntelRealSense(th.Thread):
         """
         return self.depth_frame
     
-    def get_pyrealsense_depth_frame(self) -> pr.depth_frame:
+    def get_pyrealsense_depth_frame(self) -> rs.depth_frame:
         """Function to get depth frame save in the buffer in original format
 
         Returns:
