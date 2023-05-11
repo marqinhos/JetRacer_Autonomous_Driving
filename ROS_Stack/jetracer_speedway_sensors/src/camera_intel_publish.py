@@ -11,6 +11,8 @@ import yaml
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 
+from jetracer_speedway_srvs.srv import DepthToPoint, DepthToPointResponse
+
 
 class IntelRealSense(th.Thread):
 
@@ -24,6 +26,7 @@ class IntelRealSense(th.Thread):
         self.height = 480
         self.color_frame = np.zeros((self.width, self.height))
         self.depth_frame = np.zeros((self.width, self.height))
+        self.depth_pyrealsense = None
 
         ########################### OS ###########################
         self.running = True
@@ -78,7 +81,7 @@ class IntelRealSense(th.Thread):
 
                 depth_colormap_dim = depth_colormap.shape
                 color_colormap_dim = color_image.shape
-
+                self.depth_pyrealsense = depth_frame
                 self.color_frame = color_image
                 self.depth_frame = depth_image
 
@@ -106,6 +109,14 @@ class IntelRealSense(th.Thread):
             np.ndarray: Return the last depth frame save in the buffer
         """
         return self.depth_frame
+    
+    def get_pyrealsense_depth_frame(self) -> pr.depth_frame:
+        """Function to get depth frame save in the buffer in original format
+
+        Returns:
+            pr.depth_frame: Return the last depth frame save in the buffer
+        """
+        return self.depth_pyrealsense
 
 
 class ImageDepthPublisher(th.Thread):
@@ -133,12 +144,14 @@ class ImageDepthPublisher(th.Thread):
         ## Constants
         self.name_pub_img = config["sensors"]["pub_name_img"]
         self.name_pub_depth = config["sensors"]["pub_name_depth"]
+        self.name_srv = config["navigation"]["srv_name"]
 
         self.name_ros_node = config["sensors"]["node_name_img_depth_intel"]
         ## Initialize node of ros
         rospy.init_node(self.name_ros_node)
         self.pub_image = rospy.Publisher(self.name_pub_img, Image, queue_size=1)
         self.pub_depth = rospy.Publisher(self.name_pub_depth, Image, queue_size=1)
+        self.srv = rospy.Service(self.name_srv, DepthToPoint, self.__handle_request)
 
         ## Rate
         self.rate = config["rate"]
@@ -170,6 +183,24 @@ class ImageDepthPublisher(th.Thread):
         ## Close camera
         self.camera.running = False
         rospy.loginfo("Shutdown")
+
+
+    def __handle_request(self, request: DepthToPoint) -> DepthToPointResponse:
+        frame = self.camera.get_pyrealsense_depth_frame()
+        if frame is None:
+            rospy.logwarn("No image")
+            return DepthToPointResponse(distance=0.0)
+
+        x = request.x
+        y = request.y
+
+        if x < 0 or x >= frame.shape[1] or y < 0 or y >= frame.shape[0]:
+            rospy.logwarn("Point out image")
+            return DepthToPointResponse(distance=0.0)
+
+        distance = frame.get_distance(x, y)
+
+        return DepthToPointResponse(distance=float(distance))
 
     
     def __publish_frame(self, pub: rospy.Publisher, img: bool=True) -> None:
