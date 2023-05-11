@@ -10,8 +10,11 @@
   <!-- Inicialize navigation of JetRacer -->
   <!-- <node pkg="jetracer_speedway_navigation" type="publish_goalPoint.py" name="jetracer_img_process_node"/> -->
 
-  <!-- Inicialize sensors of JetRacer -->
-  <node pkg="jetracer_speedway_sensors" type="camera_publish.py" name="jetracer_img_pub_node" />
+  <!-- Inicialize sensors of JetRacer OAK -->
+  <!-- <node pkg="jetracer_speedway_sensors" type="camera_publish.py" name="jetracer_img_pub_node" /> -->
+  <!-- Inicialize sensors of JetRacer INTEL-->
+  <node pkg="jetracer_speedway_sensors" type="camera_intel_publish.py" name="jetracer_img_depth_pub_node" />
+
 
   <!-- Inicialize cotnrol of JetRacer -->
   <node pkg="jetracer_speedway_control" type="jetracer_brain.py" name="jetracer_control_node"/>

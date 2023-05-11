@@ -29,8 +29,10 @@ navigation:
 
 
 sensors:
-  node_name_img: "jetracer_img_pub_node"
   pub_name_img: "jetracer_img_pub"
+  node_name_img_oak: "jetracer_img_pub_node"
+  node_name_img_depth_intel: "jetracer_img_depth_pub_node"
+  pub_name_depth: "jetracer_depth_pub"
   node_name_rplidar: "rplidarNode"
   pub_name_rplidar: "scan"
 

@@ -6,6 +6,7 @@ import threading as th
 import cv2
 import rospy
 import sys
+import yaml
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 
@@ -44,7 +45,7 @@ class IntelRealSense(th.Thread):
                 found_rgb = True
                 break
         if not found_rgb:
-            print("The demo requires Depth camera with Color sensor")
+            rospy.logerr("The demo requires Depth camera with Color sensor")
             exit(0)
 
         config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
@@ -54,7 +55,7 @@ class IntelRealSense(th.Thread):
         else:
             config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
 
-        # Start streaming
+        ## Start streaming
         pipeline.start(config)
 
         try:
@@ -80,27 +81,45 @@ class IntelRealSense(th.Thread):
                 self.color_frame = color_image
                 self.depth_frame = depth_image
 
-        finally:
+        except Exception as e:
+            rospy.loginfo("Close Camera")    
 
-            # Stop streaming
-            print("Closed camera")
+        finally:
+            rospy.loginfo("Close Camera")    
             pipeline.stop()
 
 
-    def get_color_frame(self):
+    def get_color_frame(self) -> np.ndarray:
+        """Function to get the color image save in the buffer
+
+        Returns:
+            np.ndarray: Return the last color image save in the buffer
+        """
         return self.color_frame
 
 
-    def get_depth_frame(self):
+    def get_depth_frame(self) -> np.ndarray:
+        """Function to get depth frame save in the buffer
+
+        Returns:
+            np.ndarray: Return the last depth frame save in the buffer
+        """
         return self.depth_frame
 
 
 class ImageDepthPublisher(th.Thread):
+    """Class to publish in a topic cam color image and in another topic depth frame"""
 
     def __init__(self, camera: IntelRealSense) -> "ImageDepthPublisher":
         ########################### Threads ###########################
         # Initialize thread
         th.Thread.__init__(self)
+
+        ########################### YAML ###########################
+        # Load config.yaml
+        yaml_path = rospy.get_param('config_file')
+        with open(yaml_path, 'r') as f:
+            config = yaml.safe_load(f)
         
         ########################### IMAGE ###########################
         self.bridge = CvBridge()
@@ -111,17 +130,17 @@ class ImageDepthPublisher(th.Thread):
 
         ########################### ROS ###########################
         ## Constants
-        self.name_pub_img = "jetracer_img_pub"
-        self.name_pub_depth = "jetracer_depth_pub"
+        self.name_pub_img = config["sensors"]["pub_name_img"]
+        self.name_pub_depth = config["sensors"]["pub_name_depth"]
 
-        self.name_ros_node = "jetracer_intel_node"
+        self.name_ros_node = config["sensors"]["node_name_img_depth_intel"]
         ## Initialize node of ros
         rospy.init_node(self.name_ros_node)
         self.pub_image = rospy.Publisher(self.name_pub_img, Image, queue_size=1)
         self.pub_depth = rospy.Publisher(self.name_pub_depth, Image, queue_size=1)
 
         ## Rate
-        self.rate = 10
+        self.rate = config["rate"]
         self.rospyRate = rospy.Rate(self.rate)
 
 
@@ -133,13 +152,18 @@ class ImageDepthPublisher(th.Thread):
             try:
                 # print(self.camera.get_color_frame())
                 ## Publish Color Image
-                self.__publish_frame(self.pub_image)
+                try:
+                    self.__publish_frame(self.pub_image)
+                except: assert ValueError(1)
                 ## Publish Depth Image
-                self.__publish_frame(self.pub_depth, False)
+                try:
+                    self.__publish_frame(self.pub_depth, False)
+                except: assert ValueError(2)
 
-            except: 
-                rospy.logwarn("Image is not Published")
-            
+            except Exception as err:
+                if err.args[0] == 1: rospy.logwarn("Image is not Published")
+                else: rospy.logwarn("Depth is not Published")
+                
             self.rospyRate.sleep()
             
         ## Close camera
