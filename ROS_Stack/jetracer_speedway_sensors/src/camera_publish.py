@@ -121,7 +121,7 @@ class ImagePublisher(th.Thread):
         ########################### ROS ###########################
         ## Constants
         self.name_pub = config["sensors"]["pub_name_img"]
-        self.name_ros_node = config["sensors"]["node_name_img"]
+        self.name_ros_node = config["sensors"]["node_name_img_oak"]
         ## Initialize node of ros
         rospy.init_node(self.name_ros_node)
         self.pub_image = rospy.Publisher(self.name_pub, Image, queue_size=1)
