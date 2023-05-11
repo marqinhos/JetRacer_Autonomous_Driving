@@ -33,6 +33,7 @@ sensors:
   pub_name_depth: "jetracer_depth_pub"
   node_name_rplidar: "rplidarNode"
   pub_name_rplidar: "scan"
-
+  srv_name: "jetracer_srv_distance"
+  
 rate: 10
 confidence: 0.8
