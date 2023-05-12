@@ -16,12 +16,6 @@ One note
 [furo api](https://pradyunsg.me/furo)
 ```
 
-<!--
-```{include} ../README.md
-```
--->
-
-
 ## Installation
 
 To install the software, do:
@@ -35,7 +29,6 @@ emphasize-lines: 1
 ```
 ## Usage
 
-You can use the {py:func} `folder.main.algo` like this:
 ...
 
 [](#ROS_Stack.jetracer_speedway_control.src.jetracer_brain)
@@ -43,11 +36,11 @@ You can use the {py:func} `folder.main.algo` like this:
 
 
 ## Something
-```{literalinclude} source/src/main.md
+```{literalinclude} main.md
 :language: md
 ```
 
 
 
 
-If u now something of our api [click here](source/src/api.md)
+If u now something of our api [click here](api.md)

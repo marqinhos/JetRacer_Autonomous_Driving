@@ -1,11 +1,14 @@
 <!doctype html>
 <html class="no-js" lang="en">
-  <head><meta charset="utf-8"/>
+  <head>
+<meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Jetracer Control package" href="../modules/control_module.html" /><link rel="prev" title="QuickStart" href="quickstart.html" />
 
     <!-- Generated with Sphinx 6.2.1 and Furo 2023.03.27 -->
+<script defer data-domain="docs.datasette.io" src="https://plausible.io/js/plausible.js"></script>
+
         <title>API - JetRacer Speedway</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
@@ -23,7 +26,7 @@
   body {
     --color-code-background: #f8f8f8;
   --color-code-foreground: black;
-  --color-brand-primary: #7C4DFF;
+  --color-brand-primary: #140062;
   --color-brand-content: #7C4DFF;
   
   }
@@ -119,7 +122,11 @@
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
 
-
+<div class="announcement">
+  <aside class="announcement-content">
+     🚀 🏎️<em>New Release JetRacer Autonomous Driving!</em>🏎️ 🚀 
+  </aside>
+</div>
 
 <div class="page">
   <header class="mobile-header">
@@ -141,7 +148,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -150,21 +157,27 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><div class="sidebar-scroll"><a class="sidebar-brand" href="../../index.html">
-  
-  
-  <span class="sidebar-brand-text">JetRacer Speedway</span>
-  
-</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+      <div class="sidebar-sticky"><div class="sidebar-scroll"><div class="sidebar-brand centered">
+    
+    <div class="sidebar-logo-container">
+      <a href="https://github.com/marqinhos/JetRacer_Autonomous_Driving"><img class="sidebar-logo" src="" alt="JetRacer Autonomous Driving"></a>
+    </div>
+    
+    
+    
+  </div><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-tree">
-  <ul class="current">
+    <ul>
+      <li class="toctree-l1"><a class="reference internal" href="../../index.html">Contents</a></li>
+    </ul>
+    <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="main.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">QuickStart</a></li>
-<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">API</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../modules/control_module.html">Jetracer Control package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../modules/drivers_module.html">Jetracer Driver package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../modules/navigation_module.html">Jetracer Navigation package</a></li>
@@ -174,7 +187,7 @@
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
 
-</div>
+  </div>
 </div>
       </div>
       
@@ -199,7 +212,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
@@ -207,6 +220,16 @@
         <article role="main">
           <section id="api">
 <h1>API<a class="headerlink" href="#api" title="Permalink to this heading">#</a></h1>
+<!--
+```{toctree} 
+../modules/control_module.md
+../modules/drivers_module.md
+../modules/navigation_module.md
+../modules/sensors_module.md
+
+```
+-->
+<hr class="docutils" />
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules/control_module.html">Jetracer Control package</a><ul>
@@ -220,6 +243,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../modules/control_module.html#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.signal_handler"><code class="docutils literal notranslate"><span class="pre">signal_handler()</span></code></a></li>
 </ul>
 </li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="toctree-wrapper compound">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules/drivers_module.html">Jetracer Driver package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../modules/drivers_module.html#ROS_Stack.jetracer_speedway_drivers.src.jetracer_driver.Driver"><code class="docutils literal notranslate"><span class="pre">Driver</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../modules/drivers_module.html#ROS_Stack.jetracer_speedway_drivers.src.jetracer_driver.Driver.run"><code class="docutils literal notranslate"><span class="pre">Driver.run()</span></code></a></li>
@@ -239,6 +267,11 @@
 </li>
 </ul>
 </li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="toctree-wrapper compound">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules/navigation_module.html">Jetracer Navigation package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../modules/navigation_module.html#ROS_Stack.jetracer_speedway_navigation.src.object_detection.ObjectDetection"><code class="docutils literal notranslate"><span class="pre">ObjectDetection</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../modules/navigation_module.html#ROS_Stack.jetracer_speedway_navigation.src.object_detection.ObjectDetection.publish_command"><code class="docutils literal notranslate"><span class="pre">ObjectDetection.publish_command()</span></code></a></li>
@@ -277,6 +310,11 @@
 </li>
 </ul>
 </li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="toctree-wrapper compound">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules/sensors_module.html">Jetracer Sensors package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../modules/sensors_module.html#ROS_Stack.jetracer_speedway_sensors.src.camera_intel_publish.ImageDepthPublisher"><code class="docutils literal notranslate"><span class="pre">ImageDepthPublisher</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../modules/sensors_module.html#ROS_Stack.jetracer_speedway_sensors.src.camera_intel_publish.ImageDepthPublisher.__handle_request"><code class="docutils literal notranslate"><span class="pre">ImageDepthPublisher.__handle_request()</span></code></a></li>
@@ -348,7 +386,7 @@
           </div>
           <div class="right-details">
             <div class="icons">
-              <a class="muted-link fa-brands fa-solid fa-github fa-2x" href="https://github.com/pradyunsg/furo" aria-label="GitHub"></a>
+              <a class="muted-link fa-brands fa-solid fa-github fa-2x" href="https://github.com/marqinhos/JetRacer_Autonomous_Driving" aria-label="GitHub"></a>
               
             </div>
           </div>
@@ -356,17 +394,64 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">API</a><ul>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
   </div>
-</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+</div>
+<script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/scripts/furo.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    </body>
+    
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // Show banner linking to /stable/ if this is a /latest/ page
+  if (!/\/latest\//.test(location.pathname)) {
+    return;
+  }
+  var stableUrl = location.pathname.replace("/latest/", "/stable/");
+  // Check it's not a 404
+  fetch(stableUrl, { method: "HEAD" }).then((response) => {
+    if (response.status === 200) {
+      var warning = document.createElement("div");
+      warning.className = "admonition warning";
+      warning.innerHTML = `
+        <p class="first admonition-title">Note</p>
+        <p class="last">
+          This documentation covers the <strong>development version</strong> of Datasette.
+        </p>
+        <p>
+          See <a href="${stableUrl}">this page</a> for the current stable release.
+        </p>
+      `;
+      var mainArticle = document.querySelector("article[role=main]");
+      mainArticle.insertBefore(warning, mainArticle.firstChild);
+    }
+  });
+});
+</script>
+</body>
 </html>
