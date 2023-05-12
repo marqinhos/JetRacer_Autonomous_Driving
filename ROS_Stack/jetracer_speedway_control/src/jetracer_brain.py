@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import rospy
-from jetracer_speedway_msgs.msg import Points
-from jetracer_speedway_msgs.msg import Velocities
+from jetracer_speedway_msgs.msg import Dictionary, KeyValue, Points, Velocities
+from jetracer_speedway_srvs.srv import DepthToPoint, DepthToPointResponse
 import threading as th
 import numpy as np
 import signal
@@ -28,9 +28,19 @@ class Brain(th.Thread):
 
         ########################### Point ###########################
         self.points = None
+
+        ################### Objects Dictionary ######################
+        self.obj_dict = None
+        self.class_dict = {"stop sign",
+                           "car"}
+        
+        self.is_going_slow = False
+        self.last_car_distance = None
+
         ########################### ROS ###########################
          ## Constants
         self.name_sub = config["navigation"]["pub_name_img"]
+        self.name_sub_obj = config["navigation"]["pub_name_obj"]        
         self.name_pub = config["control"]["pub_name"]
         self.name_ros_node = config["control"]["node_name"]
         ## Initialize node of ros
@@ -40,9 +50,16 @@ class Brain(th.Thread):
         self.rospyRate = rospy.Rate(self.rate)
         ## Publisher and Subscribers
         self.pub_vels = rospy.Publisher(self.name_pub, Velocities, queue_size=1)
+        
+        ## Wait for subscribers
         rospy.wait_for_message(self.name_sub, Points)
         self.sub_point = rospy.Subscriber(self.name_sub, Points, self.__callback_point)
+
+        rospy.wait_for_message(self.name_sub_obj, Dictionary)
+        self.sub_dictionary = rospy.Subscriber(self.name_sub_obj, Dictionary, self.__callback_dictionary)
         
+        # Wait for service
+        rospy.wait_for_service("jetracer_srv_distance")
 
 
     def run(self) -> None:
@@ -59,6 +76,10 @@ class Brain(th.Thread):
 
             rospy.loginfo(f"Angle: {angle}")
             self.rospyRate.sleep()
+
+
+    def __callback_dictionary(self, msg: Dictionary) -> None:
+        self.obj_dict = msg 
 
 
     def __callback_point(self, msg: Points) -> None:
@@ -91,6 +112,10 @@ class Brain(th.Thread):
             
             # Publish message in topic vels_jetracer
             self.pub_vels.publish(vel_msg)
+
+
+    def __check_car2follow(self):
+        pass
 
 
     def __convert_point_2_vel(self, points: Points) -> float:
