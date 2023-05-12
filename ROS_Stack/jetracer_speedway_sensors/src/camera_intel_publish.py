@@ -144,7 +144,7 @@ class ImageDepthPublisher(th.Thread):
         ## Constants
         self.name_pub_img = config["sensors"]["pub_name_img"]
         self.name_pub_depth = config["sensors"]["pub_name_depth"]
-        self.name_srv = config["navigation"]["srv_name"]
+        self.name_srv = config["sensors"]["srv_name"]
 
         self.name_ros_node = config["sensors"]["node_name_img_depth_intel"]
         ## Initialize node of ros
