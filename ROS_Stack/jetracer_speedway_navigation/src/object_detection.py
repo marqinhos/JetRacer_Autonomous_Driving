@@ -86,6 +86,9 @@ class ObjectDetection(th.Thread):
 
             dict_objects = self.object.run(result)
 
+            ## Publish dictionary
+            self.publish_command(dict_objects)
+
             ## Show Point in image
             self.__show(self.frame, dict_objects)
 
@@ -106,20 +109,19 @@ class ObjectDetection(th.Thread):
         Args:
             result_objects (dict): Dictionary with all objects detections
         """
+        ## Only publish car and stop info
 
         ## Create obj command
         dict_msg = Dictionary()
-        key_value = KeyValue()
-        point_cc = Points()
-
-        ## Only publish car and stop info
-
+        
         ## Check for objects
         try:
             for name in list(result_objects.keys()):
                 name_detect = self.object.dict_keys_detect_swap[name]
+                key_value = KeyValue()
                 key_value.key = name_detect
                 for point in result_objects[name]:
+                    point_cc = Points()
                     point_cc.x = point.x
                     point_cc.y = point.y
                     key_value.value.append(point_cc)
