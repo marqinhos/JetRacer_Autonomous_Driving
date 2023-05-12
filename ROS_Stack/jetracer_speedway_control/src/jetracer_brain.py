@@ -2,7 +2,7 @@
 
 import rospy
 from jetracer_speedway_msgs.msg import Dictionary, KeyValue, Points, Velocities
-from jetracer_speedway_srvs.srv import DepthToPoint, DepthToPointResponse
+from jetracer_speedway_srvs.srv import DepthToPoint, DepthToPointRequest
 import threading as th
 import numpy as np
 import signal
@@ -31,11 +31,12 @@ class Brain(th.Thread):
 
         ################### Objects Dictionary ######################
         self.obj_dict = None
-        self.class_dict = {"stop sign",
-                           "car"}
+        self.class_list = ["stop sign",
+                           "car"]
         
-        self.is_going_slow = False
+        self.is_going_slow = False ## TODO
         self.last_car_distance = None
+        self.current_car_distance = None
 
         ########################### ROS ###########################
          ## Constants
@@ -43,6 +44,7 @@ class Brain(th.Thread):
         self.name_sub_obj = config["navigation"]["pub_name_obj"]        
         self.name_pub = config["control"]["pub_name"]
         self.name_ros_node = config["control"]["node_name"]
+        self.name_srv = config["sensors"]["srv_name"]
         ## Initialize node of ros
         rospy.init_node(self.name_ros_node)
         ## Rate
@@ -59,7 +61,8 @@ class Brain(th.Thread):
         self.sub_dictionary = rospy.Subscriber(self.name_sub_obj, Dictionary, self.__callback_dictionary)
         
         # Wait for service
-        rospy.wait_for_service("jetracer_srv_distance")
+        rospy.wait_for_service(self.name_srv)
+        self.distance_srv = rospy.ServiceProxy(self.name_srv, DepthToPoint)
 
 
     def run(self) -> None:
@@ -69,22 +72,15 @@ class Brain(th.Thread):
                 self.rospyRate.sleep()
                 continue
             
+            ## Check if there is any car to follow
+            goal_point = self.__check_car2follow(self.points)
             ## Pass desired point to angle
-            angle = self.__convert_point_2_vel(self.points)
+            angle = self.__convert_point_2_vel(goal_point)
             ## Publish desired point
             self.publish_vels(angle)
 
             rospy.loginfo(f"Angle: {angle}")
             self.rospyRate.sleep()
-
-
-    def __callback_dictionary(self, msg: Dictionary) -> None:
-        self.obj_dict = msg 
-
-
-    def __callback_point(self, msg: Points) -> None:
-        ## rospy.loginfo(msg)
-        self.points = msg
 
 
     def publish_vels(self, angle_deg: float) -> None:
@@ -96,26 +92,108 @@ class Brain(th.Thread):
             CONSTANT_VEL = 0.6
             vel = 0.05
             
-            #if not same:
+            ## if not same:
             if angle_deg > 0:
                 vel = 4.4*(1/abs(angle_deg))
 
             else:
                 vel = CONSTANT_VEL
             
-            # Break velocity
+            ## Set value of vel if there is a car to follow
+            if self.current_car_distance is not None:
+                vel = self.current_car_distance
+                self.last_car_distance = self.current_car_distance
+
+            ## Check if stop_signal
+            vel = self.__reduce_vel(vel)
+
+            ## Break velocity
             vel = vel if vel <= CONSTANT_VEL else CONSTANT_VEL
-            # Create Twist message
+
+            ## Create Twist message
             vel_msg = Velocities()
             vel_msg.angular = angle_deg
             vel_msg.linear = vel
             
-            # Publish message in topic vels_jetracer
+            ## Publish message in topic vels_jetracer
             self.pub_vels.publish(vel_msg)
 
 
-    def __check_car2follow(self):
-        pass
+    def __callback_dictionary(self, msg: Dictionary) -> None:
+        self.obj_dict = msg 
+
+
+    def __callback_point(self, msg: Points) -> None:
+        ## rospy.loginfo(msg)
+        self.points = msg
+
+
+    def __reduce_vel(self, vel: float) -> float:
+        """Function to know if there is a stop. 
+        If there is, the speed will be set based on the proximity to the stop 
+
+        Args:
+            vel (float): Current value of vel
+
+        Returns:
+            float: new vel value. If there isn't object return vel param
+        """
+        
+        try:
+            all_detections = self.obj_dict.dict
+            for item in all_detections:
+                if item.key == self.class_list[0]:
+                    ## Call service to take distance to the point
+                    list_dists = []
+                    for point in item.value:
+                        request = DepthToPointRequest()
+                        request.x = point.x
+                        request.y = point.y
+                        distance = self.distance_srv(request)
+                        list_dists.append[distance]
+
+                    return min(list_dists)
+                    
+        except: pass
+
+        return vel
+
+
+    def __check_car2follow(self, current_pt: Points) -> Points:
+        """Function to know if there is a car to follow. 
+        If there is, the speed will be set based on the proximity to the car,
+        set the goal_point with the car position. 
+
+        Args:
+            current_pt (Points): Current goal point
+
+        Returns:
+            Points: Return the new desired point to go. If there isn't cars return the same value
+                    of current_pt param
+        """
+        try:
+            all_detections = self.obj_dict.dict
+            for item in all_detections:
+                if item.key == self.class_list[1]:
+                    ## Call service to take distance to the car
+                    list_dists = []
+                    for point in item.value:
+                        request = DepthToPointRequest()
+                        request.x = point.x
+                        request.y = point.y
+                        distance = self.distance_srv(request)
+                        list_dists.append[distance]
+
+                    index_min = list_dists.index(min(list_dists))
+                    point = item.value[index_min]
+                    current_pt.x = point.x
+                    current_pt.y = point.y
+                    self.current_car_distance = min(list_dists)
+                    return current_pt
+
+        except: pass
+        self.current_car_distance = None
+        return current_pt
 
 
     def __convert_point_2_vel(self, points: Points) -> float:
