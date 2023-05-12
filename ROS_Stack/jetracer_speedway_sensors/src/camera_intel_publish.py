@@ -171,7 +171,8 @@ class ImageDepthPublisher(th.Thread):
                 except: assert ValueError(1)
                 ## Publish Depth Image
                 try:
-                    self.__publish_frame(self.pub_depth, False)
+                    pass
+                    ## self.__publish_frame(self.pub_depth, False)
                 except: assert ValueError(2)
 
             except Exception as err:
@@ -187,6 +188,7 @@ class ImageDepthPublisher(th.Thread):
 
     def __handle_request(self, request: DepthToPoint) -> DepthToPointResponse:
         frame = self.camera.get_pyrealsense_depth_frame()
+        color_frame = self.camera.get_color_frame()
         if frame is None:
             rospy.logwarn("No image")
             return DepthToPointResponse(distance=0.0)
@@ -194,7 +196,7 @@ class ImageDepthPublisher(th.Thread):
         x = request.x
         y = request.y
 
-        if x < 0 or x >= frame.shape[1] or y < 0 or y >= frame.shape[0]:
+        if x < 0 or x >= color_frame.shape[1] or y < 0 or y >= color_frame.shape[0]:
             rospy.logwarn("Point out image")
             return DepthToPointResponse(distance=0.0)
 
