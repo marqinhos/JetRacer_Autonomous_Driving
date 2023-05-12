@@ -6,3 +6,4 @@ share
 pyvenv.cfg
 /va/benchmark
 .gitignore
+**/__pycache__/
