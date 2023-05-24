@@ -11,6 +11,8 @@
   <node pkg="jetracer_speedway_navigation" type="publish_goalPoint.py" name="jetracer_img_process_node"/>
 
   <!-- Inicialize sensors of JetRacer -->
+  <node pkg="jetracer_speedway_navigation" type="object_detection.py" name="jetracer_objects_node" />
+  <!-- Inicialize sensors of JetRacer -->
   <!-- <node pkg="jetracer_speedway_sensors" type="camera_publish.py" name="jetracer_img_pub_node" /> -->
 
   <!-- Inicialize cotnrol of JetRacer -->
