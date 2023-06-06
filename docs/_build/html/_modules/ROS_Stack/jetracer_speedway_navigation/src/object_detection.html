@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <!-- Generated with Sphinx 6.2.1 and Furo 2023.03.27 -->
+    <!-- Generated with Sphinx 6.2.1 and Furo 2023.05.20 -->
 <script defer data-domain="docs.datasette.io" src="https://plausible.io/js/plausible.js"></script>
 
         <title>ROS_Stack.jetracer_speedway_navigation.src.object_detection - JetRacer Speedway</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -213,6 +213,26 @@
           <h1>Source code for ROS_Stack.jetracer_speedway_navigation.src.object_detection</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 
+<span class="c1">#</span>
+<span class="c1"># This file is part of the repo: https://github.com/marqinhos/JetRacer_Autonomous_Driving</span>
+<span class="c1"># If you find the code useful, please cite the Author: Marcos Fernandez Gonzalez</span>
+<span class="c1"># </span>
+<span class="c1"># Copyright 2023 The JetRacer Autonomous Driving Author. All Rights Reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the AGPL-3.0 License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     https://www.gnu.org/licenses/agpl-3.0.html</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+<span class="c1"># ========================================================================================</span>
+
+
 <span class="kn">import</span> <span class="nn">rospy</span>
 <span class="kn">import</span> <span class="nn">cv2</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -299,6 +319,9 @@
 
             <span class="n">dict_objects</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 
+            <span class="c1">## Publish dictionary</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">publish_command</span><span class="p">(</span><span class="n">dict_objects</span><span class="p">)</span>
+
             <span class="c1">## Show Point in image</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__show</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="p">,</span> <span class="n">dict_objects</span><span class="p">)</span>
 
@@ -319,20 +342,19 @@
 <span class="sd">        Args:</span>
 <span class="sd">            result_objects (dict): Dictionary with all objects detections</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">## Only publish car and stop info</span>
 
         <span class="c1">## Create obj command</span>
         <span class="n">dict_msg</span> <span class="o">=</span> <span class="n">Dictionary</span><span class="p">()</span>
-        <span class="n">key_value</span> <span class="o">=</span> <span class="n">KeyValue</span><span class="p">()</span>
-        <span class="n">point_cc</span> <span class="o">=</span> <span class="n">Points</span><span class="p">()</span>
-
-        <span class="c1">## Only publish car and stop info</span>
-
+        
         <span class="c1">## Check for objects</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">result_objects</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
                 <span class="n">name_detect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">dict_keys_detect_swap</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+                <span class="n">key_value</span> <span class="o">=</span> <span class="n">KeyValue</span><span class="p">()</span>
                 <span class="n">key_value</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">name_detect</span>
                 <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">result_objects</span><span class="p">[</span><span class="n">name</span><span class="p">]:</span>
+                    <span class="n">point_cc</span> <span class="o">=</span> <span class="n">Points</span><span class="p">()</span>
                     <span class="n">point_cc</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">x</span>
                     <span class="n">point_cc</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">y</span>
                     <span class="n">key_value</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">point_cc</span><span class="p">)</span>

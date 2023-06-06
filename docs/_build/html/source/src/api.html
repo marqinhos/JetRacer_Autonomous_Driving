@@ -3,15 +3,15 @@
   <head>
 <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Jetracer Control package" href="../modules/control_module.html" /><link rel="prev" title="QuickStart" href="quickstart.html" />
 
-    <!-- Generated with Sphinx 6.2.1 and Furo 2023.03.27 -->
+    <!-- Generated with Sphinx 6.2.1 and Furo 2023.05.20 -->
 <script defer data-domain="docs.datasette.io" src="https://plausible.io/js/plausible.js"></script>
 
         <title>API - JetRacer Speedway</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -234,8 +234,11 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules/control_module.html">Jetracer Control package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../modules/control_module.html#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain"><code class="docutils literal notranslate"><span class="pre">Brain</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../modules/control_module.html#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__callback_dictionary"><code class="docutils literal notranslate"><span class="pre">Brain.__callback_dictionary()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/control_module.html#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__callback_point"><code class="docutils literal notranslate"><span class="pre">Brain.__callback_point()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules/control_module.html#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__check_car2follow"><code class="docutils literal notranslate"><span class="pre">Brain.__check_car2follow()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/control_module.html#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__convert_point_2_vel"><code class="docutils literal notranslate"><span class="pre">Brain.__convert_point_2_vel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules/control_module.html#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__reduce_vel"><code class="docutils literal notranslate"><span class="pre">Brain.__reduce_vel()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/control_module.html#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.publish_vels"><code class="docutils literal notranslate"><span class="pre">Brain.publish_vels()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../modules/control_module.html#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.run"><code class="docutils literal notranslate"><span class="pre">Brain.run()</span></code></a></li>
 </ul>
@@ -254,17 +257,6 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../modules/drivers_module.html#ROS_Stack.jetracer_speedway_drivers.src.jetracer_driver.signal_handler"><code class="docutils literal notranslate"><span class="pre">signal_handler()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../modules/drivers_module.html#ROS_Stack.jetracer_speedway_drivers.src.utils.jetracer_cls.JetRacer"><code class="docutils literal notranslate"><span class="pre">JetRacer</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../modules/drivers_module.html#ROS_Stack.jetracer_speedway_drivers.src.utils.jetracer_cls.JetRacer.get_current_angle"><code class="docutils literal notranslate"><span class="pre">JetRacer.get_current_angle()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../modules/drivers_module.html#ROS_Stack.jetracer_speedway_drivers.src.utils.jetracer_cls.JetRacer.get_current_vel"><code class="docutils literal notranslate"><span class="pre">JetRacer.get_current_vel()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../modules/drivers_module.html#ROS_Stack.jetracer_speedway_drivers.src.utils.jetracer_cls.JetRacer.run"><code class="docutils literal notranslate"><span class="pre">JetRacer.run()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../modules/drivers_module.html#ROS_Stack.jetracer_speedway_drivers.src.utils.jetracer_cls.JetRacer.set_angle"><code class="docutils literal notranslate"><span class="pre">JetRacer.set_angle()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../modules/drivers_module.html#ROS_Stack.jetracer_speedway_drivers.src.utils.jetracer_cls.JetRacer.set_rate"><code class="docutils literal notranslate"><span class="pre">JetRacer.set_rate()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../modules/drivers_module.html#ROS_Stack.jetracer_speedway_drivers.src.utils.jetracer_cls.JetRacer.set_vel"><code class="docutils literal notranslate"><span class="pre">JetRacer.set_vel()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../modules/drivers_module.html#ROS_Stack.jetracer_speedway_drivers.src.utils.jetracer_cls.JetRacer.stop"><code class="docutils literal notranslate"><span class="pre">JetRacer.stop()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../modules/drivers_module.html#ROS_Stack.jetracer_speedway_drivers.src.utils.jetracer_cls.JetRacer.stop_emergency"><code class="docutils literal notranslate"><span class="pre">JetRacer.stop_emergency()</span></code></a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -315,35 +307,7 @@
 <hr class="docutils" />
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../modules/sensors_module.html">Jetracer Sensors package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../modules/sensors_module.html#ROS_Stack.jetracer_speedway_sensors.src.camera_intel_publish.ImageDepthPublisher"><code class="docutils literal notranslate"><span class="pre">ImageDepthPublisher</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../modules/sensors_module.html#ROS_Stack.jetracer_speedway_sensors.src.camera_intel_publish.ImageDepthPublisher.__handle_request"><code class="docutils literal notranslate"><span class="pre">ImageDepthPublisher.__handle_request()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../modules/sensors_module.html#ROS_Stack.jetracer_speedway_sensors.src.camera_intel_publish.ImageDepthPublisher.__publish_frame"><code class="docutils literal notranslate"><span class="pre">ImageDepthPublisher.__publish_frame()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../modules/sensors_module.html#ROS_Stack.jetracer_speedway_sensors.src.camera_intel_publish.ImageDepthPublisher.run"><code class="docutils literal notranslate"><span class="pre">ImageDepthPublisher.run()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../modules/sensors_module.html#ROS_Stack.jetracer_speedway_sensors.src.camera_intel_publish.IntelRealSense"><code class="docutils literal notranslate"><span class="pre">IntelRealSense</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../modules/sensors_module.html#ROS_Stack.jetracer_speedway_sensors.src.camera_intel_publish.IntelRealSense.get_color_frame"><code class="docutils literal notranslate"><span class="pre">IntelRealSense.get_color_frame()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../modules/sensors_module.html#ROS_Stack.jetracer_speedway_sensors.src.camera_intel_publish.IntelRealSense.get_depth_frame"><code class="docutils literal notranslate"><span class="pre">IntelRealSense.get_depth_frame()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../modules/sensors_module.html#ROS_Stack.jetracer_speedway_sensors.src.camera_intel_publish.IntelRealSense.get_pyrealsense_depth_frame"><code class="docutils literal notranslate"><span class="pre">IntelRealSense.get_pyrealsense_depth_frame()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../modules/sensors_module.html#ROS_Stack.jetracer_speedway_sensors.src.camera_intel_publish.IntelRealSense.run"><code class="docutils literal notranslate"><span class="pre">IntelRealSense.run()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../modules/sensors_module.html#ROS_Stack.jetracer_speedway_sensors.src.camera_intel_publish.signal_handler"><code class="docutils literal notranslate"><span class="pre">signal_handler()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../modules/sensors_module.html#ROS_Stack.jetracer_speedway_sensors.src.camera_publish.Camera_OAK"><code class="docutils literal notranslate"><span class="pre">Camera_OAK</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../modules/sensors_module.html#ROS_Stack.jetracer_speedway_sensors.src.camera_publish.Camera_OAK.__show_specs"><code class="docutils literal notranslate"><span class="pre">Camera_OAK.__show_specs()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../modules/sensors_module.html#ROS_Stack.jetracer_speedway_sensors.src.camera_publish.Camera_OAK.get_frame"><code class="docutils literal notranslate"><span class="pre">Camera_OAK.get_frame()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../modules/sensors_module.html#ROS_Stack.jetracer_speedway_sensors.src.camera_publish.Camera_OAK.run"><code class="docutils literal notranslate"><span class="pre">Camera_OAK.run()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../modules/sensors_module.html#ROS_Stack.jetracer_speedway_sensors.src.camera_publish.ImagePublisher"><code class="docutils literal notranslate"><span class="pre">ImagePublisher</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../modules/sensors_module.html#ROS_Stack.jetracer_speedway_sensors.src.camera_publish.ImagePublisher.__publish_image"><code class="docutils literal notranslate"><span class="pre">ImagePublisher.__publish_image()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../modules/sensors_module.html#ROS_Stack.jetracer_speedway_sensors.src.camera_publish.ImagePublisher.run"><code class="docutils literal notranslate"><span class="pre">ImagePublisher.run()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../modules/sensors_module.html#ROS_Stack.jetracer_speedway_sensors.src.camera_publish.signal_handler"><code class="docutils literal notranslate"><span class="pre">signal_handler()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/sensors_module.html">Jetracer Sensors package</a></li>
 </ul>
 </div>
 </section>
