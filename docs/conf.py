@@ -35,7 +35,6 @@ release = '1.0.0'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-            'jetracer_speedway_msgs',
             'sensor_msgs',
             'myst_parser',
             'sphinx.ext.todo',
