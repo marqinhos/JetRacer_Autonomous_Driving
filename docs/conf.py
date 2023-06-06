@@ -45,6 +45,7 @@ extensions = [
 
 
 autodoc_mock_imports = [
+                        "rospy",
                         "utils",
                         "pyrealsense2",
                         "README.md"
