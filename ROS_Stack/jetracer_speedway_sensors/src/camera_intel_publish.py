@@ -211,6 +211,9 @@ class ImageDepthPublisher(th.Thread):
             if image is not None:
                 ros_image = self.bridge.cv2_to_imgmsg(image, "bgr8")
                 pub.publish(ros_image)
+                
+            else: assert ValueError(1)
+            
         else:
             depth = self.camera.get_depth_frame()
             if depth is not None:
