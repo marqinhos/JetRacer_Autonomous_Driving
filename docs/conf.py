@@ -35,7 +35,6 @@ release = '1.0.0'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-            'sensor_msgs',
             'myst_parser',
             'sphinx.ext.todo',
             'sphinx.ext.viewcode', 
@@ -46,6 +45,8 @@ extensions = [
 
 
 autodoc_mock_imports = [
+                        'jetracer_speedway_msgs',
+                        'sensor_msgs',
                         "rospy",
                         "utils",
                         "pyrealsense2",
