@@ -7,6 +7,6 @@ preferred-citation:
     given-names: Glenn
   title: "JetRacer Autonomous Driving"
   version: 1.0.0
-  date-released: 2023-6-12
+  date-released: 2023-06-12
   license: AGPL-3.0
   url: "https://github.com/marqinhos/JetRacer_Autonomous_Driving"
