@@ -45,6 +45,9 @@ extensions = [
 
 
 autodoc_mock_imports = [
+                        "jetracer_speedway_srvs",
+                        "std_msgs",
+                        "cv_bridge",
                         'jetracer_speedway_msgs',
                         'sensor_msgs',
                         "rospy",
