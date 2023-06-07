@@ -193,7 +193,7 @@ class ObjectDetection(th.Thread):
     
 
 def signal_handler(signal, frame) -> None:
-    rospy.logwarn("Ctrl+C detected, stopping threads...")
+    rospy.logwarn("Ctrl+C detected, stopping object thread...")
     object_detection.running = False
 
         

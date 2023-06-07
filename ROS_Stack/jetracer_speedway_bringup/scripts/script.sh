@@ -32,7 +32,7 @@ function stop_processes {
     pkill -f "jetracer_brain.py";
     pkill -f "jetracer_driver.py";
     rosnode kill /rplidarNode;
-    pkill -f "roslaunch rplidar_ros rplidar.launch""
+    pkill -f "roslaunch rplidar_ros rplidar_a1.launch""
 
     pkill -f "security_stop.py"
     pkill -f "roscore"
@@ -59,7 +59,7 @@ then
 else
     echo "direnv ya está instalado"
 fi
-
+direnv allow
 ######################################################################
 ## Load enviorement var with direnv
 eval "$(direnv export bash)"
@@ -81,19 +81,65 @@ while true; do
   fi
   sleep 1 
 done
+# Nombre de la carpeta
+carpeta="nombre_de_la_carpeta"
 
+# Verificar si la carpeta existe
+if [ -d "$carpeta" ]; then
+  echo "La carpeta ya existe. No se realizarán cambios."
+else
+  # Crear la carpeta
+  mkdir "$carpeta"
+
+  # Ingresar en la carpeta
+  cd "$carpeta"
+
+  # Crear un archivo de texto
+  touch archivo.txt
+
+  # Salir de la carpeta
+  cd ..
+  
+  echo "Carpeta creada y archivo.txt creado dentro de ella."
+fi
 
 ################################### IMAGE ###################################
 ## Run in Jetson Nano
 sshpass -p "$JETSON_PASSWORD" ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $JETSON_USER@$JETSON_IP "
-cd ~/catkin_ws/src/jetracer_ws; 
-source ~/jetracer_ws/devel/setup.bash;
+cd ~/catkin_ws/src;
+source ~/catkin_ws/devel/setup.bash;
+if [ -d "jetracer_ws" ]; then
+    echo "Workspace found";
+else
+  mkdir -p "jetracer_ws/src";
+  cd "jetracer_ws";
+  catkin_make;
+  cd ..;
+  echo "Jetracer workspace create";
+fi
+cd jetracer_ws;
+echo $ROS_PACKAGE_PATH >> ~/.bashrc;
+source devel/setup.bash;
 export ROS_IP=$JETSON_IP && export ROS_MASTER_URI=http://$USER_IP:11311;
 cd src;
+catkin_init_workspace;
+if [ -d "rplidar_ros" ]; then
+    rm -rf rplidar_ros
+fi
+git clone https://github.com/Slamtec/rplidar_ros;
+cd ..;
+catkin_make;
+cd src;
+cd rplidar_ros/launch;
+chmod +x rplidar_a1.launch;
+cd ../..;
 sudo chmod 666 /dev/ttyUSB0;
-roslaunch rplidar_ros rplidar.launch &
-if [ -d "ros_jetracer_control" ]; then
-    rm -rf ros_jetracer_control
+cd ..;
+catkin_make;
+cd src;
+roslaunch rplidar_ros rplidar_a1.launch &
+if [ -d "JetRacer_Autonomous_Driving" ]; then
+    rm -rf JetRacer_Autonomous_Driving
 fi
 git clone https://github.com/marqinhos/JetRacer_Autonomous_Driving;
 cd ..;
@@ -107,14 +153,14 @@ roslaunch jetracer_speedway_bringup run_jetson.launch" &
 sshpass_pid_1=$! 
 
 
-cd ~/catkin_ws; 
-source ~/catkin_ws/devel/setup.bash;
+cd ~/TFG/tfg_ws; 
+source ~/devel/setup.bash;
 catkin_make;
 export ROS_IP=$USER_IP;
-cd src;
-git clone https://github.com/marqinhos/JetRacer_Autonomous_Driving;
-cd ..;
-catkin_make;
+#cd src;
+#git clone https://github.com/marqinhos/JetRacer_Autonomous_Driving;
+#cd ..;
+#catkin_make;
 cd src/JetRacer_Autonomous_Driving/ROS_Stack;
 roslaunch jetracer_speedway_bringup run_master.launch
 
