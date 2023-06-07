@@ -110,7 +110,7 @@ class ObjectDetection(th.Thread):
             self.publish_command(dict_objects)
 
             ## Show Point in image
-            self.__show(self.frame, dict_objects)
+            ##self.__show(self.frame, dict_objects)
 
             ## Publish desired point
             # self.publish_point(desired_pt)
