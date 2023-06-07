@@ -322,12 +322,12 @@
 <span class="sd">            Args:</span>
 <span class="sd">                angle_deg (float): Angle</span>
 <span class="sd">            &quot;&quot;&quot;</span>
-            <span class="n">CONSTANT_VEL</span> <span class="o">=</span> <span class="mf">0.6</span>
+            <span class="n">CONSTANT_VEL</span> <span class="o">=</span> <span class="mf">0.3</span>
             <span class="n">vel</span> <span class="o">=</span> <span class="mf">0.05</span>
             
             <span class="c1">## if not same:</span>
             <span class="k">if</span> <span class="n">angle_deg</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">vel</span> <span class="o">=</span> <span class="mf">4.4</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="nb">abs</span><span class="p">(</span><span class="n">angle_deg</span><span class="p">))</span>
+                <span class="n">vel</span> <span class="o">=</span> <span class="mf">2.4</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="nb">abs</span><span class="p">(</span><span class="n">angle_deg</span><span class="p">))</span>
 
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">vel</span> <span class="o">=</span> <span class="n">CONSTANT_VEL</span>
@@ -384,8 +384,11 @@
                         <span class="n">request</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">y</span>
                         <span class="n">distance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">distance_srv</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
                         <span class="n">list_dists</span><span class="o">.</span><span class="n">append</span><span class="p">[</span><span class="n">distance</span><span class="p">]</span>
-
-                    <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">list_dists</span><span class="p">)</span>
+                        
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt;&gt;&gt;&gt; Distance to stop --&gt; &quot;</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">list_dists</span><span class="p">))</span>
+                    <span class="c1">## return min(list_dists)</span>
+                    <span class="k">return</span> <span class="n">vel</span><span class="o">*</span><span class="mf">0.5</span>
+                
                     
         <span class="k">except</span><span class="p">:</span> <span class="k">pass</span>
 

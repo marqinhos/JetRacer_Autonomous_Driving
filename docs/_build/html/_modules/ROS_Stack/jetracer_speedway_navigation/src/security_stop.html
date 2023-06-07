@@ -312,7 +312,7 @@
 
 
 <div class="viewcode-block" id="signal_handler"><a class="viewcode-back" href="../../../../source/modules/navigation_module.html#ROS_Stack.jetracer_speedway_navigation.src.security_stop.signal_handler">[docs]</a><span class="k">def</span> <span class="nf">signal_handler</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
-    <span class="n">rospy</span><span class="o">.</span><span class="n">logwarn</span><span class="p">(</span><span class="s2">&quot;Ctrl+C detected, stopping threads...&quot;</span><span class="p">)</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">logwarn</span><span class="p">(</span><span class="s2">&quot;Ctrl+C detected, stopping emergency stop thread...&quot;</span><span class="p">)</span>
     <span class="n">security</span><span class="o">.</span><span class="n">running</span> <span class="o">=</span> <span class="kc">False</span></div>
 
 

@@ -323,7 +323,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">publish_command</span><span class="p">(</span><span class="n">dict_objects</span><span class="p">)</span>
 
             <span class="c1">## Show Point in image</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__show</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="p">,</span> <span class="n">dict_objects</span><span class="p">)</span>
+            <span class="c1">##self.__show(self.frame, dict_objects)</span>
 
             <span class="c1">## Publish desired point</span>
             <span class="c1"># self.publish_point(desired_pt)</span>
@@ -406,7 +406,7 @@
     
 
 <div class="viewcode-block" id="signal_handler"><a class="viewcode-back" href="../../../../source/modules/navigation_module.html#ROS_Stack.jetracer_speedway_navigation.src.object_detection.signal_handler">[docs]</a><span class="k">def</span> <span class="nf">signal_handler</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">rospy</span><span class="o">.</span><span class="n">logwarn</span><span class="p">(</span><span class="s2">&quot;Ctrl+C detected, stopping threads...&quot;</span><span class="p">)</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">logwarn</span><span class="p">(</span><span class="s2">&quot;Ctrl+C detected, stopping object thread...&quot;</span><span class="p">)</span>
     <span class="n">object_detection</span><span class="o">.</span><span class="n">running</span> <span class="o">=</span> <span class="kc">False</span></div>
 
         

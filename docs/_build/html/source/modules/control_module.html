@@ -230,34 +230,40 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Thread</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__callback_dictionary">
-<span class="sig-name descname"><span class="pre">__callback_dictionary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dictionary</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__callback_dictionary" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__callback_dictionary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jetracer_speedway_msgs.msg.Dictionary</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__callback_dictionary" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__callback_point">
-<span class="sig-name descname"><span class="pre">__callback_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Points</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__callback_point" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__callback_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jetracer_speedway_msgs.msg.Points</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__callback_point" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__check_car2follow">
-<span class="sig-name descname"><span class="pre">__check_car2follow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_pt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Points</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Points</span></span></span><a class="headerlink" href="#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__check_car2follow" title="Permalink to this definition">#</a></dt>
-<dd><p>Function to know if there is a car to follow. 
+<span class="sig-name descname"><span class="pre">__check_car2follow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_pt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jetracer_speedway_msgs.msg.Points</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">jetracer_speedway_msgs.msg.Points</span></span></span><a class="headerlink" href="#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__check_car2follow" title="Permalink to this definition">#</a></dt>
+<dd><p>Function to know if there is a car to follow.
 If there is, the speed will be set based on the proximity to the car,
 set the goal_point with the car position.</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>current_pt (Points): Current goal point</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>current_pt</strong> (<em>Points</em>) – Current goal point</p>
 </dd>
-<dt>Returns:</dt><dd><dl class="simple">
-<dt>Points: Return the new desired point to go. If there isn’t cars return the same value</dt><dd><p>of current_pt param</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Return the new desired point to go. If there isn’t cars return the same value</dt><dd><p>of current_pt param</p>
 </dd>
 </dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Points</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__convert_point_2_vel">
-<span class="sig-name descname"><span class="pre">__convert_point_2_vel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Points</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__convert_point_2_vel" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__convert_point_2_vel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jetracer_speedway_msgs.msg.Points</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__convert_point_2_vel" title="Permalink to this definition">#</a></dt>
 <dd><dl class="simple">
 <dt>Function to extract angle from a goal point respect real point.</dt><dd><dl class="simple">
 <dt>To calculate angle use trigonometry.</dt><dd><ul class="simple">
@@ -274,9 +280,16 @@ In the other case is positive.</p>
 </dd>
 </dl>
 </dd>
-<dt>Args:</dt><dd><p>goal_point (Point): Desired Point calculate below</p>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>goal_point</strong> (<a class="reference internal" href="navigation_module.html#ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point" title="ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point"><em>Point</em></a>) – Desired Point calculate below</p>
 </dd>
-<dt>Returns:</dt><dd><p>float: Return angle in degrees</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Return angle in degrees</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -284,12 +297,17 @@ In the other case is positive.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__reduce_vel">
 <span class="sig-name descname"><span class="pre">__reduce_vel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__reduce_vel" title="Permalink to this definition">#</a></dt>
-<dd><p>Function to know if there is a stop. 
+<dd><p>Function to know if there is a stop.
 If there is, the speed will be set based on the proximity to the stop</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>vel (float): Current value of vel</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>vel</strong> (<em>float</em>) – Current value of vel</p>
 </dd>
-<dt>Returns:</dt><dd><p>float: new vel value. If there isn’t object return vel param</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>new vel value. If there isn’t object return vel param</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -298,8 +316,9 @@ If there is, the speed will be set based on the proximity to the stop</p>
 <dt class="sig sig-object py" id="ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.publish_vels">
 <span class="sig-name descname"><span class="pre">publish_vels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle_deg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/ROS_Stack/jetracer_speedway_control/src/jetracer_brain.html#Brain.publish_vels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.publish_vels" title="Permalink to this definition">#</a></dt>
 <dd><p>Void to publish angular vel and linear vel in Twist format. The topic to publish is “jetracer_vels”</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>angle_deg (float): Angle</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>angle_deg</strong> (<em>float</em>) – Angle</p>
 </dd>
 </dl>
 </dd></dl>

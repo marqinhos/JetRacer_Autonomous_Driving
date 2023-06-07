@@ -249,7 +249,10 @@ Them process the segmentation, to extract the desired point to go the robot</p>
 </div></blockquote>
 <p>Only publish car and stop sign info. TODO for the rest of detections.</p>
 </dd>
-<dt>Args:</dt><dd><p>result_objects (dict): Dictionary with all objects detections</p>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>result_objects</strong> (<em>dict</em>) – Dictionary with all objects detections</p>
 </dd>
 </dl>
 </dd></dl>
@@ -277,8 +280,9 @@ Them process the segmentation, to extract the desired point to go the robot</p>
 <dt class="sig sig-object py" id="ROS_Stack.jetracer_speedway_navigation.src.publish_goalPoint.ProcessImage.publish_point">
 <span class="sig-name descname"><span class="pre">publish_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">desired_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point" title="ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point"><span class="pre">utils.Point</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/ROS_Stack/jetracer_speedway_navigation/src/publish_goalPoint.html#ProcessImage.publish_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ROS_Stack.jetracer_speedway_navigation.src.publish_goalPoint.ProcessImage.publish_point" title="Permalink to this definition">#</a></dt>
 <dd><p>Void to publish desired point in Points format. The topic to publish is “jetracer_vels”</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>angle_deg (float): Angle</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>angle_deg</strong> (<em>float</em>) – Angle</p>
 </dd>
 </dl>
 </dd></dl>
@@ -326,7 +330,7 @@ from the args and kwargs arguments, respectively.</p>
 <dt class="sig sig-object py" id="ROS_Stack.jetracer_speedway_navigation.src.utils.image_process.Features_Detection">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ROS_Stack.jetracer_speedway_navigation.src.utils.image_process.</span></span><span class="sig-name descname"><span class="pre">Features_Detection</span></span><a class="reference internal" href="../../_modules/ROS_Stack/jetracer_speedway_navigation/src/utils/image_process.html#Features_Detection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ROS_Stack.jetracer_speedway_navigation.src.utils.image_process.Features_Detection" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Class to extract the goal point in the image 
+<p>Class to extract the goal point in the image
 Errors:</p>
 <blockquote>
 <div><ul class="simple">
@@ -338,7 +342,7 @@ Errors:</p>
 <dt class="sig sig-object py" id="ROS_Stack.jetracer_speedway_navigation.src.utils.image_process.Features_Detection.process">
 <span class="sig-name descname"><span class="pre">process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point" title="ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point"><span class="pre">Point</span></a></span></span><a class="reference internal" href="../../_modules/ROS_Stack/jetracer_speedway_navigation/src/utils/image_process.html#Features_Detection.process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ROS_Stack.jetracer_speedway_navigation.src.utils.image_process.Features_Detection.process" title="Permalink to this definition">#</a></dt>
 <dd><dl>
-<dt>Function to get the desired point (this point will be a point in the center of the lane). </dt><dd><dl>
+<dt>Function to get the desired point (this point will be a point in the center of the lane).</dt><dd><dl>
 <dt>For get the point use different methods. Methods implement:</dt><dd><div class="line-block">
 <div class="line">RIGHT CORNER – MIDDLE LINE -&gt; Detect right corner line and middle line. Return the center point of both masks’ centroids</div>
 <div class="line">RIGHT LANE -&gt; Detect right lane. Return the centroid of lane mask</div>
@@ -354,16 +358,20 @@ Errors:</p>
 </dd>
 </dl>
 </dd>
-<dt>Args:</dt><dd><p>result (list): Result of the prediction</p>
-</dd>
-<dt>Raises:</dt><dd><dl class="simple">
-<dt>ValueError: Possible value error</dt><dd><ul class="simple">
-<li><p>1: No detections</p></li>
-</ul>
-</dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>result</strong> (<em>list</em>) – Result of the prediction</p>
 </dd>
-<dt>Returns:</dt><dd><p>Point: Return the point in the middle of right lane</p>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – Possible value error
+    - 1: No detections</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return the point in the middle of right lane</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point" title="ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point">Point</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -383,11 +391,18 @@ Errors:</p>
 <dt class="sig sig-object py" id="ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point.displace">
 <span class="sig-name descname"><span class="pre">displace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point" title="ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point"><span class="pre">Point</span></a></span></span><a class="reference internal" href="../../_modules/ROS_Stack/jetracer_speedway_navigation/src/utils/utils.html#Point.displace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point.displace" title="Permalink to this definition">#</a></dt>
 <dd><p>Function to displace “m” px and “n” px in (x, y)</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>x (int, optional): Displacement in the x axi. Defaults to 0.
-y (int, optional): Displacement in the y axi. Defaults to 0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>int</em><em>, </em><em>optional</em>) – Displacement in the x axi. Defaults to 0.</p></li>
+<li><p><strong>y</strong> (<em>int</em><em>, </em><em>optional</em>) – Displacement in the y axi. Defaults to 0.</p></li>
+</ul>
 </dd>
-<dt>Returns:</dt><dd><p>Point: Return the self point displaced</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Return the self point displaced</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point" title="ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point">Point</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -396,10 +411,15 @@ y (int, optional): Displacement in the y axi. Defaults to 0.</p>
 <dt class="sig sig-object py" id="ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point.is_right_than">
 <span class="sig-name descname"><span class="pre">is_right_than</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point" title="ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point"><span class="pre">Point</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../_modules/ROS_Stack/jetracer_speedway_navigation/src/utils/utils.html#Point.is_right_than"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point.is_right_than" title="Permalink to this definition">#</a></dt>
 <dd><p>Function to know is self point is in a more to the right position than other point</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>other_point (Point): Other point to compare</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other_point</strong> (<a class="reference internal" href="#ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point" title="ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point"><em>Point</em></a>) – Other point to compare</p>
 </dd>
-<dt>Returns:</dt><dd><p>bool: Return True or False if self point is more to the right than other point</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Return True or False if self point is more to the right than other point</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -408,10 +428,15 @@ y (int, optional): Displacement in the y axi. Defaults to 0.</p>
 <dt class="sig sig-object py" id="ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point.middle_2_point">
 <span class="sig-name descname"><span class="pre">middle_2_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point" title="ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point"><span class="pre">Point</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point" title="ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point"><span class="pre">Point</span></a></span></span><a class="reference internal" href="../../_modules/ROS_Stack/jetracer_speedway_navigation/src/utils/utils.html#Point.middle_2_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point.middle_2_point" title="Permalink to this definition">#</a></dt>
 <dd><p>Function to take the middle point between self point and other point</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>other_point (Point): The other point</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other_point</strong> (<a class="reference internal" href="#ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point" title="ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point"><em>Point</em></a>) – The other point</p>
 </dd>
-<dt>Returns:</dt><dd><p>Point: Return the new point that is between the middle of both points</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Return the new point that is between the middle of both points</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point" title="ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point">Point</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -420,8 +445,12 @@ y (int, optional): Displacement in the y axi. Defaults to 0.</p>
 <dt class="sig sig-object py" id="ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point.zero">
 <span class="sig-name descname"><span class="pre">zero</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../_modules/ROS_Stack/jetracer_speedway_navigation/src/utils/utils.html#Point.zero"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ROS_Stack.jetracer_speedway_navigation.src.utils.utils.Point.zero" title="Permalink to this definition">#</a></dt>
 <dd><p>Function to check if 0,0 point</p>
-<dl class="simple">
-<dt>Returns:</dt><dd><p>bool: Return True if 0,0 point and False in the other cases</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return True if 0,0 point and False in the other cases</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -432,7 +461,7 @@ y (int, optional): Displacement in the y axi. Defaults to 0.</p>
 <dt class="sig sig-object py" id="ROS_Stack.jetracer_speedway_navigation.src.utils.object_process.ObjectProcessing">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ROS_Stack.jetracer_speedway_navigation.src.utils.object_process.</span></span><span class="sig-name descname"><span class="pre">ObjectProcessing</span></span><a class="reference internal" href="../../_modules/ROS_Stack/jetracer_speedway_navigation/src/utils/object_process.html#ObjectProcessing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ROS_Stack.jetracer_speedway_navigation.src.utils.object_process.ObjectProcessing" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Class to extract the goal point in the image 
+<p>Class to extract the goal point in the image
 Errors:</p>
 <blockquote>
 <div><ul class="simple">
