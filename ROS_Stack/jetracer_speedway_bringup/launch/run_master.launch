@@ -1,4 +1,25 @@
-<!-- version: 0.0.2 -->
+<!-- version: 1.0.0 -->
+
+<!--
+# This file is part of the repo: https://github.com/marqinhos/JetRacer_Autonomous_Driving
+# If you find the code useful, please cite the Author: Marcos Fernandez Gonzalez
+# 
+# Copyright 2023 The JetRacer Autonomous Driving Author. All Rights Reserved.
+#
+# Licensed under the AGPL-3.0 License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.gnu.org/licenses/agpl-3.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ========================================================================================
+-->
+
 <launch>
   <!-- Set config_file path -->
   <rosparam file="$(find jetracer_speedway_bringup)/config/config.yaml" command="load" />
@@ -7,16 +28,10 @@
   <!-- Inicialize security stop of JetRacer -->
   <node pkg="jetracer_speedway_navigation" type="security_stop.py" name="jetracer_emergency_stop_node"/>
 
-  <!-- Inicialize navigation of JetRacer -->
+  <!-- Inicialize get goal point of JetRacer -->
   <node pkg="jetracer_speedway_navigation" type="publish_goalPoint.py" name="jetracer_img_process_node"/>
 
-  <!-- Inicialize sensors of JetRacer -->
-  <!-- <node pkg="jetracer_speedway_sensors" type="camera_publish.py" name="jetracer_img_pub_node" /> -->
-
-  <!-- Inicialize cotnrol of JetRacer -->
-  <!-- <node pkg="jetracer_speedway_control" type="jetracer_brain.py" name="jetracer_control_node"/> -->
-
-  <!-- Inicialize cotnrol of JetRacer -->
-  <!-- <node pkg="jetracer_speedway_drivers" type="jetracer_driver.py" name="jetracer_driver_node"/> -->
+  <!-- Inicialize object detection of JetRacer -->
+  <node pkg="jetracer_speedway_navigation" type="object_detection.py" name="jetracer_objects_node" />
 
 </launch>

@@ -1,15 +1,22 @@
 <!doctype html>
 <html class="no-js" lang="en">
-  <head><meta charset="utf-8"/>
+  <head>
+<meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <!-- Generated with Sphinx 6.2.1 and Furo 2023.03.27 -->
-        <title>ROS_Stack.jetracer_speedway_control.src.jetracer_brain - Jetracer Speedway 1.0.0 documentation</title>
+    <!-- Generated with Sphinx 6.2.1 and Furo 2023.05.20 -->
+<script defer data-domain="docs.datasette.io" src="https://plausible.io/js/plausible.js"></script>
+
+        <title>ROS_Stack.jetracer_speedway_control.src.jetracer_brain - JetRacer Speedway</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/fontawesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/solid.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/brands.min.css" />
     
     
 
@@ -18,6 +25,8 @@
   body {
     --color-code-background: #f8f8f8;
   --color-code-foreground: black;
+  --color-brand-primary: #140062;
+  --color-brand-content: #7C4DFF;
   
   }
   @media not print {
@@ -112,7 +121,11 @@
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
 
-
+<div class="announcement">
+  <aside class="announcement-content">
+     🚀 🏎️<em>New Release JetRacer Autonomous Driving!</em>🏎️ 🚀 
+  </aside>
+</div>
 
 <div class="page">
   <header class="mobile-header">
@@ -123,7 +136,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">Jetracer Speedway 1.0.0 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">JetRacer Speedway</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -143,21 +156,32 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
-  
-  
-  <span class="sidebar-brand-text">Jetracer Speedway 1.0.0 documentation</span>
-  
-</a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
+      <div class="sidebar-sticky"><div class="sidebar-scroll"><div class="sidebar-brand centered">
+    
+    <div class="sidebar-logo-container">
+      <a href="https://github.com/marqinhos/JetRacer_Autonomous_Driving"><img class="sidebar-logo" src="" alt="JetRacer Autonomous Driving"></a>
+    </div>
+    
+    
+    
+  </div><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form>
-<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  
-</div>
-</div>
+<div id="searchbox"></div><div class="sidebar-tree">
+    <ul>
+      <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Contents</a></li>
+    </ul>
+    <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/src/main.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/src/quickstart.html">QuickStart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/src/api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/src/license.html">License</a></li>
+</ul>
 
+  </div>
+</div>
       </div>
       
     </div>
@@ -189,9 +213,29 @@
           <h1>Source code for ROS_Stack.jetracer_speedway_control.src.jetracer_brain</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 
+<span class="c1">#</span>
+<span class="c1"># This file is part of the repo: https://github.com/marqinhos/JetRacer_Autonomous_Driving</span>
+<span class="c1"># If you find the code useful, please cite the Author: Marcos Fernandez Gonzalez</span>
+<span class="c1"># </span>
+<span class="c1"># Copyright 2023 The JetRacer Autonomous Driving Author. All Rights Reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the AGPL-3.0 License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     https://www.gnu.org/licenses/agpl-3.0.html</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+<span class="c1"># ========================================================================================</span>
+
+
 <span class="kn">import</span> <span class="nn">rospy</span>
-<span class="kn">from</span> <span class="nn">jetracer_speedway_msgs.msg</span> <span class="kn">import</span> <span class="n">Points</span>
-<span class="kn">from</span> <span class="nn">jetracer_speedway_msgs.msg</span> <span class="kn">import</span> <span class="n">Velocities</span>
+<span class="kn">from</span> <span class="nn">jetracer_speedway_msgs.msg</span> <span class="kn">import</span> <span class="n">Dictionary</span><span class="p">,</span> <span class="n">KeyValue</span><span class="p">,</span> <span class="n">Points</span><span class="p">,</span> <span class="n">Velocities</span>
+<span class="kn">from</span> <span class="nn">jetracer_speedway_srvs.srv</span> <span class="kn">import</span> <span class="n">DepthToPoint</span><span class="p">,</span> <span class="n">DepthToPointRequest</span>
 <span class="kn">import</span> <span class="nn">threading</span> <span class="k">as</span> <span class="nn">th</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">signal</span>
@@ -217,11 +261,23 @@
 
         <span class="c1">########################### Point ###########################</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1">################### Objects Dictionary ######################</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obj_dict</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">class_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;stop sign&quot;</span><span class="p">,</span>
+                           <span class="s2">&quot;car&quot;</span><span class="p">]</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_going_slow</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1">## TODO</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_car_distance</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_car_distance</span> <span class="o">=</span> <span class="kc">None</span>
+
         <span class="c1">########################### ROS ###########################</span>
          <span class="c1">## Constants</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name_sub</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;navigation&quot;</span><span class="p">][</span><span class="s2">&quot;pub_name_img&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name_sub_obj</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;navigation&quot;</span><span class="p">][</span><span class="s2">&quot;pub_name_obj&quot;</span><span class="p">]</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">name_pub</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;control&quot;</span><span class="p">][</span><span class="s2">&quot;pub_name&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name_ros_node</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;control&quot;</span><span class="p">][</span><span class="s2">&quot;node_name&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name_srv</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;sensors&quot;</span><span class="p">][</span><span class="s2">&quot;srv_name&quot;</span><span class="p">]</span>
         <span class="c1">## Initialize node of ros</span>
         <span class="n">rospy</span><span class="o">.</span><span class="n">init_node</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name_ros_node</span><span class="p">)</span>
         <span class="c1">## Rate</span>
@@ -229,9 +285,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">rospyRate</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Rate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rate</span><span class="p">)</span>
         <span class="c1">## Publisher and Subscribers</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pub_vels</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Publisher</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name_pub</span><span class="p">,</span> <span class="n">Velocities</span><span class="p">,</span> <span class="n">queue_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="c1">## Wait for subscribers</span>
         <span class="n">rospy</span><span class="o">.</span><span class="n">wait_for_message</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name_sub</span><span class="p">,</span> <span class="n">Points</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sub_point</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Subscriber</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name_sub</span><span class="p">,</span> <span class="n">Points</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__callback_point</span><span class="p">)</span>
+
+        <span class="n">rospy</span><span class="o">.</span><span class="n">wait_for_message</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name_sub_obj</span><span class="p">,</span> <span class="n">Dictionary</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sub_dictionary</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Subscriber</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name_sub_obj</span><span class="p">,</span> <span class="n">Dictionary</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__callback_dictionary</span><span class="p">)</span>
         
+        <span class="c1"># Wait for service</span>
+        <span class="n">rospy</span><span class="o">.</span><span class="n">wait_for_service</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name_srv</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">distance_srv</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">ServiceProxy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name_srv</span><span class="p">,</span> <span class="n">DepthToPoint</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Brain.run"><a class="viewcode-back" href="../../../../source/modules/control_module.html#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -241,18 +305,15 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">rospyRate</span><span class="o">.</span><span class="n">sleep</span><span class="p">()</span>
                 <span class="k">continue</span>
             
+            <span class="c1">## Check if there is any car to follow</span>
+            <span class="n">goal_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__check_car2follow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">)</span>
             <span class="c1">## Pass desired point to angle</span>
-            <span class="n">angle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__convert_point_2_vel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">)</span>
+            <span class="n">angle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__convert_point_2_vel</span><span class="p">(</span><span class="n">goal_point</span><span class="p">)</span>
             <span class="c1">## Publish desired point</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">publish_vels</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
 
             <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Angle: </span><span class="si">{</span><span class="n">angle</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">rospyRate</span><span class="o">.</span><span class="n">sleep</span><span class="p">()</span></div>
-
-
-    <span class="k">def</span> <span class="nf">__callback_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="n">Points</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="c1">## rospy.loginfo(msg)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="n">msg</span>
 
 
 <div class="viewcode-block" id="Brain.publish_vels"><a class="viewcode-back" href="../../../../source/modules/control_module.html#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.publish_vels">[docs]</a>    <span class="k">def</span> <span class="nf">publish_vels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle_deg</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -264,22 +325,108 @@
             <span class="n">CONSTANT_VEL</span> <span class="o">=</span> <span class="mf">0.6</span>
             <span class="n">vel</span> <span class="o">=</span> <span class="mf">0.05</span>
             
-            <span class="c1">#if not same:</span>
+            <span class="c1">## if not same:</span>
             <span class="k">if</span> <span class="n">angle_deg</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">vel</span> <span class="o">=</span> <span class="mf">4.4</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="nb">abs</span><span class="p">(</span><span class="n">angle_deg</span><span class="p">))</span>
 
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">vel</span> <span class="o">=</span> <span class="n">CONSTANT_VEL</span>
             
-            <span class="c1"># Break velocity</span>
+            <span class="c1">## Set value of vel if there is a car to follow</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_car_distance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">vel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_car_distance</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">last_car_distance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_car_distance</span>
+
+            <span class="c1">## Check if stop_signal</span>
+            <span class="n">vel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__reduce_vel</span><span class="p">(</span><span class="n">vel</span><span class="p">)</span>
+
+            <span class="c1">## Break velocity</span>
             <span class="n">vel</span> <span class="o">=</span> <span class="n">vel</span> <span class="k">if</span> <span class="n">vel</span> <span class="o">&lt;=</span> <span class="n">CONSTANT_VEL</span> <span class="k">else</span> <span class="n">CONSTANT_VEL</span>
-            <span class="c1"># Create Twist message</span>
+
+            <span class="c1">## Create Twist message</span>
             <span class="n">vel_msg</span> <span class="o">=</span> <span class="n">Velocities</span><span class="p">()</span>
             <span class="n">vel_msg</span><span class="o">.</span><span class="n">angular</span> <span class="o">=</span> <span class="n">angle_deg</span>
             <span class="n">vel_msg</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="n">vel</span>
             
-            <span class="c1"># Publish message in topic vels_jetracer</span>
+            <span class="c1">## Publish message in topic vels_jetracer</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">pub_vels</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">vel_msg</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">__callback_dictionary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="n">Dictionary</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obj_dict</span> <span class="o">=</span> <span class="n">msg</span> 
+
+
+    <span class="k">def</span> <span class="nf">__callback_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="n">Points</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1">## rospy.loginfo(msg)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="n">msg</span>
+
+
+    <span class="k">def</span> <span class="nf">__reduce_vel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vel</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to know if there is a stop. </span>
+<span class="sd">        If there is, the speed will be set based on the proximity to the stop </span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            vel (float): Current value of vel</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: new vel value. If there isn&#39;t object return vel param</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">all_detections</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj_dict</span><span class="o">.</span><span class="n">dict</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">all_detections</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="c1">## Call service to take distance to the point</span>
+                    <span class="n">list_dists</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                        <span class="n">request</span> <span class="o">=</span> <span class="n">DepthToPointRequest</span><span class="p">()</span>
+                        <span class="n">request</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">x</span>
+                        <span class="n">request</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">y</span>
+                        <span class="n">distance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">distance_srv</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+                        <span class="n">list_dists</span><span class="o">.</span><span class="n">append</span><span class="p">[</span><span class="n">distance</span><span class="p">]</span>
+
+                    <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">list_dists</span><span class="p">)</span>
+                    
+        <span class="k">except</span><span class="p">:</span> <span class="k">pass</span>
+
+        <span class="k">return</span> <span class="n">vel</span>
+
+
+    <span class="k">def</span> <span class="nf">__check_car2follow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_pt</span><span class="p">:</span> <span class="n">Points</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Points</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to know if there is a car to follow. </span>
+<span class="sd">        If there is, the speed will be set based on the proximity to the car,</span>
+<span class="sd">        set the goal_point with the car position. </span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            current_pt (Points): Current goal point</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Points: Return the new desired point to go. If there isn&#39;t cars return the same value</span>
+<span class="sd">                    of current_pt param</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">all_detections</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj_dict</span><span class="o">.</span><span class="n">dict</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">all_detections</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="c1">## Call service to take distance to the car</span>
+                    <span class="n">list_dists</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                        <span class="n">request</span> <span class="o">=</span> <span class="n">DepthToPointRequest</span><span class="p">()</span>
+                        <span class="n">request</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">x</span>
+                        <span class="n">request</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">y</span>
+                        <span class="n">distance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">distance_srv</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+                        <span class="n">list_dists</span><span class="o">.</span><span class="n">append</span><span class="p">[</span><span class="n">distance</span><span class="p">]</span>
+
+                    <span class="n">index_min</span> <span class="o">=</span> <span class="n">list_dists</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">list_dists</span><span class="p">))</span>
+                    <span class="n">point</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="n">index_min</span><span class="p">]</span>
+                    <span class="n">current_pt</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">x</span>
+                    <span class="n">current_pt</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">y</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">current_car_distance</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">list_dists</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">current_pt</span>
+
+        <span class="k">except</span><span class="p">:</span> <span class="k">pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_car_distance</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">current_pt</span>
 
 
     <span class="k">def</span> <span class="nf">__convert_point_2_vel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">:</span> <span class="n">Points</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -353,7 +500,10 @@
             
           </div>
           <div class="right-details">
-            
+            <div class="icons">
+              <a class="muted-link fa-brands fa-solid fa-github fa-2x" href="https://github.com/marqinhos/JetRacer_Autonomous_Driving" aria-label="GitHub"></a>
+              
+            </div>
           </div>
         </div>
         
@@ -365,11 +515,40 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+</div>
+<script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
     <script src="../../../../_static/doctools.js"></script>
     <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/scripts/furo.js"></script>
     <script src="../../../../_static/clipboard.min.js"></script>
     <script src="../../../../_static/copybutton.js"></script>
-    </body>
+    
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // Show banner linking to /stable/ if this is a /latest/ page
+  if (!/\/latest\//.test(location.pathname)) {
+    return;
+  }
+  var stableUrl = location.pathname.replace("/latest/", "/stable/");
+  // Check it's not a 404
+  fetch(stableUrl, { method: "HEAD" }).then((response) => {
+    if (response.status === 200) {
+      var warning = document.createElement("div");
+      warning.className = "admonition warning";
+      warning.innerHTML = `
+        <p class="first admonition-title">Note</p>
+        <p class="last">
+          This documentation covers the <strong>development version</strong> of Datasette.
+        </p>
+        <p>
+          See <a href="${stableUrl}">this page</a> for the current stable release.
+        </p>
+      `;
+      var mainArticle = document.querySelector("article[role=main]");
+      mainArticle.insertBefore(warning, mainArticle.firstChild);
+    }
+  });
+});
+</script>
+</body>
 </html>

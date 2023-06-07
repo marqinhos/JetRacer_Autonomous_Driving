@@ -24,7 +24,7 @@ List TODO:
 ## License
 **JetRacer Autonomous Driving** is available under next license:
 
-* GPL-3.0 License: See [LICENSE](LICENSE) file for details.
+* AGPL-3.0 License: See [LICENSE](LICENSE) file for details.
 ## Author:
 (c) 2023 ([Marcos Fernández](https://github.com/marqinhos))
 

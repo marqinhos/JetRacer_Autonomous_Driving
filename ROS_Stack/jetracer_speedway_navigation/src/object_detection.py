@@ -1,5 +1,25 @@
 #!/usr/bin/env python3
 
+#
+# This file is part of the repo: https://github.com/marqinhos/JetRacer_Autonomous_Driving
+# If you find the code useful, please cite the Author: Marcos Fernandez Gonzalez
+# 
+# Copyright 2023 The JetRacer Autonomous Driving Author. All Rights Reserved.
+#
+# Licensed under the AGPL-3.0 License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.gnu.org/licenses/agpl-3.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ========================================================================================
+
+
 import rospy
 import cv2
 import numpy as np
@@ -86,6 +106,9 @@ class ObjectDetection(th.Thread):
 
             dict_objects = self.object.run(result)
 
+            ## Publish dictionary
+            self.publish_command(dict_objects)
+
             ## Show Point in image
             self.__show(self.frame, dict_objects)
 
@@ -106,20 +129,19 @@ class ObjectDetection(th.Thread):
         Args:
             result_objects (dict): Dictionary with all objects detections
         """
+        ## Only publish car and stop info
 
         ## Create obj command
         dict_msg = Dictionary()
-        key_value = KeyValue()
-        point_cc = Points()
-
-        ## Only publish car and stop info
-
+        
         ## Check for objects
         try:
             for name in list(result_objects.keys()):
                 name_detect = self.object.dict_keys_detect_swap[name]
+                key_value = KeyValue()
                 key_value.key = name_detect
                 for point in result_objects[name]:
+                    point_cc = Points()
                     point_cc.x = point.x
                     point_cc.y = point.y
                     key_value.value.append(point_cc)

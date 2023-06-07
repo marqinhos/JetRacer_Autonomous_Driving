@@ -1,5 +1,25 @@
 #!/usr/bin/env python3
 
+#
+# This file is part of the repo: https://github.com/marqinhos/JetRacer_Autonomous_Driving
+# If you find the code useful, please cite the Author: Marcos Fernandez Gonzalez
+# 
+# Copyright 2023 The JetRacer Autonomous Driving Author. All Rights Reserved.
+#
+# Licensed under the AGPL-3.0 License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.gnu.org/licenses/agpl-3.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ========================================================================================
+
+
 from utils import JetRacer
 
 import rospy
@@ -57,6 +77,11 @@ class Driver(th.Thread):
                 self.jetracer.set_vel(self.vel)
                 self.jetracer.set_angle(self.angle)
                 self.rospyRate.sleep()
+            
+            else:
+                self.jetracer.set_vel(0)
+                self.jetracer.set_angle(0)
+                self.rospyRate.sleep()
 
 
     def __callback_vels(self, msg: Velocities) -> None:
@@ -78,12 +103,12 @@ class Driver(th.Thread):
         if msg.data is True:
             rospy.loginfo("EMERGENCY STOP")
             self.emergency_stop = True
-            self.jetracer.stop_emergency()
+            ## self.jetracer.stop_emergency()
         
         elif msg.data is False:
-            if self.jetracer.run_stop_emergency is True:
+            if self.emergency_stop is True:
                 self.emergency_stop = False
-                self.jetracer.run_stop_emergency = False 
+                ## self.jetracer.run_stop_emergency = False 
         else: 
             pass
 

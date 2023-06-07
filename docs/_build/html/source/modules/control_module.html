@@ -3,15 +3,15 @@
   <head>
 <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Jetracer Driver package" href="drivers_module.html" /><link rel="prev" title="API" href="../src/api.html" />
 
-    <!-- Generated with Sphinx 6.2.1 and Furo 2023.03.27 -->
+    <!-- Generated with Sphinx 6.2.1 and Furo 2023.05.20 -->
 <script defer data-domain="docs.datasette.io" src="https://plausible.io/js/plausible.js"></script>
 
         <title>Jetracer Control package - JetRacer Speedway</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -229,9 +229,31 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ROS_Stack.jetracer_speedway_control.src.jetracer_brain.</span></span><span class="sig-name descname"><span class="pre">Brain</span></span><a class="reference internal" href="../../_modules/ROS_Stack/jetracer_speedway_control/src/jetracer_brain.html#Brain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Thread</span></code></p>
 <dl class="py method">
+<dt class="sig sig-object py" id="ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__callback_dictionary">
+<span class="sig-name descname"><span class="pre">__callback_dictionary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dictionary</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__callback_dictionary" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__callback_point">
 <span class="sig-name descname"><span class="pre">__callback_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Points</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__callback_point" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__check_car2follow">
+<span class="sig-name descname"><span class="pre">__check_car2follow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_pt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Points</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Points</span></span></span><a class="headerlink" href="#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__check_car2follow" title="Permalink to this definition">#</a></dt>
+<dd><p>Function to know if there is a car to follow. 
+If there is, the speed will be set based on the proximity to the car,
+set the goal_point with the car position.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>current_pt (Points): Current goal point</p>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>Points: Return the new desired point to go. If there isn’t cars return the same value</dt><dd><p>of current_pt param</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__convert_point_2_vel">
@@ -255,6 +277,19 @@ In the other case is positive.</p>
 <dt>Args:</dt><dd><p>goal_point (Point): Desired Point calculate below</p>
 </dd>
 <dt>Returns:</dt><dd><p>float: Return angle in degrees</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__reduce_vel">
+<span class="sig-name descname"><span class="pre">__reduce_vel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__reduce_vel" title="Permalink to this definition">#</a></dt>
+<dd><p>Function to know if there is a stop. 
+If there is, the speed will be set based on the proximity to the stop</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>vel (float): Current value of vel</p>
+</dd>
+<dt>Returns:</dt><dd><p>float: new vel value. If there isn’t object return vel param</p>
 </dd>
 </dl>
 </dd></dl>
@@ -348,8 +383,11 @@ from the args and kwargs arguments, respectively.</p>
             <ul>
 <li><a class="reference internal" href="#">Jetracer Control package</a><ul>
 <li><a class="reference internal" href="#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain"><code class="docutils literal notranslate"><span class="pre">Brain</span></code></a><ul>
+<li><a class="reference internal" href="#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__callback_dictionary"><code class="docutils literal notranslate"><span class="pre">Brain.__callback_dictionary()</span></code></a></li>
 <li><a class="reference internal" href="#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__callback_point"><code class="docutils literal notranslate"><span class="pre">Brain.__callback_point()</span></code></a></li>
+<li><a class="reference internal" href="#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__check_car2follow"><code class="docutils literal notranslate"><span class="pre">Brain.__check_car2follow()</span></code></a></li>
 <li><a class="reference internal" href="#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__convert_point_2_vel"><code class="docutils literal notranslate"><span class="pre">Brain.__convert_point_2_vel()</span></code></a></li>
+<li><a class="reference internal" href="#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.__reduce_vel"><code class="docutils literal notranslate"><span class="pre">Brain.__reduce_vel()</span></code></a></li>
 <li><a class="reference internal" href="#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.publish_vels"><code class="docutils literal notranslate"><span class="pre">Brain.publish_vels()</span></code></a></li>
 <li><a class="reference internal" href="#ROS_Stack.jetracer_speedway_control.src.jetracer_brain.Brain.run"><code class="docutils literal notranslate"><span class="pre">Brain.run()</span></code></a></li>
 </ul>
