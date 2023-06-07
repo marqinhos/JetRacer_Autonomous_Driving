@@ -81,27 +81,6 @@ while true; do
   fi
   sleep 1 
 done
-# Nombre de la carpeta
-carpeta="nombre_de_la_carpeta"
-
-# Verificar si la carpeta existe
-if [ -d "$carpeta" ]; then
-  echo "La carpeta ya existe. No se realizarán cambios."
-else
-  # Crear la carpeta
-  mkdir "$carpeta"
-
-  # Ingresar en la carpeta
-  cd "$carpeta"
-
-  # Crear un archivo de texto
-  touch archivo.txt
-
-  # Salir de la carpeta
-  cd ..
-  
-  echo "Carpeta creada y archivo.txt creado dentro de ella."
-fi
 
 ################################### IMAGE ###################################
 ## Run in Jetson Nano
@@ -154,7 +133,8 @@ sshpass_pid_1=$!
 
 
 cd ~/TFG/tfg_ws; 
-source ~/devel/setup.bash;
+echo $ROS_PACKAGE_PATH >> ~/.bashrc;
+source devel/setup.bash;
 catkin_make;
 export ROS_IP=$USER_IP;
 #cd src;
