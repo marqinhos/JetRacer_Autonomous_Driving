@@ -85,7 +85,6 @@ class Driver(th.Thread):
                 
         self.jetracer.set_vel(0)
         self.jetracer.set_angle(0)
-        self.rospyRate.sleep()
 
 
     def __callback_vels(self, msg: Velocities) -> None:
@@ -119,6 +118,8 @@ class Driver(th.Thread):
 
 def signal_handler(signal, frame):
     rospy.logwarn("Ctrl+C detected, stopping threads...")
+    driver_control.jetracer.set_vel(0)
+    driver_control.jetracer.set_angle(0)
     driver_control.running = False
     driver_control.jetracer.stop()
 

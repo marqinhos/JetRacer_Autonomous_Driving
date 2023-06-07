@@ -109,12 +109,12 @@ class Brain(th.Thread):
             Args:
                 angle_deg (float): Angle
             """
-            CONSTANT_VEL = 0.6
+            CONSTANT_VEL = 0.3
             vel = 0.05
             
             ## if not same:
             if angle_deg > 0:
-                vel = 4.4*(1/abs(angle_deg))
+                vel = 2.4*(1/abs(angle_deg))
 
             else:
                 vel = CONSTANT_VEL
@@ -171,8 +171,11 @@ class Brain(th.Thread):
                         request.y = point.y
                         distance = self.distance_srv(request)
                         list_dists.append[distance]
-
-                    return min(list_dists)
+                        
+                    print(">>>> Distance to stop --> ", min(list_dists))
+                    ## return min(list_dists)
+                    return vel*0.5
+                
                     
         except: pass
 
