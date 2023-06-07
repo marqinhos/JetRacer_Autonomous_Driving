@@ -99,7 +99,7 @@ class SecurityStop(th.Thread):
 
 
 def signal_handler(signal, frame):
-    rospy.logwarn("Ctrl+C detected, stopping threads...")
+    rospy.logwarn("Ctrl+C detected, stopping emergency stop thread...")
     security.running = False
 
 

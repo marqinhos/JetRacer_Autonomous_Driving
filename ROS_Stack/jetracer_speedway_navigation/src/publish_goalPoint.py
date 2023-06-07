@@ -185,7 +185,7 @@ class ProcessImage(th.Thread):
 
 
 def signal_handler(signal, frame) -> None:
-    rospy.logwarn("Ctrl+C detected, stopping threads...")
+    rospy.logwarn("Ctrl+C detected, stopping goal point thread...")
     image_process.running = False
 
         

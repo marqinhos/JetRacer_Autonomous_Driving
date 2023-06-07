@@ -82,6 +82,10 @@ class Driver(th.Thread):
                 self.jetracer.set_vel(0)
                 self.jetracer.set_angle(0)
                 self.rospyRate.sleep()
+                
+        self.jetracer.set_vel(0)
+        self.jetracer.set_angle(0)
+        self.rospyRate.sleep()
 
 
     def __callback_vels(self, msg: Velocities) -> None:
