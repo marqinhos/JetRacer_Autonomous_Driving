@@ -126,9 +126,28 @@ class Features_Detection:
             index = self.__get_index_corner_right(list_index, result)
             dict_detections[list_class_num[3]] = index
         except: pass
+
+        ##############################################################
+        # 1. Detect RIGHT LANE
+        ##############################################################
+        if 0 in list(dict_detections.keys()):
+            rospy.loginfo("RIGHT LANE")
+            lane_r_mask = result[0].masks[dict_detections[0]].masks.squeeze()
+            lane_r_pt = self.__get_centroid_lane(lane_r_mask)
+
+            if 3 in list(dict_detections.keys()):
+                corner_mask = result[0].masks[dict_detections[3]].masks.squeeze()
+                corner_pt = self.__get_torch_centroid(corner_mask)
+                if lane_r_pt.x <= corner_pt.x:
+                    return lane_r_pt
+                else:
+                    if self.size[0]//2 <= corner_pt.x:
+                        rospy.logerr("Punto fuera de pista")
+                        lane_r_pt.x = corner_pt.x
+                        return lane_r_pt
         
         ##############################################################
-        # 1. Detect RIGHT LINE, MIDDLE LINE
+        # 2. Detect RIGHT LINE, MIDDLE LINE
         ############################################################## 
         if all(detect in list(dict_detections.keys()) for detect in [2, 3]):
             rospy.loginfo("RIGHT CORNER -- MIDDLE LINE")
@@ -136,10 +155,11 @@ class Features_Detection:
             mid_pt = self.__get_torch_centroid(mid_mask)
             corner_mask = result[0].masks[dict_detections[3]].masks.squeeze()
             corner_pt = self.__get_torch_centroid(corner_mask)
-            return mid_pt.middle_2_point(corner_pt)
+            if self.size[0]//2 <= corner_pt.x:
+                return mid_pt.middle_2_point(corner_pt)
             
         ##############################################################
-        # 2. Detect RIGHT LANE
+        # 3. Detect RIGHT LANE
         ##############################################################
         if 0 in list(dict_detections.keys()):
             rospy.loginfo("RIGHT LANE")
@@ -164,6 +184,7 @@ class Features_Detection:
             mid_mask = result[0].masks[dict_detections[2]].masks.squeeze()
             mid_pt = self.__get_centroid_line_mid(mid_mask)
             return mid_pt
+        
 
         else: raise ValueError(1) # No Detections
 
@@ -317,7 +338,8 @@ class Features_Detection:
 
 
     def __get_centroid_line_corner(self, corner_line_mask: torch.Tensor) -> Point:
-        """Function to get the centroid of a corner right mask, with add the offset to center in the lane 
+        """Function to get the centroid of a corner right mask, with add the offset to center in the lane.
+        The offset is calculated with the equation ->  288 - 0.5625 * ( 480 - point.y ).
 
         Args:
             corner_line_mask (torch.Tensor): The corner right mask
@@ -328,15 +350,18 @@ class Features_Detection:
         ## Get centroid of corner mask
         c_in_line = self.__get_torch_centroid(corner_line_mask)
         ## Add offset to center de point into the lane
-        if c_in_line.x - self.offset_right >= 0: 
-            centroid_pt = c_in_line.displace(-self.offset_right)
+
+        offset_right = int(288 - 0.5625 * ( 480 - c_in_line.y ))
+        if c_in_line.x - offset_right >= 0: 
+            centroid_pt = c_in_line.displace(-offset_right)
         else: centroid_pt = c_in_line.displace(-c_in_line.x)
         
         return centroid_pt
 
 
     def __get_centroid_line_mid(self, mid_line_mask: torch.Tensor) -> Point:
-        """Function to get the centroid of a line mid mask, with add the offset to center in the lane 
+        """Function to get the centroid of a line mid mask, with add the offset to center in the lane.
+        The offset is calculated with the equation ->  288 - 0.5625 * ( 480 - point.y ).
 
         Args:
             mid_line_mask (torch.Tensor): The line mid mask
@@ -347,7 +372,8 @@ class Features_Detection:
         ## Get centroid of mid mask
         c_in_line = self.__get_torch_centroid(mid_line_mask)
         ## Add offset to center de point into the lane
-        if c_in_line.x + self.offset_mid <= self.size[0]: 
-            centroid_pt = c_in_line.displace(self.offset_mid)
+        offset_mid = int(288 - 0.5625 * ( 480 - c_in_line.y ))
+        if c_in_line.x + offset_mid <= self.size[0]: 
+            centroid_pt = c_in_line.displace(offset_mid)
         else: centroid_pt = c_in_line.displace(-c_in_line.x)
         return centroid_pt

@@ -97,7 +97,7 @@ class ProcessImage(th.Thread):
     def run(self) -> None:
         """Main void
         """
-        rospy.loginfo("Processing image...")
+
         while self.running:
             ## Wait for a frame
             if self.frame is None:
@@ -119,7 +119,7 @@ class ProcessImage(th.Thread):
                 desired_pt = self.last_desired_pt
 
             ## Show Point in image
-            ## self.__show(self.frame, desired_pt)
+            self.__show(self.frame, desired_pt)
 
             ## Publish desired point
             self.publish_point(desired_pt)
@@ -196,7 +196,7 @@ if __name__ == '__main__':
         ## Absolute path of folder models
         models_dir = os.path.join(os.path.dirname(file_path), 'models')
         ## Model IA path
-        model_path = os.path.join(models_dir, 'best.pt')
+        model_path = os.path.join(models_dir, 'model_16.pt')
         ## Call Process Image class
         image_process = ProcessImage(model_ia_path=model_path)
         ## Manage SIGINT signal
