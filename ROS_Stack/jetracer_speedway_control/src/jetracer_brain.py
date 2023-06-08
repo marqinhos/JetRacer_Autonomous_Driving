@@ -109,12 +109,12 @@ class Brain(th.Thread):
             Args:
                 angle_deg (float): Angle
             """
-            CONSTANT_VEL = 0.3
-            vel = 0.05
+            CONSTANT_VEL = 0.5
+            vel = 0.1
             
             ## if not same:
             if angle_deg > 0:
-                vel = 2.4*(1/abs(angle_deg))
+                vel = 3.4*(1/abs(angle_deg))
 
             else:
                 vel = CONSTANT_VEL

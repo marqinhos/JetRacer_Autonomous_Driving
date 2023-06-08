@@ -74,7 +74,6 @@ class SecurityStop(th.Thread):
             if self.ranges is None:
                 self.rospyRate.sleep()
                 continue
-            
             self.publish_warning(self.ranges)
             self.rospyRate.sleep()
 

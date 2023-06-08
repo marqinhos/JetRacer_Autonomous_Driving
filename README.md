@@ -8,10 +8,22 @@
 
 
 ## Description
-This is the Final Degree Project in [Robotics](https://www.usc.gal/en/studies/degrees/engineering-and-architecture/robotics-degree).
+This is a Final Degree Project in [Robotics](https://www.usc.gal/en/studies/degrees/engineering-and-architecture/robotics-degree).
 
 ## Software
-in progress**
+
+
+
+The employed architecture of convolutional neural network (CNN) is [YOLOv8n-seg](https://github.com/ultralytics/ultralytics). This model has been trained with a dataset of 500 images of the following circuit (Figure 1). The achieved metrics of this model are:
+
+
+![Image](./img/confusion_matrix_normalized.png)
+![Image](./img/results.png)
+
+![Image](./img/result_video.png)
+
+
+
 ## Development
 
 List TODO:

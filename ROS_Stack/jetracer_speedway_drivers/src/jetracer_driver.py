@@ -103,6 +103,7 @@ class Driver(th.Thread):
         Args:
             msg (Bool): Message to get to subscribe to the jetracer_obstacle_detected
         """
+        """
         if msg.data is True:
             rospy.loginfo("EMERGENCY STOP")
             self.emergency_stop = True
@@ -114,6 +115,9 @@ class Driver(th.Thread):
                 ## self.jetracer.run_stop_emergency = False 
         else: 
             pass
+
+        """
+        self.emergency_stop = msg.data
 
 
 def signal_handler(signal, frame):

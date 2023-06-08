@@ -294,7 +294,10 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">jetracer</span><span class="o">.</span><span class="n">set_vel</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">jetracer</span><span class="o">.</span><span class="n">set_angle</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">rospyRate</span><span class="o">.</span><span class="n">sleep</span><span class="p">()</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rospyRate</span><span class="o">.</span><span class="n">sleep</span><span class="p">()</span>
+                
+        <span class="bp">self</span><span class="o">.</span><span class="n">jetracer</span><span class="o">.</span><span class="n">set_vel</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jetracer</span><span class="o">.</span><span class="n">set_angle</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
 
 
     <span class="k">def</span> <span class="nf">__callback_vels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="n">Velocities</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -313,21 +316,27 @@
 <span class="sd">        Args:</span>
 <span class="sd">            msg (Bool): Message to get to subscribe to the jetracer_obstacle_detected</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s2">&quot;EMERGENCY STOP&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">emergency_stop</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="c1">## self.jetracer.stop_emergency()</span>
-        
-        <span class="k">elif</span> <span class="n">msg</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">emergency_stop</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">emergency_stop</span> <span class="o">=</span> <span class="kc">False</span>
-                <span class="c1">## self.jetracer.run_stop_emergency = False </span>
-        <span class="k">else</span><span class="p">:</span> 
-            <span class="k">pass</span></div>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        if msg.data is True:</span>
+<span class="sd">            rospy.loginfo(&quot;EMERGENCY STOP&quot;)</span>
+<span class="sd">            self.emergency_stop = True</span>
+<span class="sd">            ## self.jetracer.stop_emergency()</span>
+<span class="sd">        </span>
+<span class="sd">        elif msg.data is False:</span>
+<span class="sd">            if self.emergency_stop is True:</span>
+<span class="sd">                self.emergency_stop = False</span>
+<span class="sd">                ## self.jetracer.run_stop_emergency = False </span>
+<span class="sd">        else: </span>
+<span class="sd">            pass</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emergency_stop</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">data</span></div>
 
 
 <div class="viewcode-block" id="signal_handler"><a class="viewcode-back" href="../../../../source/modules/drivers_module.html#ROS_Stack.jetracer_speedway_drivers.src.jetracer_driver.signal_handler">[docs]</a><span class="k">def</span> <span class="nf">signal_handler</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
     <span class="n">rospy</span><span class="o">.</span><span class="n">logwarn</span><span class="p">(</span><span class="s2">&quot;Ctrl+C detected, stopping threads...&quot;</span><span class="p">)</span>
+    <span class="n">driver_control</span><span class="o">.</span><span class="n">jetracer</span><span class="o">.</span><span class="n">set_vel</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">driver_control</span><span class="o">.</span><span class="n">jetracer</span><span class="o">.</span><span class="n">set_angle</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">driver_control</span><span class="o">.</span><span class="n">running</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">driver_control</span><span class="o">.</span><span class="n">jetracer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span></div>
 
