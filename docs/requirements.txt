@@ -1,4 +1,4 @@
 myst-parser
 sphinx-copybutton
 furo
-sphinx.ext.napoleon
+sphinxcontrib.napoleon
