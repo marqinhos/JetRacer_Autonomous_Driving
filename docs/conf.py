@@ -41,7 +41,7 @@ extensions = [
             'sphinx.ext.autodoc',
             'sphinx_copybutton',
             "sphinx.ext.intersphinx",
-            'sphinxcontrib.napoleon'
+            'sphinx.ext.napoleon'
             ]
 
 
