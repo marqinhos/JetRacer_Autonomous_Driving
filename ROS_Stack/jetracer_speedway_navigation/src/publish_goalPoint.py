@@ -119,7 +119,7 @@ class ProcessImage(th.Thread):
                 desired_pt = self.last_desired_pt
 
             ## Show Point in image
-            self.__show(self.frame, desired_pt)
+            ## self.__show(self.frame, desired_pt)
 
             ## Publish desired point
             self.publish_point(desired_pt)
