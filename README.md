@@ -8,7 +8,9 @@
 
 
 ## Description
-This is a Final Degree Project in [Robotics](https://www.usc.gal/en/studies/degrees/engineering-and-architecture/robotics-degree).
+Autonomous driving for Final Degree Project in [Robotics](https://www.usc.gal/en/studies/degrees/engineering-and-architecture/robotics-degree).
+
+![Alt Text](./img/video_lane_001_16.gif)
 
 ## Software
 
@@ -30,8 +32,14 @@ List TODO:
 - [x] [Test JetRacer motors]()
 - [x] [Keyboard Control JetRacer]()
 - [x] [Gamepad Control JetRacer]()
-- [ ] [Create own dataset]().
-- [ ] [Train YOLO]().
+- [x] [Create own dataset]().
+- [x] [Train YOLO]().
+- [x] [Lane segmentation]().
+- [x] [Object segmentation]().
+- [x] [Car follower]().
+- [x] [Security stop]().
+
+- [ ] [Implement EKF]().
 
 ## License
 **JetRacer Autonomous Driving** is available under next license:
