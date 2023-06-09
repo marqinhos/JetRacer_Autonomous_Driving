@@ -97,7 +97,6 @@ else
   echo "Jetracer workspace create";
 fi
 cd jetracer_ws;
-echo $ROS_PACKAGE_PATH >> ~/.bashrc;
 source devel/setup.bash;
 export ROS_IP=$JETSON_IP && export ROS_MASTER_URI=http://$USER_IP:11311;
 cd src;
@@ -133,7 +132,6 @@ sshpass_pid_1=$!
 
 
 cd ~/TFG/tfg_ws; 
-echo $ROS_PACKAGE_PATH >> ~/.bashrc;
 source devel/setup.bash;
 catkin_make;
 export ROS_IP=$USER_IP;

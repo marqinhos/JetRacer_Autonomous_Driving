@@ -61,10 +61,10 @@ class Brain(th.Thread):
         ########################### ROS ###########################
          ## Constants
         self.name_sub = config["navigation"]["pub_name_img"]
-        self.name_sub_obj = config["navigation"]["pub_name_obj"]        
+        ## self.name_sub_obj = config["navigation"]["pub_name_obj"]        
         self.name_pub = config["control"]["pub_name"]
         self.name_ros_node = config["control"]["node_name"]
-        self.name_srv = config["sensors"]["srv_name"]
+        ## self.name_srv = config["sensors"]["srv_name"]
         ## Initialize node of ros
         rospy.init_node(self.name_ros_node)
         ## Rate
@@ -77,12 +77,12 @@ class Brain(th.Thread):
         rospy.wait_for_message(self.name_sub, Points)
         self.sub_point = rospy.Subscriber(self.name_sub, Points, self.__callback_point)
 
-        rospy.wait_for_message(self.name_sub_obj, Dictionary)
-        self.sub_dictionary = rospy.Subscriber(self.name_sub_obj, Dictionary, self.__callback_dictionary)
+        ## rospy.wait_for_message(self.name_sub_obj, Dictionary)
+        ## self.sub_dictionary = rospy.Subscriber(self.name_sub_obj, Dictionary, self.__callback_dictionary)
         
         # Wait for service
-        rospy.wait_for_service(self.name_srv)
-        self.distance_srv = rospy.ServiceProxy(self.name_srv, DepthToPoint)
+        ## rospy.wait_for_service(self.name_srv)
+        ## self.distance_srv = rospy.ServiceProxy(self.name_srv, DepthToPoint)
 
 
     def run(self) -> None:
@@ -93,9 +93,9 @@ class Brain(th.Thread):
                 continue
             
             ## Check if there is any car to follow
-            goal_point = self.__check_car2follow(self.points)
+            ## goal_point = self.__check_car2follow(self.points)
             ## Pass desired point to angle
-            angle = self.__convert_point_2_vel(goal_point)
+            angle = self.__convert_point_2_vel(self.points)
             ## Publish desired point
             self.publish_vels(angle)
 
@@ -120,12 +120,12 @@ class Brain(th.Thread):
                 vel = CONSTANT_VEL
             
             ## Set value of vel if there is a car to follow
-            if self.current_car_distance is not None:
-                vel = self.current_car_distance
-                self.last_car_distance = self.current_car_distance
+            ## if self.current_car_distance is not None:
+            ##     vel = self.current_car_distance
+            ##     self.last_car_distance = self.current_car_distance
 
             ## Check if stop_signal
-            vel = self.__reduce_vel(vel)
+            ## vel = self.__reduce_vel(vel)
 
             ## Break velocity
             vel = vel if vel <= CONSTANT_VEL else CONSTANT_VEL
