@@ -45,20 +45,21 @@ function stop_processes {
 ## Try to install sshpass
 if ! command -v sshpass &> /dev/null
 then
-    echo "sshpass no está instalado. Instalando..."
+    echo "sshpass not installed. Instaling..."
     sudo apt-get update && sudo apt-get install -y sshpass
 else
-    echo "sshpass ya está instalado"
+    echo "sshpass already installed"
 fi
 
-# Verificar si direnv está instalado y, en caso contrario, instalarlo
+# Verify direnv
 if ! command -v direnv &> /dev/null
 then
-    echo "direnv no está instalado. Instalando..."
+    echo "direnv not installed. Instaling..."
     sudo apt-get update && sudo apt-get install -y direnv
 else
-    echo "direnv ya está instalado"
+    echo "direnv already installed"
 fi
+
 direnv allow
 ######################################################################
 ## Load enviorement var with direnv
