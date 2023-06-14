@@ -3,7 +3,7 @@ preferred-citation:
   type: software
   message: If you use this software, please cite it as below.
   authors:
-  - family-names: Fernandez
+  - family-names: Fernández
     given-names: Marcos
   title: "JetRacer Autonomous Driving"
   version: 1.0.0
