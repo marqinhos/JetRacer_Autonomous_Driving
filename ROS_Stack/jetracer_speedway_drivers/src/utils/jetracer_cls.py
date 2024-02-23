@@ -136,24 +136,32 @@ class JetRacer(th.Thread):
             raise err.args
         
 
+#    def set_vel(self, vel: float) -> None:
+#        """Function to update velocity value, to new value
+
+#        Args:
+#            new_vel (float): New value of velocity you want. As default 0.0 to reset.
+
+#        """
+
+#        try:
+#            value_vel = vel / self.__max_vel
+#            if abs(value_vel) > 1:
+#                rospy.logwarn("Module of vel must be under 0.8 m/s")
+#                value_vel = 1 if value_vel > 1 else -1
+
+#            self.current_value_vel = value_vel
+#        except Exception as err:
+#            rospy.logerr(err.args)
+#            raise err.args
+
     def set_vel(self, vel: float) -> None:
-        """Function to update velocity value, to new value
-
-        Args:
-            new_vel (float): New value of velocity you want. As default 0.0 to reset.
-
-        """
         try:
-            value_vel = vel / self.__max_vel
-            if abs(value_vel) > 1: 
-                rospy.logwarn("Module of vel must be under 0.8 m/s")
-                value_vel = 1 if value_vel > 1 else -1
-
+            value_vel=vel*self.__max_vel
             self.current_value_vel = value_vel
         except Exception as err:
             rospy.logerr(err.args)
             raise err.args
-    
 
     def get_current_vel(self) -> float:
         """Function to get the current value of velocity
