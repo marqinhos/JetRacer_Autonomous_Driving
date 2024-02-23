@@ -42,6 +42,7 @@ from cv_bridge import CvBridge
 from utils import Point, Features_Detection
 # Import detections features
 # from .utils.image_process import Features_Detection
+kk=0
 
 
 class ProcessImage(th.Thread):
@@ -72,6 +73,7 @@ class ProcessImage(th.Thread):
         ########################### IMAGE ###########################
         self.frame = None
         self.bridge = CvBridge()
+        self.last_message_seq = None
 
         #################### FEATURES DETECTION ####################
         self.compute_detect = Features_Detection()
@@ -109,17 +111,18 @@ class ProcessImage(th.Thread):
 
             ## Get desired Point
             try:
+                #Cuando la IA detecta algo, esta funcion devuelve None
                 desired_pt = self.compute_detect.run(result)
                 if not self.last_desired_pt.zero():
                     if abs(self.last_desired_pt.x - desired_pt.x) > 95 or abs(self.last_desired_pt.y - desired_pt.y) > 80:
                         rospy.logwarn("BAD DESIRED POINT")
                         desired_pt = self.last_desired_pt.middle_2_point(desired_pt)
                 self.last_desired_pt = desired_pt
-            except: 
+            except:
                 desired_pt = self.last_desired_pt
 
             ## Show Point in image
-            ## self.__show(self.frame, desired_pt)
+            self.__show(self.frame, desired_pt)
 
             ## Publish desired point
             self.publish_point(desired_pt)
@@ -156,6 +159,7 @@ class ProcessImage(th.Thread):
             image (np.ndarray): Image to show
             point (Point): Point to draw in image
         """
+
         cv2.circle(image, (point.x, point.y), 5, (0, 0, 255), -1)
         cv2.circle(image, (self.compute_detect.size[0]//2, self.compute_detect.size[1]-10), 5, (255, 0, 0), -1)
         cv2.imshow(self.name_ros_node , image)
@@ -168,6 +172,20 @@ class ProcessImage(th.Thread):
         Args:
             data (Image): Image in format image msg 
         """
+
+        current_time = rospy.Time.now()
+        msg_time = data.header.stamp
+
+        time_diff = current_time - msg_time
+        rospy.loginfo(f"Delay de la red: {time_diff.to_sec()} segundos")
+
+        if self.last_message_seq is not None:
+            lost_msgs =  data.header.seq - self.last_message_seq -1
+            if lost_msgs >0:
+                rospy.loginfo(f"Se han perdido {lost_msgs} paquetes")
+
+        self.last_message_seq = data.header.seq
+
         image = self.bridge.imgmsg_to_cv2(data, "bgr8")
         self.frame = image
 
