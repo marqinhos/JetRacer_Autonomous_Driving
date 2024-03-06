@@ -64,6 +64,10 @@ class ObjectDetection(th.Thread):
         ########################### IA ###########################
         self.model_ia_path = model_ia_path
         self.model_ia = YOLO(self.model_ia_path)
+        ## Information to select the device to run the model
+        ## https://docs.ultralytics.com/modes/predict/#streaming-source-for-loop
+        ## self.model_ia.to('cuda')
+    
         self.predict_ia_conf = config["confidence"]
 
         ########################### IMAGE ###########################
@@ -247,7 +251,8 @@ class ObjectDetection(th.Thread):
         Returns:
             list: List of result (masks, boxes, image) that return prediction in model YOLOv8
         """
-        return self.model_ia.predict(source=frame, conf=self.predict_ia_conf)
+        ## Run model in gpu or cpu with flag
+        return self.model_ia.predict(source=frame, conf=self.predict_ia_conf, device='cpu')
     
 
 def signal_handler(signal, frame) -> None:
