@@ -190,7 +190,7 @@ class ObjectDetection(th.Thread):
         """Void to show detections using new YOLOv8 method to build openCV image
 
         Args:
-            result (dict): Dictionary with all objects detections
+            results (dict): Dictionary with all objects detections
         """
         ## Create image with bounding boxes
         annotated_frame = results.plot()
@@ -204,7 +204,7 @@ class ObjectDetection(th.Thread):
 
         Args:
             image (np.ndarray): Image to show
-            result (dict): Dictionary with all objects detections
+            results (dict): Dictionary with all objects detections
         """
         color_dict = {
             'red': 'rgb(255, 0, 0)',
