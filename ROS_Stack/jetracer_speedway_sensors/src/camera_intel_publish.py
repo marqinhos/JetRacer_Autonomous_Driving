@@ -32,7 +32,6 @@ from cv_bridge import CvBridge
 
 from jetracer_speedway_srvs.srv import DepthToPoint, DepthToPointResponse
 
-sequence_number = 0
 
 class IntelRealSense(th.Thread):
 
@@ -177,6 +176,9 @@ class ImageDepthPublisher(th.Thread):
         self.rate = config["rate"]
         self.rospyRate = rospy.Rate(self.rate)
 
+        ## Add sequence number
+        self.self.sequence_number = 0
+
 
 
     def run(self) -> None:
@@ -226,14 +228,14 @@ class ImageDepthPublisher(th.Thread):
 
     
     def __publish_frame(self, pub: rospy.Publisher, img: bool=True) -> None:
-        global sequence_number
+        
         if img:
             image = self.camera.get_color_frame()
             if image is not None:
                 ros_image = self.bridge.cv2_to_imgmsg(image, "bgr8")
-                ros_image.header.seq=sequence_number
-                sequence_number+=1
-                ros_image.header.stamp=rospy.Time.now()
+                ros_image.header.seq = self.sequence_number
+                self.sequence_number += 1
+                ros_image.header.stamp = rospy.Time.now()
                 pub.publish(ros_image)
                 
             else: assert ValueError(1)
