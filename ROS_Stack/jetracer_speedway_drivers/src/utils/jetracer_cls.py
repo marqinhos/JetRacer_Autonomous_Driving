@@ -155,6 +155,7 @@ class JetRacer(th.Thread):
 #            rospy.logerr(err.args)
 #            raise err.args
 
+
     def set_vel(self, vel: float) -> None:
         """Function to update velocity value, based on max_speed parameter configured in config.yaml
 
@@ -163,11 +164,12 @@ class JetRacer(th.Thread):
 
         """
         try:
-            value_vel=vel*self.__max_vel
+            value_vel = vel*self.__max_vel
             self.current_value_vel = value_vel
         except Exception as err:
             rospy.logerr(err.args)
             raise err.args
+
 
     def get_current_vel(self) -> float:
         """Function to get the current value of velocity

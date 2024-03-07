@@ -147,7 +147,7 @@ class Brain(th.Thread):
         Args:
         angle_deg (float): Angle
         """
-        vel=1-(abs(angle_deg)/90)
+        vel = 1 - (abs(angle_deg)/90)
 
          ## Create Twist message
         vel_msg = Velocities()
