@@ -96,47 +96,66 @@ class Brain(th.Thread):
             ## goal_point = self.__check_car2follow(self.points)
             ## Pass desired point to angle
             angle = self.__convert_point_2_vel(self.points)
+
             ## Publish desired point
             self.publish_vels(angle)
 
-            rospy.loginfo(f"Angle: {angle}")
+            #rospy.loginfo(f"Angle: {angle}")
             self.rospyRate.sleep()
 
 
+#    def publish_vels(self, angle_deg: float) -> None:
+#            """Void to publish angular vel and linear vel in Twist format. The topic to publish is "jetracer_vels"
+
+#            Args:
+#                angle_deg (float): Angle
+#            """
+#            CONSTANT_VEL = 0.5
+#            vel = 0.05
+            
+#            ## if not same:
+#            if angle_deg > 0:
+#                vel = 4.5*(1/abs(angle_deg))
+
+#            else:
+#                vel = CONSTANT_VEL
+            
+            
+#            ## Set value of vel if there is a car to follow
+#            ## if self.current_car_distance is not None:
+#            ##     vel = self.current_car_distance
+#            ##     self.last_car_distance = self.current_car_distance
+
+#            ## Check if stop_signal
+#            ## vel = self.__reduce_vel(vel)
+
+#            ## Break velocity
+#            vel = vel if vel <= CONSTANT_VEL else CONSTANT_VEL
+
+#            ## Create Twist message
+#            vel_msg = Velocities()
+#            vel_msg.angular = angle_deg
+#            vel_msg.linear = vel
+            
+#            ## Publish message in topic vels_jetracer
+#            self.pub_vels.publish(vel_msg)
+
+
     def publish_vels(self, angle_deg: float) -> None:
-            """Void to publish angular vel and linear vel in Twist format. The topic to publish is "jetracer_vels"
+        """Function to calculate the velocity based on turning angle and publish angular vel and linear vel in Twist format. The topic to publish is "jetracer_vels"
 
-            Args:
-                angle_deg (float): Angle
-            """
-            CONSTANT_VEL = 0.3
-            vel = 0.05
+        Args:
+        angle_deg (float): Angle
+        """
+        vel=1-(abs(angle_deg)/90)
+
+         ## Create Twist message
+        vel_msg = Velocities()
+        vel_msg.angular = angle_deg
+        vel_msg.linear = vel
             
-            ## if not same:
-            if angle_deg > 0:
-                vel = 3.0*(1/abs(angle_deg))
-
-            else:
-                vel = CONSTANT_VEL
-            
-            ## Set value of vel if there is a car to follow
-            ## if self.current_car_distance is not None:
-            ##     vel = self.current_car_distance
-            ##     self.last_car_distance = self.current_car_distance
-
-            ## Check if stop_signal
-            ## vel = self.__reduce_vel(vel)
-
-            ## Break velocity
-            vel = vel if vel <= CONSTANT_VEL else CONSTANT_VEL
-
-            ## Create Twist message
-            vel_msg = Velocities()
-            vel_msg.angular = angle_deg
-            vel_msg.linear = vel
-            
-            ## Publish message in topic vels_jetracer
-            self.pub_vels.publish(vel_msg)
+        ## Publish message in topic vels_jetracer
+        self.pub_vels.publish(vel_msg)
 
 
     def __callback_dictionary(self, msg: Dictionary) -> None:
