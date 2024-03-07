@@ -42,7 +42,7 @@ from cv_bridge import CvBridge
 from utils import Point, Features_Detection
 # Import detections features
 # from .utils.image_process import Features_Detection
-kk=0
+
 
 
 class ProcessImage(th.Thread):
