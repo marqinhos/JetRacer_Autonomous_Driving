@@ -156,6 +156,12 @@ class JetRacer(th.Thread):
 #            raise err.args
 
     def set_vel(self, vel: float) -> None:
+        """Function to update velocity value, based on max_speed parameter configured in config.yaml
+
+        Args:
+            new_vel (float): New value of velocity you want. As default 0.0 to reset.
+
+        """
         try:
             value_vel=vel*self.__max_vel
             self.current_value_vel = value_vel

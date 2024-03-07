@@ -142,7 +142,11 @@ class Brain(th.Thread):
 
 
     def publish_vels(self, angle_deg: float) -> None:
+        """Function to calculate the velocity based on turning angle and publish angular vel and linear vel in Twist format. The topic to publish is "jetracer_vels"
 
+        Args:
+        angle_deg (float): Angle
+        """
         vel=1-(abs(angle_deg)/90)
 
          ## Create Twist message
