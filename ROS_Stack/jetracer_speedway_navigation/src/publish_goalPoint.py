@@ -124,6 +124,9 @@ class ProcessImage(th.Thread):
             ## Show Point in image
             self.__show(self.frame, desired_pt)
 
+            ## Show segmentation using Yolov8 method
+            ##self.__show_segmentation(result)
+
             ## Publish desired point
             self.publish_point(desired_pt)
             # rospy.loginfo(f"Point: {desired_pt}")
@@ -165,6 +168,16 @@ class ProcessImage(th.Thread):
         cv2.imshow(self.name_ros_node , image)
         cv2.waitKey(3)
 
+
+    def __show_segmentation(self, results: list) -> None: 
+        """Void to show detections using new YOLOv8 method. 
+
+        Args:
+            results (list): Dictionary with all objects detections
+        """
+        for result in results:
+            result.show()  # display to screen
+
     
     def __callback_image(self, data: Image) -> None:
         """Callback to set in self variable the values of image. Convert the type of data to opencv image
@@ -199,7 +212,7 @@ class ProcessImage(th.Thread):
         Returns:
             list: List of result (masks, boxes, image) that return prediction in model YOLOv8
         """
-        return self.model_ia.predict(source=frame, conf=self.predict_ia_conf)
+        return self.model_ia.predict(source=frame, conf=self.predict_ia_conf, device='cpu')
 
 
 def signal_handler(signal, frame) -> None:

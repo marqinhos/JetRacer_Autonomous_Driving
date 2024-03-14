@@ -116,11 +116,8 @@ class ObjectDetection(th.Thread):
             ## Show Point in image
             ##self.__show(self.frame, dict_objects)
 
-            ## Show segmentation detections in image
-            ##self.__show_frame_segmentation(self.frame, result)
-
-            ## Show bounding boxes using Yolov8 method
-            ##self.__show_bounding_boxes(result)
+            ## Show segmentation using Yolov8 method
+            ##self.__show_segmentation(result)
 
             ## Publish desired point
             # self.publish_point(desired_pt)
@@ -190,56 +187,15 @@ class ObjectDetection(th.Thread):
         cv2.waitKey(3)
 
 
-    def __show_bounding_boxes(self, results: dict) -> None: 
-        """Void to show detections using new YOLOv8 method to build openCV image
+    def __show_segmentation(self, results: list) -> None: 
+        """Void to show detections using new YOLOv8 method. 
 
         Args:
-            results (dict): Dictionary with all objects detections
+            results (list): Dictionary with all objects detections
         """
-        ## Create image with bounding boxes
-        annotated_frame = results.plot()
-        ## Show
-        cv2.imshow("Segementation of detected areas", annotated_frame)
-        cv2.waitKey(3)
+        for result in results:
+            result.show()  # display to screen
 
-
-    def __show_frame_segmentation(self, image: np.ndarray, results: dict) -> None: 
-        """Void to show detections with a color mask 
-
-        Args:
-            image (np.ndarray): Image to show
-            results (dict): Dictionary with all objects detections
-        """
-        color_dict = {
-            'red': 'rgb(255, 0, 0)',
-            'blue': 'rgb(0, 0, 255)',
-            'green': 'rgb(0, 255, 0)',
-            'yellow': 'rgb(255, 255, 0)',
-            'purple': 'rgb(128, 0, 128)',
-            'orange': 'rgb(255, 165, 0)',
-            'pink': 'rgb(255, 192, 203)',
-            'gray': 'rgb(128, 128, 128)',
-            'turquoise': 'rgb(64, 224, 208)',
-            'brown': 'rgb(139, 69, 19)'
-        }
-
-        for i, det in enumerate(results.xyxy[0]):
-            x1, y1, x2, y2, conf, cls = det.tolist()
-
-            ## Build a mask for represent the segmentation of detect object
-            mask = np.zeros_like(image)
-            cv2.rectangle(mask, (int(x1), int(y1)), (int(x2), int(y2)), list(color_dict.values())[i], -1)
-
-            segmented_object = cv2.bitwise_and(image, mask)
-
-            ## Change to True, if you want show the segmentation confidence
-            if False:
-                label = f"Clase {int(cls)}: {conf:.2f}"
-                cv2.putText(frame, label, (int(x1), int(y1) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, GREEN, 2)
-
-        ## Show image
-        cv2.imshow("Segmentation", frame)
-        cv2.waitKey(3)
 
 
     def __run_ia(self, frame: np.ndarray) -> list:
