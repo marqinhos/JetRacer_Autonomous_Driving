@@ -122,10 +122,10 @@ class ProcessImage(th.Thread):
                 desired_pt = self.last_desired_pt
 
             ## Show Point in image
-            self.__show(self.frame, desired_pt)
+            ##self.__show(self.frame, desired_pt)
 
             ## Show segmentation using Yolov8 method
-            ##self.__show_segmentation(result)
+            self.__show_segmentation(result)
 
             ## Publish desired point
             self.publish_point(desired_pt)
@@ -176,7 +176,11 @@ class ProcessImage(th.Thread):
             results (list): Dictionary with all objects detections
         """
         for result in results:
-            result.show()  # display to screen
+            ## Create image with bounding boxes
+            annotated_frame = result.plot()
+            ## Show
+            cv2.imshow("Segementation of detected areas", annotated_frame)
+            cv2.waitKey(3)
 
     
     def __callback_image(self, data: Image) -> None:

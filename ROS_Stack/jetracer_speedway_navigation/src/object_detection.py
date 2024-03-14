@@ -194,7 +194,11 @@ class ObjectDetection(th.Thread):
             results (list): Dictionary with all objects detections
         """
         for result in results:
-            result.show()  # display to screen
+            ## Create image with bounding boxes
+            annotated_frame = result.plot()
+            ## Show
+            cv2.imshow("Segementation of detected areas", annotated_frame)
+            cv2.waitKey(3)
 
 
 
